@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Login | Expense Tracker
+    </title>
+
+
+    <!-- Main CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../CSS/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <main class="login-page">
+
+
+        <section class="login-card">
+
+
+            <!-- Logo -->
+
+            <div class="logo">
+
+                ₹
+
+            </div>
+
+
+            <!-- Application Name -->
+
+            <h1>
+                Expense Tracker
+            </h1>
+
+
+            <!-- Tagline -->
+
+            <p class="tagline">
+
+                Take Control of Your Money,
+                One Expense at a Time.
+
+            </p>
+
+
+
+            <!-- Login Form -->
+
+            <form id="loginForm">
+
+
+                <!-- Email -->
+
+                <div class="input-group">
+
+                    <label for="email">
+
+                        Email Address
+
+                    </label>
+
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- Password -->
+
+                <div class="input-group">
+
+                    <label for="password">
+
+                        Password
+
+                    </label>
+
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- Login Button -->
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                    id="loginButton"
+                >
+
+                    Login
+
+                </button>
+
+
+            </form>
+
+
+
+            <!-- Divider -->
+
+            <div class="divider">
+
+                <span>
+                    OR
+                </span>
+
+            </div>
+
+
+
+            <!-- Google Login -->
+
+            <button
+                type="button"
+                id="googleLogin"
+                class="google-btn"
+            >
+
+                Continue with Google
+
+            </button>
+
+
+
+            <!-- Login Message -->
+
+            <p
+                id="message"
+                class="message"
+            ></p>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- Authentication JavaScript -->
+
+    <script
+        type="module"
+        src="../JS/auth.js"
+    ></script>
+
+
+</body>
+
+</html>
