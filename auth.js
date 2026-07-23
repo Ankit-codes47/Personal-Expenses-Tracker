@@ -1,11 +1,5 @@
-// Import Firebase Authentication instance
+import { auth } from "./firebase-config.js";
 
-import {
-    auth
-} from "./firebase-config.js";
-
-
-// Import Firebase Authentication functions
 
 import {
 
@@ -13,52 +7,38 @@ import {
 
     signInWithPopup,
 
-    GoogleAuthProvider,
-
-    onAuthStateChanged
+    GoogleAuthProvider
 
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
 
 
 // ================================
-// GET HTML ELEMENTS
+// HTML ELEMENTS
 // ================================
 
 const loginForm =
-    document.getElementById(
-        "loginForm"
-    );
+    document.getElementById("loginForm");
 
 
 const emailInput =
-    document.getElementById(
-        "email"
-    );
+    document.getElementById("email");
 
 
 const passwordInput =
-    document.getElementById(
-        "password"
-    );
+    document.getElementById("password");
 
 
 const loginButton =
-    document.getElementById(
-        "loginButton"
-    );
+    document.getElementById("loginButton");
 
 
 const googleLoginButton =
-    document.getElementById(
-        "googleLogin"
-    );
+    document.getElementById("googleLogin");
 
 
 const message =
-    document.getElementById(
-        "message"
-    );
+    document.getElementById("message");
 
 
 
@@ -82,7 +62,7 @@ function showMessage(
 
 
 // ================================
-// EMAIL AND PASSWORD LOGIN
+// EMAIL / PASSWORD LOGIN
 // ================================
 
 loginForm.addEventListener(
@@ -92,13 +72,9 @@ loginForm.addEventListener(
     async (event) => {
 
 
-        // Prevent page refresh
-
         event.preventDefault();
 
 
-
-        // Get user input
 
         const email =
             emailInput.value.trim();
@@ -108,8 +84,6 @@ loginForm.addEventListener(
             passwordInput.value;
 
 
-
-        // Disable button while logging in
 
         loginButton.disabled =
             true;
@@ -133,27 +107,13 @@ loginForm.addEventListener(
         try {
 
 
-            // Firebase login
+            await signInWithEmailAndPassword(
 
-            const userCredential =
+                auth,
 
-                await signInWithEmailAndPassword(
+                email,
 
-                    auth,
-
-                    email,
-
-                    password
-
-                );
-
-
-
-            console.log(
-
-                "Logged in:",
-
-                userCredential.user.email
+                password
 
             );
 
@@ -161,7 +121,7 @@ loginForm.addEventListener(
 
             showMessage(
 
-                "Login successful. Opening dashboard...",
+                "Login successful.",
 
                 "success"
 
@@ -169,26 +129,20 @@ loginForm.addEventListener(
 
 
 
-            // Open dashboard
+            // Redirect only after user clicks Login
+            // and Firebase login succeeds.
 
-            setTimeout(() => {
-
-                window.location.href =
-                    "dashboard.html";
-
-            }, 700);
-
+            window.location.replace(
+                "dashboard.html"
+            );
 
 
         } catch (error) {
 
 
             console.error(
-
                 "Login error:",
-
                 error
-
             );
 
 
@@ -200,10 +154,8 @@ loginForm.addEventListener(
 
 
             if (
-
                 error.code ===
                 "auth/invalid-email"
-
             ) {
 
                 errorMessage =
@@ -212,12 +164,9 @@ loginForm.addEventListener(
             }
 
 
-
-            if (
-
+            else if (
                 error.code ===
                 "auth/invalid-credential"
-
             ) {
 
                 errorMessage =
@@ -226,16 +175,13 @@ loginForm.addEventListener(
             }
 
 
-
-            if (
-
+            else if (
                 error.code ===
                 "auth/too-many-requests"
-
             ) {
 
                 errorMessage =
-                    "Too many login attempts. Please try again later.";
+                    "Too many attempts. Please try again later.";
 
             }
 
@@ -248,7 +194,6 @@ loginForm.addEventListener(
                 "error"
 
             );
-
 
 
         } finally {
@@ -276,7 +221,6 @@ loginForm.addEventListener(
 // ================================
 
 const googleProvider =
-
     new GoogleAuthProvider();
 
 
@@ -310,23 +254,11 @@ googleLoginButton.addEventListener(
         try {
 
 
-            const result =
+            await signInWithPopup(
 
-                await signInWithPopup(
+                auth,
 
-                    auth,
-
-                    googleProvider
-
-                );
-
-
-
-            console.log(
-
-                "Google user:",
-
-                result.user.email
+                googleProvider
 
             );
 
@@ -334,7 +266,7 @@ googleLoginButton.addEventListener(
 
             showMessage(
 
-                "Google login successful. Opening dashboard...",
+                "Google login successful.",
 
                 "success"
 
@@ -342,13 +274,12 @@ googleLoginButton.addEventListener(
 
 
 
-            setTimeout(() => {
+            // Redirect only after successful
+            // Google authentication.
 
-                window.location.href =
-                    "dashboard.html";
-
-            }, 700);
-
+            window.location.replace(
+                "dashboard.html"
+            );
 
 
         } catch (error) {
@@ -365,10 +296,8 @@ googleLoginButton.addEventListener(
 
 
             if (
-
                 error.code ===
                 "auth/popup-closed-by-user"
-
             ) {
 
                 showMessage(
@@ -381,11 +310,17 @@ googleLoginButton.addEventListener(
 
             }
 
-           else {
+
+            else {
+
                 showMessage(
-                    `${error.code}: ${error.message}`,
+
+                    "Google Sign-In failed. Please try again.",
+
                     "error"
+
                 );
+
             }
 
 
@@ -398,38 +333,6 @@ googleLoginButton.addEventListener(
 
             googleLoginButton.textContent =
                 "Continue with Google";
-
-
-        }
-
-
-    }
-
-);
-
-
-
-// ================================
-// CHECK LOGIN STATUS
-// ================================
-
-onAuthStateChanged(
-
-    auth,
-
-    (user) => {
-
-
-        if (user) {
-
-
-            console.log(
-
-                "Authenticated user:",
-
-                user.email
-
-            );
 
 
         }
