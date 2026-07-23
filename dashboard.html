@@ -14,20 +14,946 @@
         Dashboard | Expense Tracker
     </title>
 
+
+    <link
+        rel="stylesheet"
+        href="../CSS/dashboard.css"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="../CSS/responsive.css"
+    >
+
+
 </head>
 
 
 <body>
 
 
-    <h1>
-        Expense Tracker Dashboard
-    </h1>
+<div
+    id="dashboardContent"
+    class="app-container"
+    style="display: none;"
+>
 
 
-    <p>
-        Login successful. Your dashboard is connected.
-    </p>
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+
+            <div class="brand-logo">
+
+                ₹
+
+            </div>
+
+
+            <div>
+
+                <h2>Expense</h2>
+
+                <span>Tracker</span>
+
+            </div>
+
+
+        </div>
+
+
+
+        <nav class="sidebar-nav">
+
+
+            <a
+                href="dashboard.html"
+                class="nav-link active"
+            >
+
+                <span>⌂</span>
+
+                Dashboard
+
+            </a>
+
+
+            <a
+                href="transactions.html"
+                class="nav-link"
+            >
+
+                <span>↔</span>
+
+                Transactions
+
+            </a>
+
+
+            <a
+                href="reports.html"
+                class="nav-link"
+            >
+
+                <span>▥</span>
+
+                Reports
+
+            </a>
+
+
+            <a
+                href="budget.html"
+                class="nav-link"
+            >
+
+                <span>₹</span>
+
+                Budget
+
+            </a>
+
+
+            <a
+                href="savings.html"
+                class="nav-link"
+            >
+
+                <span>◎</span>
+
+                Savings Goals
+
+            </a>
+
+
+            <a
+                href="settings.html"
+                class="nav-link"
+            >
+
+                <span>⚙</span>
+
+                Settings
+
+            </a>
+
+
+        </nav>
+
+
+
+        <div class="sidebar-bottom">
+
+
+            <div class="user-info">
+
+
+                <div
+                    class="user-avatar"
+                    id="userAvatar"
+                >
+
+                    U
+
+                </div>
+
+
+                <div>
+
+
+                    <small>
+
+                        Signed in as
+
+                    </small>
+
+
+                    <p id="userEmail">
+
+                        Loading...
+
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="logout-btn"
+            >
+
+                Logout
+
+            </button>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+
+        <!-- MOBILE HEADER -->
+
+        <header class="mobile-header">
+
+
+            <div class="mobile-brand">
+
+                <span>₹</span>
+
+                Expense Tracker
+
+            </div>
+
+
+            <button
+                type="button"
+                id="menuButton"
+                class="menu-button"
+            >
+
+                ☰
+
+            </button>
+
+
+        </header>
+
+
+
+        <!-- HEADER -->
+
+        <section class="dashboard-header">
+
+
+            <div>
+
+
+                <p class="page-label">
+
+                    OVERVIEW
+
+                </p>
+
+
+                <h1>
+
+                    Welcome Back
+
+                </h1>
+
+
+                <p>
+
+                    Here's an overview of your finances.
+
+                </p>
+
+
+            </div>
+
+
+
+            <div class="current-date">
+
+
+                <span>
+
+                    Today
+
+                </span>
+
+
+                <strong id="currentDate">
+
+                    Loading...
+
+                </strong>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- SUMMARY -->
+
+        <section class="summary-grid">
+
+
+            <article
+                class="summary-card balance-card"
+            >
+
+
+                <div class="card-top">
+
+                    <span class="card-icon">
+                        ₹
+                    </span>
+
+                    <span class="card-label">
+                        Total Balance
+                    </span>
+
+                </div>
+
+
+                <h2 id="totalBalance">
+
+                    ₹0.00
+
+                </h2>
+
+
+                <p>
+
+                    Current available balance
+
+                </p>
+
+
+            </article>
+
+
+
+            <article class="summary-card">
+
+
+                <div class="card-top">
+
+                    <span
+                        class="card-icon income-icon"
+                    >
+                        ↑
+                    </span>
+
+                    <span class="card-label">
+                        Total Income
+                    </span>
+
+                </div>
+
+
+                <h2 id="totalIncome">
+
+                    ₹0.00
+
+                </h2>
+
+
+                <p>
+
+                    All recorded income
+
+                </p>
+
+
+            </article>
+
+
+
+            <article class="summary-card">
+
+
+                <div class="card-top">
+
+                    <span
+                        class="card-icon expense-icon"
+                    >
+                        ↓
+                    </span>
+
+                    <span class="card-label">
+                        Total Expenses
+                    </span>
+
+                </div>
+
+
+                <h2 id="totalExpenses">
+
+                    ₹0.00
+
+                </h2>
+
+
+                <p>
+
+                    All recorded expenses
+
+                </p>
+
+
+            </article>
+
+
+
+            <article class="summary-card">
+
+
+                <div class="card-top">
+
+                    <span
+                        class="card-icon savings-icon"
+                    >
+                        ◎
+                    </span>
+
+                    <span class="card-label">
+                        Savings
+                    </span>
+
+                </div>
+
+
+                <h2 id="totalSavings">
+
+                    ₹0.00
+
+                </h2>
+
+
+                <p>
+
+                    Your current savings
+
+                </p>
+
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- QUICK ACTIONS -->
+
+        <section class="dashboard-section">
+
+
+            <div class="section-heading">
+
+                <h2>
+                    Quick Actions
+                </h2>
+
+                <p>
+                    Manage your finances quickly.
+                </p>
+
+            </div>
+
+
+
+            <div class="quick-actions">
+
+
+                <button
+                    type="button"
+                    id="addIncomeButton"
+                    class="action-card income-action"
+                >
+
+                    <span>＋</span>
+
+                    <div>
+
+                        <strong>
+                            Add Income
+                        </strong>
+
+                        <small>
+                            Record money received
+                        </small>
+
+                    </div>
+
+                </button>
+
+
+
+                <button
+                    type="button"
+                    id="addExpenseButton"
+                    class="action-card expense-action"
+                >
+
+                    <span>−</span>
+
+                    <div>
+
+                        <strong>
+                            Add Expense
+                        </strong>
+
+                        <small>
+                            Record your spending
+                        </small>
+
+                    </div>
+
+                </button>
+
+
+
+                <a
+                    href="transactions.html"
+                    class="action-card"
+                >
+
+                    <span>↔</span>
+
+                    <div>
+
+                        <strong>
+                            Transactions
+                        </strong>
+
+                        <small>
+                            View financial history
+                        </small>
+
+                    </div>
+
+                </a>
+
+
+
+                <a
+                    href="reports.html"
+                    class="action-card"
+                >
+
+                    <span>▥</span>
+
+                    <div>
+
+                        <strong>
+                            View Reports
+                        </strong>
+
+                        <small>
+                            Analyze your finances
+                        </small>
+
+                    </div>
+
+                </a>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- BOTTOM SECTION -->
+
+        <section class="dashboard-bottom-grid">
+
+
+            <article class="dashboard-panel">
+
+
+                <div class="panel-header">
+
+
+                    <div>
+
+                        <h2>
+                            Recent Transactions
+                        </h2>
+
+                        <p>
+                            Your latest financial activity.
+                        </p>
+
+                    </div>
+
+
+                    <a href="transactions.html">
+
+                        View All
+
+                    </a>
+
+
+                </div>
+
+
+
+                <div
+                    id="recentTransactions"
+                    class="empty-state"
+                >
+
+
+                    <div class="empty-icon">
+
+                        ↔
+
+                    </div>
+
+
+                    <h3>
+
+                        No transactions yet
+
+                    </h3>
+
+
+                    <p>
+
+                        Add your first income or expense
+                        to see it here.
+
+                    </p>
+
+
+                </div>
+
+
+            </article>
+
+
+
+            <article class="dashboard-panel">
+
+
+                <div class="panel-header">
+
+
+                    <div>
+
+                        <h2>
+                            Monthly Budget
+                        </h2>
+
+                        <p>
+                            Track your spending limit.
+                        </p>
+
+                    </div>
+
+
+                    <a href="budget.html">
+
+                        Manage
+
+                    </a>
+
+
+                </div>
+
+
+
+                <div class="budget-summary">
+
+
+                    <div class="budget-values">
+
+
+                        <div>
+
+                            <span>
+                                Spent
+                            </span>
+
+                            <strong id="budgetSpent">
+                                ₹0
+                            </strong>
+
+                        </div>
+
+
+
+                        <div class="budget-right">
+
+                            <span>
+                                Budget
+                            </span>
+
+                            <strong id="monthlyBudget">
+                                ₹0
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="progress-track">
+
+                        <div
+                            id="budgetProgress"
+                            class="progress-bar"
+                        ></div>
+
+                    </div>
+
+
+
+                    <p id="budgetMessage">
+
+                        Set your monthly budget to start
+                        tracking your spending.
+
+                    </p>
+
+
+                </div>
+
+
+            </article>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+<!-- ========================================
+     TRANSACTION MODAL
+========================================= -->
+
+<div
+    id="transactionModal"
+    class="modal-overlay"
+    style="display: none;"
+>
+
+    <div class="transaction-modal">
+
+        <!-- Modal Header -->
+
+        <div class="modal-header">
+
+            <div>
+
+                <p
+                    class="modal-label"
+                    id="modalLabel"
+                >
+                    NEW TRANSACTION
+                </p>
+
+                <h2 id="modalTitle">
+                    Add Transaction
+                </h2>
+
+            </div>
+
+            <button
+                type="button"
+                id="closeModalButton"
+                class="close-modal"
+                aria-label="Close transaction form"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- Transaction Form -->
+
+        <form id="transactionForm">
+
+
+            <!-- Transaction Title -->
+
+            <div class="form-group">
+
+                <label for="transactionTitle">
+                    Title
+                </label>
+
+                <input
+                    type="text"
+                    id="transactionTitle"
+                    placeholder="Example: Salary or Groceries"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Amount -->
+
+            <div class="form-group">
+
+                <label for="transactionAmount">
+                    Amount
+                </label>
+
+                <input
+                    type="number"
+                    id="transactionAmount"
+                    placeholder="Enter amount"
+                    min="0.01"
+                    step="0.01"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Category -->
+
+            <div class="form-group">
+
+                <label for="transactionCategory">
+                    Category
+                </label>
+
+                <select
+                    id="transactionCategory"
+                    required
+                >
+                    <!-- Added dynamically -->
+                </select>
+
+            </div>
+
+
+            <!-- Date -->
+
+            <div class="form-group">
+
+                <label for="transactionDate">
+                    Date
+                </label>
+
+                <input
+                    type="date"
+                    id="transactionDate"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Payment Method -->
+
+            <div class="form-group">
+
+                <label for="paymentMethod">
+                    Payment Method
+                </label>
+
+                <select
+                    id="paymentMethod"
+                    required
+                >
+
+                    <option value="">
+                        Select payment method
+                    </option>
+
+                    <option value="Cash">
+                        Cash
+                    </option>
+
+                    <option value="UPI">
+                        UPI
+                    </option>
+
+                    <option value="Debit Card">
+                        Debit Card
+                    </option>
+
+                    <option value="Credit Card">
+                        Credit Card
+                    </option>
+
+                    <option value="Bank Transfer">
+                        Bank Transfer
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Notes -->
+
+            <div class="form-group">
+
+                <label for="transactionNotes">
+                    Notes
+                    <span>(Optional)</span>
+                </label>
+
+                <textarea
+                    id="transactionNotes"
+                    placeholder="Add additional details..."
+                    rows="3"
+                ></textarea>
+
+            </div>
+
+
+            <!-- Message -->
+
+            <p
+                id="transactionMessage"
+                class="transaction-message"
+            ></p>
+
+
+            <!-- Submit -->
+
+            <button
+                type="submit"
+                id="saveTransactionButton"
+                class="save-transaction-btn"
+            >
+                Save Transaction
+            </button>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script
+    type="module"
+    src="../JS/dashboard.js"
+></script>
 
 
 </body>
