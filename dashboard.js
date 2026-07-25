@@ -1,943 +1,522 @@
-import {
-    auth,
-    db
-} from "./firebase-config.js";
+// ========================================
+// IMPORTS
+// ========================================
 
+import { auth, db } from "../JS/firebase-config.js";
 
 import {
     onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
-
 import {
     collection,
+    query,
+    where,
+    orderBy,
+    getDocs,
     addDoc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
+import {
+    formatCurrency,
+    formatDate,
+    getCurrentDate,
+    showToast
+} from "./utils.js";
 
 
-// ==========================================
-// CURRENT USER
-// ==========================================
+// ========================================
+// DOM ELEMENTS
+// ========================================
+
+const dashboardContent = document.getElementById("dashboardContent");
+
+const userEmail = document.getElementById("userEmail");
+const userAvatar = document.getElementById("userAvatar");
+
+const currentDate = document.getElementById("currentDate");
+
+const menuButton = document.getElementById("menuButton");
+const sidebar = document.querySelector(".sidebar");
+
+const logoutButton = document.getElementById("logoutButton");
+
+const totalBalance = document.getElementById("totalBalance");
+const totalIncome = document.getElementById("totalIncome");
+const totalExpenses = document.getElementById("totalExpenses");
+const totalSavings = document.getElementById("totalSavings");
+
+const recentTransactions = document.getElementById("recentTransactions");
+
+const budgetSpent = document.getElementById("budgetSpent");
+const monthlyBudget = document.getElementById("monthlyBudget");
+const budgetProgress = document.getElementById("budgetProgress");
+const budgetMessage = document.getElementById("budgetMessage");
+// ========================================
+// TRANSACTION MODAL
+// ========================================
+
+const transactionModal = document.getElementById("transactionModal");
+
+const addIncomeButton = document.getElementById("addIncomeButton");
+const addExpenseButton = document.getElementById("addExpenseButton");
+
+const closeModalButton = document.getElementById("closeModalButton");
+
+const transactionForm = document.getElementById("transactionForm");
+
+const modalTitle = document.getElementById("modalTitle");
+const modalLabel = document.getElementById("modalLabel");
+
+const transactionTitle = document.getElementById("transactionTitle");
+const transactionAmount = document.getElementById("transactionAmount");
+const transactionCategory = document.getElementById("transactionCategory");
+const transactionDate = document.getElementById("transactionDate");
+const paymentMethod = document.getElementById("paymentMethod");
+const transactionNotes = document.getElementById("transactionNotes");
+const transactionMessage = document.getElementById("transactionMessage");
+
+// ========================================
+// GLOBAL VARIABLES
+// ========================================
 
 let currentUser = null;
-
-let transactionType = null;
-
-
-
-// ==========================================
-// HTML ELEMENTS
-// ==========================================
-
-const dashboardContent =
-    document.getElementById("dashboardContent");
-
-const logoutButton =
-    document.getElementById("logoutButton");
-
-const userEmail =
-    document.getElementById("userEmail");
-
-const userAvatar =
-    document.getElementById("userAvatar");
-
-const currentDate =
-    document.getElementById("currentDate");
-
-
-const menuButton =
-    document.getElementById("menuButton");
-
-const sidebar =
-    document.querySelector(".sidebar");
-
-
-
-// Transaction buttons
-
-const addIncomeButton =
-    document.getElementById("addIncomeButton");
-
-const addExpenseButton =
-    document.getElementById("addExpenseButton");
-
-
-
-// Modal
-
-const transactionModal =
-    document.getElementById("transactionModal");
-
-const closeModalButton =
-    document.getElementById("closeModalButton");
-
-const modalLabel =
-    document.getElementById("modalLabel");
-
-const modalTitle =
-    document.getElementById("modalTitle");
-
-
-
-// Form
-
-const transactionForm =
-    document.getElementById("transactionForm");
-
-const transactionTitle =
-    document.getElementById("transactionTitle");
-
-const transactionAmount =
-    document.getElementById("transactionAmount");
-
-const transactionCategory =
-    document.getElementById("transactionCategory");
-
-const transactionDate =
-    document.getElementById("transactionDate");
-
-const paymentMethod =
-    document.getElementById("paymentMethod");
-
-const transactionNotes =
-    document.getElementById("transactionNotes");
-
-const transactionMessage =
-    document.getElementById("transactionMessage");
-
-const saveTransactionButton =
-    document.getElementById("saveTransactionButton");
-
-
-
-// ==========================================
-// TRANSACTION CATEGORIES
-// ==========================================
+let transactions = [];
+let transactionType = "income";
 
 const incomeCategories = [
-
     "Salary",
-
-    "Freelancing",
-
     "Business",
-
+    "Freelancing",
     "Investment",
-
     "Gift",
-
+    "Bonus",
     "Other"
-
 ];
-
 
 const expenseCategories = [
-
     "Food",
-
     "Shopping",
-
-    "Transportation",
-
-    "Education",
-
-    "Bills",
-
-    "Entertainment",
-
-    "Health",
-
     "Travel",
-
+    "Bills",
+    "Entertainment",
+    "Health",
+    "Education",
+    "Rent",
     "Other"
-
 ];
 
 
+// ========================================
+// SHOW TODAY'S DATE
+// ========================================
 
-// ==========================================
-// AUTHENTICATION
-// ==========================================
-
-onAuthStateChanged(
-
-    auth,
-
-    (user) => {
+currentDate.textContent = getCurrentDate();
 
 
-        if (user) {
+// ========================================
+// MOBILE MENU
+// ========================================
+
+menuButton.addEventListener("click", () => {
+    sidebar.classList.toggle("show");
+});
 
 
-            currentUser = user;
+// ========================================
+// LOGOUT
+// ========================================
+
+logoutButton.addEventListener("click", async () => {
+
+    try {
+
+        await signOut(auth);
+
+    } catch (error) {
+
+        console.error(error);
+        showToast("Logout failed");
+
+    }
+
+});
 
 
-            // Display email
+// ========================================
+// AUTH CHECK
+// ========================================
 
-            if (userEmail) {
+onAuthStateChanged(auth, async (user) => {
 
-                userEmail.textContent =
-                    user.email || "User";
+    if (!user) {
 
-            }
+        window.location.href = "login.html";
+        return;
 
+    }
 
-            // Display avatar letter
+    currentUser = user;
 
-            if (userAvatar) {
+    dashboardContent.style.display = "flex";
 
+    loadUser();
 
-                const name =
+    await loadTransactions();
 
-                    user.displayName ||
-                    user.email ||
-                    "User";
-
-
-                userAvatar.textContent =
-
-                    name
-                        .charAt(0)
-                        .toUpperCase();
-
-            }
+});
 
 
-            // Show dashboard
+// ========================================
+// LOAD USER
+// ========================================
 
-            if (dashboardContent) {
+function loadUser() {
 
-                dashboardContent.style.display =
-                    "block";
+    userEmail.textContent = currentUser.email;
 
-            }
+    userAvatar.textContent =
+        currentUser.email.charAt(0).toUpperCase();
 
+}
+
+
+// ========================================
+// LOAD TRANSACTIONS
+// ========================================
+
+async function loadTransactions() {
+
+    try {
+
+        const q = query(
+            collection(db, "transactions"),
+            where("uid", "==", currentUser.uid),
+            orderBy("createdAt", "desc")
+
+        );
+
+        const snapshot = await getDocs(q);
+
+        transactions = [];
+
+        snapshot.forEach((doc) => {
+
+            transactions.push({
+                id: doc.id,
+                ...doc.data()
+            });
+
+        });
+
+        updateDashboard();
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+// ========================================
+// UPDATE DASHBOARD
+// ========================================
+
+function updateDashboard() {
+
+    let income = 0;
+    let expense = 0;
+
+    transactions.forEach(transaction => {
+
+        if (transaction.type === "income") {
+
+            income += Number(transaction.amount);
+
+        } else {
+
+            expense += Number(transaction.amount);
 
         }
 
-        else {
+    });
 
+    const balance = income - expense;
+    const savings = balance;
 
-            currentUser = null;
+    totalIncome.textContent = formatCurrency(income);
+    totalExpenses.textContent = formatCurrency(expense);
+    totalBalance.textContent = formatCurrency(balance);
+    totalSavings.textContent = formatCurrency(savings);
 
+    renderRecentTransactions();
 
-            window.location.replace(
-                "index.html"
-            );
+    updateBudget(expense);
 
+}
+// ========================================
+// RECENT TRANSACTIONS
+// ========================================
 
-        }
+function renderRecentTransactions() {
+
+    if (transactions.length === 0) {
+
+        recentTransactions.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">↔</div>
+                <h3>No transactions yet</h3>
+                <p>Add your first transaction.</p>
+            </div>
+        `;
+
+        return;
+
+    }
+
+    const latest = transactions.slice(0, 5);
+
+    recentTransactions.innerHTML = latest.map(transaction => `
+
+        <div class="transaction-item">
+
+            <div>
+
+                <strong>${transaction.title}</strong>
+
+                <p>${transaction.category}</p>
+
+            </div>
+
+            <div>
+
+                <strong class="${
+                    transaction.type === "income"
+                        ? "income-text"
+                        : "expense-text"
+                }">
+
+                    ${transaction.type === "income" ? "+" : "-"}
+                    ${formatCurrency(transaction.amount)}
+
+                </strong>
+
+                <small>${formatDate(transaction.date)}</small>
+
+            </div>
+
+        </div>
+
+    `).join("");
+
+}
+// ========================================
+// MONTHLY BUDGET
+// ========================================
+
+function updateBudget(expense) {
+
+    const budget = Number(localStorage.getItem("monthlyBudget")) || 0;
+
+    budgetSpent.textContent = formatCurrency(expense);
+
+    monthlyBudget.textContent = formatCurrency(budget);
+
+    if (budget === 0) {
+
+        budgetProgress.style.width = "0%";
+
+        budgetMessage.textContent =
+            "Set your monthly budget to start tracking.";
+
+        return;
+
+    }
+
+    const percent = Math.min((expense / budget) * 100, 100);
+
+    budgetProgress.style.width = percent + "%";
+
+    const remaining = budget - expense;
+
+    if (remaining >= 0) {
+
+        budgetMessage.textContent =
+            `${formatCurrency(remaining)} remaining this month`;
+
+    } else {
+
+        budgetMessage.textContent =
+            `Budget exceeded by ${formatCurrency(Math.abs(remaining))}`;
+
+    }
+
+}
+// ========================================
+// TRANSACTION MODAL
+// ========================================
+
+// Open Income Modal
+addIncomeButton.addEventListener("click", () => {
+    openTransactionModal("income");
+});
+
+// Open Expense Modal
+addExpenseButton.addEventListener("click", () => {
+    openTransactionModal("expense");
+});
+
+// Close Modal Button
+closeModalButton.addEventListener("click", closeTransactionModal);
+
+// Save Transaction
+transactionForm.addEventListener("submit", saveTransaction);
+
+// Close Modal when clicking outside
+transactionModal.addEventListener("click", (event) => {
+
+    if (event.target === transactionModal) {
+
+        transactionForm.reset();
+
+        closeTransactionModal();
 
 
     }
 
-);
-
-
-
-// ==========================================
-// LOGOUT
-// ==========================================
-
-if (logoutButton) {
-
-
-    logoutButton.addEventListener(
-
-        "click",
-
-        async () => {
-
-
-            try {
-
-
-                await signOut(auth);
-
-
-                window.location.replace(
-                    "index.html"
-                );
-
-
-            }
-
-            catch (error) {
-
-
-                console.error(
-                    "Logout error:",
-                    error
-                );
-
-
-                alert(
-                    "Unable to logout."
-                );
-
-
-            }
-
-
-        }
-
-    );
-
-
-}
-
-
-
-// ==========================================
-// CURRENT DATE
-// ==========================================
-
-if (currentDate) {
-
-
-    const today =
-        new Date();
-
-
-    currentDate.textContent =
-
-        today.toLocaleDateString(
-
-            "en-IN",
-
-            {
-
-                day: "numeric",
-
-                month: "short",
-
-                year: "numeric"
-
-            }
-
-        );
-
-
-}
-
-
-
-// ==========================================
-// MOBILE MENU
-// ==========================================
-
-if (
-    menuButton &&
-    sidebar
-) {
-
-
-    menuButton.addEventListener(
-
-        "click",
-
-        () => {
-
-
-            sidebar.classList.toggle(
-                "open"
-            );
-
-
-        }
-
-    );
-
-
-}
-
-
-
-// ==========================================
-// SET TODAY AS DEFAULT DATE
-// ==========================================
-
-function setTodayDate() {
-
-
-    const today =
-        new Date();
-
-
-    const year =
-        today.getFullYear();
-
-
-    const month =
-        String(
-            today.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    const day =
-        String(
-            today.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
-
-    transactionDate.value =
-
-        `${year}-${month}-${day}`;
-
-
-}
-
-
-
-// ==========================================
-// LOAD CATEGORIES
-// ==========================================
-
-function loadCategories(categories) {
-
-
-    transactionCategory.innerHTML =
-
-        `<option value="">
-            Select category
-        </option>`;
-
-
-
-    categories.forEach(
-
-        (category) => {
-
-
-            const option =
-
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                category;
-
-
-            option.textContent =
-                category;
-
-
-            transactionCategory.appendChild(
-                option
-            );
-
-
-        }
-
-    );
-
-
-}
-
-
-
-// ==========================================
-// OPEN TRANSACTION MODAL
-// ==========================================
+});
+
+// ========================================
+// OPEN MODAL
+// ========================================
 
 function openTransactionModal(type) {
 
-
-    transactionType =
-        type;
-
+    transactionType = type;
 
     transactionForm.reset();
 
+    transactionDate.value = new Date().toISOString().split("T")[0];
 
-    transactionMessage.textContent =
-        "";
-
-
-    transactionMessage.className =
-        "transaction-message";
-
-
-    setTodayDate();
-
-
+    transactionMessage.textContent = "";
 
     if (type === "income") {
 
+        modalTitle.textContent = "Add Income";
+        modalLabel.textContent = "NEW INCOME";
 
-        modalLabel.textContent =
-            "NEW INCOME";
+        loadCategories(incomeCategories);
 
+    } else {
 
-        modalTitle.textContent =
-            "Add New Income";
+        modalTitle.textContent = "Add Expense";
+        modalLabel.textContent = "NEW EXPENSE";
 
-
-        saveTransactionButton.textContent =
-            "Save Income";
-
-
-        loadCategories(
-            incomeCategories
-        );
-
+        loadCategories(expenseCategories);
 
     }
 
-    else {
-
-
-        modalLabel.textContent =
-            "NEW EXPENSE";
-
-
-        modalTitle.textContent =
-            "Add New Expense";
-
-
-        saveTransactionButton.textContent =
-            "Save Expense";
-
-
-        loadCategories(
-            expenseCategories
-        );
-
-
-    }
-
-
-
-    transactionModal.style.display =
-        "flex";
-
+    transactionModal.style.display = "flex";
 
     transactionTitle.focus();
-
-
 }
 
-
-
-// ==========================================
+// ========================================
 // CLOSE MODAL
-// ==========================================
+// ========================================
 
 function closeTransactionModal() {
 
-
-    transactionModal.style.display =
-        "none";
-
-
-    transactionForm.reset();
-
-
-    transactionType =
-        null;
-
-
+    transactionModal.style.display = "none";
 }
 
+// ========================================
+// LOAD CATEGORY OPTIONS
+// ========================================
 
+function loadCategories(categories) {
 
-// ==========================================
-// OPEN INCOME FORM
-// ==========================================
+    transactionCategory.innerHTML = "";
 
-if (addIncomeButton) {
+    categories.forEach(category => {
 
+        const option = document.createElement("option");
 
-    addIncomeButton.addEventListener(
+        option.value = category;
+        option.textContent = category;
 
-        "click",
+        transactionCategory.appendChild(option);
 
-        () => {
-
-
-            openTransactionModal(
-                "income"
-            );
-
-
-        }
-
-    );
-
+    });
 
 }
+// ========================================
+// SAVE TRANSACTION
+// ========================================
 
+async function saveTransaction(event) {
 
+    event.preventDefault();
 
-// ==========================================
-// OPEN EXPENSE FORM
-// ==========================================
+    transactionMessage.textContent = "";
 
-if (addExpenseButton) {
+    const title = transactionTitle.value.trim();
+    const amount = Number(transactionAmount.value);
+    const category = transactionCategory.value;
+    const date = transactionDate.value;
+    const payment = paymentMethod.value;
+    const notes = transactionNotes.value.trim();
 
-
-    addExpenseButton.addEventListener(
-
-        "click",
-
-        () => {
-
-
-            openTransactionModal(
-                "expense"
-            );
-
-
-        }
-
-    );
-
-
-}
-
-
-
-// ==========================================
-// CLOSE BUTTON
-// ==========================================
-
-if (closeModalButton) {
-
-
-    closeModalButton.addEventListener(
-
-        "click",
-
-        closeTransactionModal
-
-    );
-
-
-}
-
-
-
-// ==========================================
-// CLOSE WHEN CLICKING OUTSIDE
-// ==========================================
-
-if (transactionModal) {
-
-
-    transactionModal.addEventListener(
-
-        "click",
-
-        (event) => {
-
-
-            if (
-                event.target ===
-                transactionModal
-            ) {
-
-
-                closeTransactionModal();
-
-
-            }
-
-
-        }
-
-    );
-
-
-}
-
-
-
-// ==========================================
-// ESCAPE KEY
-// ==========================================
-
-document.addEventListener(
-
-    "keydown",
-
-    (event) => {
-
-
-        if (
-            event.key === "Escape" &&
-            transactionModal.style.display ===
-                "flex"
-        ) {
-
-
-            closeTransactionModal();
-
-
-        }
-
-
-    }
-
-);
-
-
-
-// ==========================================
-// SAVE TRANSACTION TO FIRESTORE
-// ==========================================
-
-transactionForm.addEventListener(
-
-    "submit",
-
-    async (event) => {
-
-
-        event.preventDefault();
-
-
-
-        // Check authentication
-
-        if (!currentUser) {
-
-
-            transactionMessage.textContent =
-
-                "You must be logged in.";
-
-
-            transactionMessage.className =
-
-                "transaction-message error";
-
-
-            return;
-
-
-        }
-
-
-
-        // Get amount
-
-        const amount =
-
-            Number(
-                transactionAmount.value
-            );
-
-
-
-        // Validate amount
-
-        if (
-            !Number.isFinite(amount) ||
-            amount <= 0
-        ) {
-
-
-            transactionMessage.textContent =
-
-                "Please enter a valid amount.";
-
-
-            transactionMessage.className =
-
-                "transaction-message error";
-
-
-            return;
-
-
-        }
-
-
-
-        // Disable submit button
-
-        saveTransactionButton.disabled =
-            true;
-
-
-        saveTransactionButton.textContent =
-
-            "Saving...";
-
+    if (!title || amount <= 0 || !category || !date || !payment) {
 
         transactionMessage.textContent =
+            "Please fill all required fields.";
 
-            "Saving transaction...";
-
-
-        transactionMessage.className =
-
-            "transaction-message";
-
-
-
-        try {
-
-
-            // User-specific transactions collection
-
-            const transactionsReference =
-
-                collection(
-
-                    db,
-
-                    "users",
-
-                    currentUser.uid,
-
-                    "transactions"
-
-                );
-
-
-
-            // Add transaction
-
-            await addDoc(
-
-                transactionsReference,
-
-                {
-
-
-                    title:
-                        transactionTitle
-                            .value
-                            .trim(),
-
-
-                    amount:
-                        amount,
-
-
-                    type:
-                        transactionType,
-
-
-                    category:
-                        transactionCategory
-                            .value,
-
-
-                    date:
-                        transactionDate
-                            .value,
-
-
-                    paymentMethod:
-                        paymentMethod
-                            .value,
-
-
-                    notes:
-                        transactionNotes
-                            .value
-                            .trim(),
-
-
-                    createdAt:
-                        serverTimestamp()
-
-
-                }
-
-            );
-
-
-
-            transactionMessage.textContent =
-
-                `${
-                    transactionType ===
-                    "income"
-                        ? "Income"
-                        : "Expense"
-                } saved successfully.`;
-
-
-            transactionMessage.className =
-
-                "transaction-message success";
-
-
-
-            setTimeout(
-
-                () => {
-
-
-                    closeTransactionModal();
-
-
-                },
-
-                700
-
-            );
-
-
-        }
-
-        catch (error) {
-
-
-            console.error(
-
-                "Firestore error:",
-
-                error
-
-            );
-
-
-            transactionMessage.textContent =
-
-                "Unable to save transaction. Please try again.";
-
-
-            transactionMessage.className =
-
-                "transaction-message error";
-
-
-        }
-
-        finally {
-
-
-            saveTransactionButton.disabled =
-                false;
-
-
-            saveTransactionButton.textContent =
-
-                transactionType === "income"
-
-                    ? "Save Income"
-
-                    : "Save Expense";
-
-
-        }
-
+        return;
 
     }
 
-);
+    try {
+
+        await addDoc(collection(db, "transactions"), {
+
+            uid: currentUser.uid,
+
+            title,
+
+            amount,
+
+            category,
+
+            type: transactionType,
+
+            date,
+
+            payment,
+
+            notes: notes.trim(),
+
+            createdAt: serverTimestamp()
+
+        });
+
+        showToast("Transaction Added Successfully");
+
+        transactionForm.reset();
+
+        closeTransactionModal();
+
+        await loadTransactions();
+
+    } catch (error) {
+
+        console.error(error);
+
+        transactionMessage.textContent =
+            "Failed to save transaction.";
+
+    }
+
+}
