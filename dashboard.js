@@ -31,60 +31,118 @@ import {
 // DOM ELEMENTS
 // ========================================
 
-const dashboardContent = document.getElementById("dashboardContent");
+const dashboardContent =
+    document.getElementById("dashboardContent");
 
-const userEmail = document.getElementById("userEmail");
-const userAvatar = document.getElementById("userAvatar");
+const userEmail =
+    document.getElementById("userEmail");
 
-const currentDate = document.getElementById("currentDate");
+const userAvatar =
+    document.getElementById("userAvatar");
 
-const menuButton = document.getElementById("menuButton");
-const sidebar = document.querySelector(".sidebar");
+const currentDate =
+    document.getElementById("currentDate");
 
-const logoutButton = document.getElementById("logoutButton");
+const menuButton =
+    document.getElementById("menuButton");
 
-const totalBalance = document.getElementById("totalBalance");
-const totalIncome = document.getElementById("totalIncome");
-const totalExpenses = document.getElementById("totalExpenses");
-const totalSavings = document.getElementById("totalSavings");
+const sidebar =
+    document.querySelector(".sidebar");
 
-const recentTransactions = document.getElementById("recentTransactions");
+const logoutButton =
+    document.getElementById("logoutButton");
 
-const budgetSpent = document.getElementById("budgetSpent");
-const monthlyBudget = document.getElementById("monthlyBudget");
-const budgetProgress = document.getElementById("budgetProgress");
-const budgetMessage = document.getElementById("budgetMessage");
+const totalBalance =
+    document.getElementById("totalBalance");
+
+const totalIncome =
+    document.getElementById("totalIncome");
+
+const totalExpenses =
+    document.getElementById("totalExpenses");
+
+const totalSavings =
+    document.getElementById("totalSavings");
+
+const recentTransactions =
+    document.getElementById("recentTransactions");
+
+const budgetSpent =
+    document.getElementById("budgetSpent");
+
+const monthlyBudget =
+    document.getElementById("monthlyBudget");
+
+const budgetProgress =
+    document.getElementById("budgetProgress");
+
+const budgetMessage =
+    document.getElementById("budgetMessage");
+
+
 // ========================================
 // TRANSACTION MODAL
 // ========================================
 
-const transactionModal = document.getElementById("transactionModal");
+const transactionModal =
+    document.getElementById("transactionModal");
 
-const addIncomeButton = document.getElementById("addIncomeButton");
-const addExpenseButton = document.getElementById("addExpenseButton");
+const addIncomeButton =
+    document.getElementById("addIncomeButton");
 
-const closeModalButton = document.getElementById("closeModalButton");
+const addExpenseButton =
+    document.getElementById("addExpenseButton");
 
-const transactionForm = document.getElementById("transactionForm");
+const closeModalButton =
+    document.getElementById("closeModalButton");
 
-const modalTitle = document.getElementById("modalTitle");
-const modalLabel = document.getElementById("modalLabel");
+const transactionForm =
+    document.getElementById("transactionForm");
 
-const transactionTitle = document.getElementById("transactionTitle");
-const transactionAmount = document.getElementById("transactionAmount");
-const transactionCategory = document.getElementById("transactionCategory");
-const transactionDate = document.getElementById("transactionDate");
-const paymentMethod = document.getElementById("paymentMethod");
-const transactionNotes = document.getElementById("transactionNotes");
-const transactionMessage = document.getElementById("transactionMessage");
+const modalTitle =
+    document.getElementById("modalTitle");
+
+const modalLabel =
+    document.getElementById("modalLabel");
+
+const transactionTitle =
+    document.getElementById("transactionTitle");
+
+const transactionAmount =
+    document.getElementById("transactionAmount");
+
+const transactionCategory =
+    document.getElementById("transactionCategory");
+
+const transactionDate =
+    document.getElementById("transactionDate");
+
+const paymentMethod =
+    document.getElementById("paymentMethod");
+
+const transactionNotes =
+    document.getElementById("transactionNotes");
+
+const transactionMessage =
+    document.getElementById("transactionMessage");
+
 
 // ========================================
 // GLOBAL VARIABLES
 // ========================================
 
 let currentUser = null;
+
 let transactions = [];
+
+let savingsGoals = [];
+
 let transactionType = "income";
+
+
+// ========================================
+// CATEGORIES
+// ========================================
 
 const incomeCategories = [
     "Salary",
@@ -113,23 +171,62 @@ const expenseCategories = [
 // SHOW TODAY'S DATE
 // ========================================
 
-currentDate.textContent = getCurrentDate();
+if (currentDate) {
+    currentDate.textContent = getCurrentDate();
+}
 
 
 // ========================================
 // MOBILE MENU
 // ========================================
 
-menuButton.addEventListener("click", () => {
-    sidebar.classList.toggle("show");
-});
+if (menuButton && sidebar) {
+
+    menuButton.addEventListener("click", (event) => {
+
+        event.stopPropagation();
+
+        sidebar.classList.toggle("open");
+
+    });
+
+
+    document.addEventListener("click", (event) => {
+
+        if (
+            sidebar.classList.contains("open") &&
+            !sidebar.contains(event.target) &&
+            !menuButton.contains(event.target)
+        ) {
+
+            sidebar.classList.remove("open");
+
+        }
+
+    });
+
+
+    const navLinks =
+        sidebar.querySelectorAll(".nav-link");
+
+    navLinks.forEach((link) => {
+
+        link.addEventListener("click", () => {
+
+            sidebar.classList.remove("open");
+
+        });
+
+    });
+
+}
 
 
 // ========================================
 // LOGOUT
 // ========================================
 
-logoutButton.addEventListener("click", async () => {
+logoutButton?.addEventListener("click", async () => {
 
     try {
 
@@ -138,6 +235,7 @@ logoutButton.addEventListener("click", async () => {
     } catch (error) {
 
         console.error(error);
+
         showToast("Logout failed");
 
     }
@@ -154,17 +252,35 @@ onAuthStateChanged(auth, async (user) => {
     if (!user) {
 
         window.location.href = "login.html";
+
         return;
 
     }
 
+
     currentUser = user;
 
-    dashboardContent.style.display = "flex";
+
+    if (dashboardContent) {
+
+        dashboardContent.style.display = "flex";
+
+    }
+
 
     loadUser();
 
-    await loadTransactions();
+
+    // Load transactions and savings goals
+    // before calculating dashboard totals.
+
+    await Promise.all([
+        loadTransactions(),
+        loadSavingsGoals()
+    ]);
+
+
+    updateDashboard();
 
 });
 
@@ -175,10 +291,25 @@ onAuthStateChanged(auth, async (user) => {
 
 function loadUser() {
 
-    userEmail.textContent = currentUser.email;
+    if (userEmail) {
 
-    userAvatar.textContent =
-        currentUser.email.charAt(0).toUpperCase();
+        userEmail.textContent =
+            currentUser.email || "User";
+
+    }
+
+
+    if (userAvatar) {
+
+        const name =
+            currentUser.displayName ||
+            currentUser.email ||
+            "User";
+
+        userAvatar.textContent =
+            name.charAt(0).toUpperCase();
+
+    }
 
 }
 
@@ -195,31 +326,126 @@ async function loadTransactions() {
             collection(db, "transactions"),
             where("uid", "==", currentUser.uid),
             orderBy("createdAt", "desc")
-
         );
 
-        const snapshot = await getDocs(q);
+
+        const snapshot =
+            await getDocs(q);
+
 
         transactions = [];
 
-        snapshot.forEach((doc) => {
+
+        snapshot.forEach((documentSnapshot) => {
 
             transactions.push({
-                id: doc.id,
-                ...doc.data()
+
+                id: documentSnapshot.id,
+
+                ...documentSnapshot.data()
+
             });
 
         });
 
-        updateDashboard();
-
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Failed to load transactions:",
+            error
+        );
+
+
+        transactions = [];
 
     }
 
 }
+
+
+// ========================================
+// LOAD SAVINGS GOALS
+// ========================================
+
+async function loadSavingsGoals() {
+
+    try {
+
+        const goalsReference =
+            collection(
+                db,
+                "users",
+                currentUser.uid,
+                "savingsGoals"
+            );
+
+
+        const snapshot =
+            await getDocs(goalsReference);
+
+
+        savingsGoals = [];
+
+
+        snapshot.forEach((documentSnapshot) => {
+
+            savingsGoals.push({
+
+                id: documentSnapshot.id,
+
+                ...documentSnapshot.data()
+
+            });
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Failed to load savings goals:",
+            error
+        );
+
+
+        savingsGoals = [];
+
+    }
+
+}
+
+
+// ========================================
+// CALCULATE TOTAL SAVINGS
+// ========================================
+
+function calculateTotalSavings() {
+
+    return savingsGoals.reduce(
+        (total, goal) => {
+
+            const amount =
+                Number(goal.savedAmount);
+
+
+            if (
+                !Number.isFinite(amount) ||
+                amount < 0
+            ) {
+
+                return total;
+
+            }
+
+
+            return total + amount;
+
+        },
+        0
+    );
+
+}
+
+
 // ========================================
 // UPDATE DASHBOARD
 // ========================================
@@ -227,48 +453,121 @@ async function loadTransactions() {
 function updateDashboard() {
 
     let income = 0;
+
     let expense = 0;
 
-    transactions.forEach(transaction => {
+
+    transactions.forEach((transaction) => {
+
+        const amount =
+            Number(transaction.amount);
+
+
+        if (
+            !Number.isFinite(amount) ||
+            amount < 0
+        ) {
+
+            return;
+
+        }
+
 
         if (transaction.type === "income") {
 
-            income += Number(transaction.amount);
+            income += amount;
 
-        } else {
+        } else if (
+            transaction.type === "expense"
+        ) {
 
-            expense += Number(transaction.amount);
+            expense += amount;
 
         }
 
     });
 
-    const balance = income - expense;
-    const savings = balance;
 
-    totalIncome.textContent = formatCurrency(income);
-    totalExpenses.textContent = formatCurrency(expense);
-    totalBalance.textContent = formatCurrency(balance);
-    totalSavings.textContent = formatCurrency(savings);
+    // Actual money saved in Day 8 Savings Goals.
+
+    const savings =
+        calculateTotalSavings();
+
+
+    // Spendable balance after expenses
+    // and allocated savings.
+
+    const balance =
+        income -
+        expense -
+        savings;
+
+
+    if (totalIncome) {
+
+        totalIncome.textContent =
+            formatCurrency(income);
+
+    }
+
+
+    if (totalExpenses) {
+
+        totalExpenses.textContent =
+            formatCurrency(expense);
+
+    }
+
+
+    if (totalSavings) {
+
+        totalSavings.textContent =
+            formatCurrency(savings);
+
+    }
+
+
+    if (totalBalance) {
+
+        totalBalance.textContent =
+            formatCurrency(balance);
+
+    }
+
 
     renderRecentTransactions();
 
     updateBudget(expense);
 
 }
+
+
 // ========================================
 // RECENT TRANSACTIONS
 // ========================================
 
 function renderRecentTransactions() {
 
+    if (!recentTransactions) return;
+
+
     if (transactions.length === 0) {
 
         recentTransactions.innerHTML = `
             <div class="empty-state">
-                <div class="empty-icon">↔</div>
-                <h3>No transactions yet</h3>
-                <p>Add your first transaction.</p>
+
+                <div class="empty-icon">
+                    ↔
+                </div>
+
+                <h3>
+                    No transactions yet
+                </h3>
+
+                <p>
+                    Add your first transaction.
+                </p>
+
             </div>
         `;
 
@@ -276,161 +575,330 @@ function renderRecentTransactions() {
 
     }
 
-    const latest = transactions.slice(0, 5);
 
-    recentTransactions.innerHTML = latest.map(transaction => `
+    const latest =
+        transactions.slice(0, 5);
 
-        <div class="transaction-item">
 
-            <div>
+    recentTransactions.innerHTML =
+        latest.map((transaction) => `
 
-                <strong>${transaction.title}</strong>
+            <div class="transaction-item">
 
-                <p>${transaction.category}</p>
+                <div>
+
+                    <strong>
+                        ${escapeHTML(
+                            transaction.title || ""
+                        )}
+                    </strong>
+
+                    <p>
+                        ${escapeHTML(
+                            transaction.category || ""
+                        )}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <strong class="${
+                        transaction.type === "income"
+                            ? "income-text"
+                            : "expense-text"
+                    }">
+
+                        ${
+                            transaction.type === "income"
+                                ? "+"
+                                : "-"
+                        }
+
+                        ${formatCurrency(
+                            Number(transaction.amount) || 0
+                        )}
+
+                    </strong>
+
+                    <small>
+                        ${formatDate(
+                            transaction.date
+                        )}
+                    </small>
+
+                </div>
 
             </div>
 
-            <div>
-
-                <strong class="${
-                    transaction.type === "income"
-                        ? "income-text"
-                        : "expense-text"
-                }">
-
-                    ${transaction.type === "income" ? "+" : "-"}
-                    ${formatCurrency(transaction.amount)}
-
-                </strong>
-
-                <small>${formatDate(transaction.date)}</small>
-
-            </div>
-
-        </div>
-
-    `).join("");
+        `).join("");
 
 }
+
+
 // ========================================
 // MONTHLY BUDGET
 // ========================================
 
 function updateBudget(expense) {
 
-    const budget = Number(localStorage.getItem("monthlyBudget")) || 0;
+    const budget =
+        Number(
+            localStorage.getItem(
+                "monthlyBudget"
+            )
+        ) || 0;
 
-    budgetSpent.textContent = formatCurrency(expense);
 
-    monthlyBudget.textContent = formatCurrency(budget);
+    if (budgetSpent) {
+
+        budgetSpent.textContent =
+            formatCurrency(expense);
+
+    }
+
+
+    if (monthlyBudget) {
+
+        monthlyBudget.textContent =
+            formatCurrency(budget);
+
+    }
+
 
     if (budget === 0) {
 
-        budgetProgress.style.width = "0%";
+        if (budgetProgress) {
 
-        budgetMessage.textContent =
-            "Set your monthly budget to start tracking.";
+            budgetProgress.style.width =
+                "0%";
+
+        }
+
+
+        if (budgetMessage) {
+
+            budgetMessage.textContent =
+                "Set your monthly budget to start tracking.";
+
+        }
+
 
         return;
 
     }
 
-    const percent = Math.min((expense / budget) * 100, 100);
 
-    budgetProgress.style.width = percent + "%";
+    const percent =
+        Math.min(
+            (expense / budget) * 100,
+            100
+        );
 
-    const remaining = budget - expense;
+
+    if (budgetProgress) {
+
+        budgetProgress.style.width =
+            percent + "%";
+
+    }
+
+
+    const remaining =
+        budget - expense;
+
+
+    if (!budgetMessage) return;
+
 
     if (remaining >= 0) {
 
         budgetMessage.textContent =
-            `${formatCurrency(remaining)} remaining this month`;
+            `${formatCurrency(
+                remaining
+            )} remaining this month`;
 
     } else {
 
         budgetMessage.textContent =
-            `Budget exceeded by ${formatCurrency(Math.abs(remaining))}`;
+            `Budget exceeded by ${formatCurrency(
+                Math.abs(remaining)
+            )}`;
 
     }
 
 }
+
+
 // ========================================
-// TRANSACTION MODAL
+// TRANSACTION MODAL EVENTS
 // ========================================
 
-// Open Income Modal
-addIncomeButton.addEventListener("click", () => {
-    openTransactionModal("income");
-});
+addIncomeButton?.addEventListener(
+    "click",
+    () => {
 
-// Open Expense Modal
-addExpenseButton.addEventListener("click", () => {
-    openTransactionModal("expense");
-});
-
-// Close Modal Button
-closeModalButton.addEventListener("click", closeTransactionModal);
-
-// Save Transaction
-transactionForm.addEventListener("submit", saveTransaction);
-
-// Close Modal when clicking outside
-transactionModal.addEventListener("click", (event) => {
-
-    if (event.target === transactionModal) {
-
-        transactionForm.reset();
-
-        closeTransactionModal();
-
+        openTransactionModal(
+            "income"
+        );
 
     }
+);
 
-});
+
+addExpenseButton?.addEventListener(
+    "click",
+    () => {
+
+        openTransactionModal(
+            "expense"
+        );
+
+    }
+);
+
+
+closeModalButton?.addEventListener(
+    "click",
+    closeTransactionModal
+);
+
+
+transactionForm?.addEventListener(
+    "submit",
+    saveTransaction
+);
+
 
 // ========================================
-// OPEN MODAL
+// CLOSE MODAL WHEN CLICKING OUTSIDE
+// ========================================
+
+transactionModal?.addEventListener(
+    "click",
+    (event) => {
+
+        if (
+            event.target ===
+            transactionModal
+        ) {
+
+            transactionForm?.reset();
+
+            closeTransactionModal();
+
+        }
+
+    }
+);
+
+
+// ========================================
+// OPEN TRANSACTION MODAL
 // ========================================
 
 function openTransactionModal(type) {
 
     transactionType = type;
 
-    transactionForm.reset();
 
-    transactionDate.value = new Date().toISOString().split("T")[0];
+    transactionForm?.reset();
 
-    transactionMessage.textContent = "";
 
-    if (type === "income") {
+    if (transactionDate) {
 
-        modalTitle.textContent = "Add Income";
-        modalLabel.textContent = "NEW INCOME";
-
-        loadCategories(incomeCategories);
-
-    } else {
-
-        modalTitle.textContent = "Add Expense";
-        modalLabel.textContent = "NEW EXPENSE";
-
-        loadCategories(expenseCategories);
+        transactionDate.value =
+            new Date()
+                .toISOString()
+                .split("T")[0];
 
     }
 
-    transactionModal.style.display = "flex";
 
-    transactionTitle.focus();
+    if (transactionMessage) {
+
+        transactionMessage.textContent =
+            "";
+
+    }
+
+
+    if (type === "income") {
+
+        if (modalTitle) {
+
+            modalTitle.textContent =
+                "Add Income";
+
+        }
+
+
+        if (modalLabel) {
+
+            modalLabel.textContent =
+                "NEW INCOME";
+
+        }
+
+
+        loadCategories(
+            incomeCategories
+        );
+
+    } else {
+
+        if (modalTitle) {
+
+            modalTitle.textContent =
+                "Add Expense";
+
+        }
+
+
+        if (modalLabel) {
+
+            modalLabel.textContent =
+                "NEW EXPENSE";
+
+        }
+
+
+        loadCategories(
+            expenseCategories
+        );
+
+    }
+
+
+    if (transactionModal) {
+
+        transactionModal.style.display =
+            "flex";
+
+    }
+
+
+    transactionTitle?.focus();
+
 }
 
+
 // ========================================
-// CLOSE MODAL
+// CLOSE TRANSACTION MODAL
 // ========================================
 
 function closeTransactionModal() {
 
-    transactionModal.style.display = "none";
+    if (transactionModal) {
+
+        transactionModal.style.display =
+            "none";
+
+    }
+
 }
+
 
 // ========================================
 // LOAD CATEGORY OPTIONS
@@ -438,20 +906,37 @@ function closeTransactionModal() {
 
 function loadCategories(categories) {
 
-    transactionCategory.innerHTML = "";
+    if (!transactionCategory) return;
 
-    categories.forEach(category => {
 
-        const option = document.createElement("option");
+    transactionCategory.innerHTML =
+        "";
 
-        option.value = category;
-        option.textContent = category;
 
-        transactionCategory.appendChild(option);
+    categories.forEach((category) => {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+
+        option.value =
+            category;
+
+        option.textContent =
+            category;
+
+
+        transactionCategory.appendChild(
+            option
+        );
 
     });
 
 }
+
+
 // ========================================
 // SAVE TRANSACTION
 // ========================================
@@ -460,63 +945,152 @@ async function saveTransaction(event) {
 
     event.preventDefault();
 
-    transactionMessage.textContent = "";
 
-    const title = transactionTitle.value.trim();
-    const amount = Number(transactionAmount.value);
-    const category = transactionCategory.value;
-    const date = transactionDate.value;
-    const payment = paymentMethod.value;
-    const notes = transactionNotes.value.trim();
+    if (!currentUser) return;
 
-    if (!title || amount <= 0 || !category || !date || !payment) {
+
+    if (transactionMessage) {
 
         transactionMessage.textContent =
-            "Please fill all required fields.";
+            "";
+
+    }
+
+
+    const title =
+        transactionTitle?.value
+            .trim() || "";
+
+
+    const amount =
+        Number(
+            transactionAmount?.value
+        );
+
+
+    const category =
+        transactionCategory?.value ||
+        "";
+
+
+    const date =
+        transactionDate?.value ||
+        "";
+
+
+    const payment =
+        paymentMethod?.value ||
+        "";
+
+
+    const notes =
+        transactionNotes?.value
+            .trim() || "";
+
+
+    if (
+        !title ||
+        !Number.isFinite(amount) ||
+        amount <= 0 ||
+        !category ||
+        !date ||
+        !payment
+    ) {
+
+        if (transactionMessage) {
+
+            transactionMessage.textContent =
+                "Please fill all required fields.";
+
+        }
+
 
         return;
 
     }
 
+
     try {
 
-        await addDoc(collection(db, "transactions"), {
+        await addDoc(
+            collection(
+                db,
+                "transactions"
+            ),
+            {
 
-            uid: currentUser.uid,
+                uid:
+                    currentUser.uid,
 
-            title,
+                title,
 
-            amount,
+                amount,
 
-            category,
+                category,
 
-            type: transactionType,
+                type:
+                    transactionType,
 
-            date,
+                date,
 
-            payment,
+                payment,
 
-            notes: notes.trim(),
+                notes,
 
-            createdAt: serverTimestamp()
+                createdAt:
+                    serverTimestamp()
 
-        });
+            }
+        );
 
-        showToast("Transaction Added Successfully");
 
-        transactionForm.reset();
+        showToast(
+            "Transaction Added Successfully"
+        );
+
+
+        transactionForm?.reset();
+
 
         closeTransactionModal();
 
+
         await loadTransactions();
+
+
+        updateDashboard();
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Failed to save transaction:",
+            error
+        );
 
-        transactionMessage.textContent =
-            "Failed to save transaction.";
+
+        if (transactionMessage) {
+
+            transactionMessage.textContent =
+                "Failed to save transaction.";
+
+        }
 
     }
+
+}
+
+
+// ========================================
+// ESCAPE HTML
+// ========================================
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
 }
