@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Savings Goals | Expense Tracker</title>
+
+
+    <!-- SHARED DASHBOARD CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../CSS/dashboard.css"
+    >
+
+
+    <!-- SAVINGS CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../CSS/savings.css"
+    >
+
+
+    <!-- RESPONSIVE CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../CSS/responsive.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SAVINGS PAGE
+===================================================== -->
+
+<div
+    id="savingsPage"
+    class="app-container"
+    style="display: none;"
+>
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                ₹
+            </div>
+
+            <div>
+
+                <h2>
+                    Expense
+                </h2>
+
+                <span>
+                    Tracker
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+
+            <a
+                href="dashboard.html"
+                class="nav-link"
+            >
+                <span>⌂</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="transactions.html"
+                class="nav-link"
+            >
+                <span>↔</span>
+                Transactions
+            </a>
+
+
+            <a
+                href="reports.html"
+                class="nav-link"
+            >
+                <span>▥</span>
+                Reports
+            </a>
+
+
+            <a
+                href="budget.html"
+                class="nav-link"
+            >
+                <span>₹</span>
+                Budget
+            </a>
+
+
+            <a
+                href="savings.html"
+                class="nav-link active"
+            >
+                <span>◎</span>
+                Savings Goals
+            </a>
+
+
+            <a
+                href="settings.html"
+                class="nav-link"
+            >
+                <span>⚙</span>
+                Settings
+            </a>
+
+
+        </nav>
+
+
+        <!-- USER -->
+
+        <div class="sidebar-bottom">
+
+
+            <div class="user-info">
+
+
+                <div
+                    class="user-avatar"
+                    id="userAvatar"
+                >
+                    U
+                </div>
+
+
+                <div>
+
+                    <small>
+                        Signed in as
+                    </small>
+
+                    <p id="userEmail">
+                        Loading...
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- MOBILE HEADER -->
+
+        <header class="mobile-header">
+
+
+            <div class="mobile-brand">
+
+                <span>
+                    ₹
+                </span>
+
+                Expense Tracker
+
+            </div>
+
+
+            <button
+                type="button"
+                id="menuButton"
+                class="menu-button"
+                aria-label="Open navigation menu"
+            >
+                ☰
+            </button>
+
+
+        </header>
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+        <section class="savings-header">
+
+
+            <div>
+
+
+                <p class="page-label">
+                    FINANCIAL GOALS
+                </p>
+
+
+                <h1>
+                    Savings Goals
+                </h1>
+
+
+                <p>
+                    Create financial goals, add savings and
+                    track your progress toward the things
+                    that matter to you.
+                </p>
+
+
+            </div>
+
+
+            <button
+                type="button"
+                id="openGoalModalButton"
+                class="create-goal-btn"
+            >
+                + New Goal
+            </button>
+
+
+        </section>
+
+
+        <!-- =================================================
+             MESSAGE
+        ================================================== -->
+
+        <div
+            id="savingsMessage"
+            class="savings-message"
+        >
+        </div>
+
+
+        <!-- =================================================
+             SUMMARY CARDS
+        ================================================== -->
+
+        <section class="savings-summary-grid">
+
+
+            <!-- TOTAL TARGET -->
+
+            <article
+                class="savings-summary-card target-card"
+            >
+
+                <span class="savings-card-label">
+                    Total Target
+                </span>
+
+                <strong
+                    id="totalSavingsTarget"
+                    class="savings-card-value"
+                >
+                    ₹0.00
+                </strong>
+
+                <p>
+                    Combined target of all goals
+                </p>
+
+            </article>
+
+
+            <!-- TOTAL SAVED -->
+
+            <article
+                class="savings-summary-card saved-card"
+            >
+
+                <span class="savings-card-label">
+                    Total Saved
+                </span>
+
+                <strong
+                    id="totalSavingsAmount"
+                    class="savings-card-value"
+                >
+                    ₹0.00
+                </strong>
+
+                <p>
+                    Money saved across all goals
+                </p>
+
+            </article>
+
+
+            <!-- REMAINING -->
+
+            <article
+                class="savings-summary-card remaining-card"
+            >
+
+                <span class="savings-card-label">
+                    Remaining
+                </span>
+
+                <strong
+                    id="totalSavingsRemaining"
+                    class="savings-card-value"
+                >
+                    ₹0.00
+                </strong>
+
+                <p>
+                    Amount still needed
+                </p>
+
+            </article>
+
+
+            <!-- COMPLETED -->
+
+            <article
+                class="savings-summary-card completed-card"
+            >
+
+                <span class="savings-card-label">
+                    Goals Completed
+                </span>
+
+                <strong
+                    id="completedGoalsCount"
+                    class="savings-card-value"
+                >
+                    0
+                </strong>
+
+                <p>
+                    Successfully completed goals
+                </p>
+
+            </article>
+
+
+        </section>
+
+
+        <!-- =================================================
+             OVERALL PROGRESS
+        ================================================== -->
+
+        <section class="overall-savings-panel">
+
+
+            <div class="overall-savings-header">
+
+
+                <div>
+
+                    <h2>
+                        Overall Savings Progress
+                    </h2>
+
+                    <p>
+                        Progress across all of your
+                        financial goals.
+                    </p>
+
+                </div>
+
+
+                <strong id="overallSavingsPercentage">
+                    0.0%
+                </strong>
+
+
+            </div>
+
+
+            <div class="overall-progress-track">
+
+                <div
+                    id="overallSavingsProgressBar"
+                    class="overall-progress-bar"
+                    style="width: 0%;"
+                >
+                </div>
+
+            </div>
+
+
+            <div class="overall-progress-values">
+
+                <span id="overallSavedText">
+                    ₹0.00 saved
+                </span>
+
+                <span id="overallTargetText">
+                    ₹0.00 target
+                </span>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             GOALS HEADER / FILTER
+        ================================================== -->
+
+        <section class="goals-toolbar">
+
+
+            <div>
+
+                <h2>
+                    Your Goals
+                </h2>
+
+                <p id="goalsCountText">
+                    0 goals
+                </p>
+
+            </div>
+
+
+            <div class="goal-filter-group">
+
+
+                <label for="goalStatusFilter">
+                    Show
+                </label>
+
+
+                <select id="goalStatusFilter">
+
+                    <option value="all">
+                        All Goals
+                    </option>
+
+                    <option value="active">
+                        Active
+                    </option>
+
+                    <option value="completed">
+                        Completed
+                    </option>
+
+                </select>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             GOALS GRID
+        ================================================== -->
+
+        <section
+            id="savingsGoalsGrid"
+            class="savings-goals-grid"
+        >
+
+
+            <div class="savings-loading-placeholder">
+                Loading savings goals...
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             EMPTY STATE
+        ================================================== -->
+
+        <section
+            id="savingsEmptyState"
+            class="savings-empty-state"
+            hidden
+        >
+
+
+            <div class="savings-empty-icon">
+                ◎
+            </div>
+
+
+            <h2>
+                Create your first savings goal
+            </h2>
+
+
+            <p>
+                Whether you're saving for a laptop,
+                trip, emergency fund or something else,
+                you can track your progress here.
+            </p>
+
+
+            <button
+                type="button"
+                id="emptyCreateGoalButton"
+                class="create-goal-btn"
+            >
+                + Create Goal
+            </button>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+<!-- =====================================================
+     CREATE / EDIT GOAL MODAL
+===================================================== -->
+
+<div
+    id="goalModal"
+    class="savings-modal"
+    aria-hidden="true"
+>
+
+
+    <div
+        class="savings-modal-backdrop"
+        data-close-goal-modal
+    >
+    </div>
+
+
+    <div
+        class="savings-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="goalModalTitle"
+    >
+
+
+        <!-- MODAL HEADER -->
+
+        <div class="savings-modal-header">
+
+
+            <div>
+
+                <p class="modal-label">
+                    SAVINGS GOAL
+                </p>
+
+                <h2 id="goalModalTitle">
+                    Create New Goal
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="closeGoalModalButton"
+                class="modal-close-btn"
+                aria-label="Close goal form"
+            >
+                ×
+            </button>
+
+
+        </div>
+
+
+        <!-- GOAL FORM -->
+
+        <form id="goalForm">
+
+
+            <!-- HIDDEN EDIT ID -->
+
+            <input
+                type="hidden"
+                id="editingGoalId"
+                value=""
+            >
+
+
+            <!-- GOAL NAME -->
+
+            <div class="savings-form-group">
+
+
+                <label for="goalName">
+                    Goal Name
+                </label>
+
+
+                <input
+                    type="text"
+                    id="goalName"
+                    maxlength="60"
+                    placeholder="Example: New Laptop"
+                    required
+                >
+
+
+            </div>
+
+
+            <!-- TARGET -->
+
+            <div class="savings-form-group">
+
+
+                <label for="goalTargetAmount">
+                    Target Amount
+                </label>
+
+
+                <div class="savings-money-input">
+
+
+                    <span>
+                        ₹
+                    </span>
+
+
+                    <input
+                        type="number"
+                        id="goalTargetAmount"
+                        min="1"
+                        step="0.01"
+                        placeholder="50000"
+                        required
+                    >
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- CURRENT SAVINGS -->
+
+            <div class="savings-form-group">
+
+
+                <label for="goalSavedAmount">
+                    Already Saved
+                </label>
+
+
+                <div class="savings-money-input">
+
+
+                    <span>
+                        ₹
+                    </span>
+
+
+                    <input
+                        type="number"
+                        id="goalSavedAmount"
+                        min="0"
+                        step="0.01"
+                        value="0"
+                        placeholder="0"
+                        required
+                    >
+
+
+                </div>
+
+
+                <small>
+                    Enter 0 if you are starting from scratch.
+                </small>
+
+
+            </div>
+
+
+            <!-- TARGET DATE -->
+
+            <div class="savings-form-group">
+
+
+                <label for="goalTargetDate">
+                    Target Date
+                </label>
+
+
+                <input
+                    type="date"
+                    id="goalTargetDate"
+                    required
+                >
+
+
+            </div>
+
+
+            <!-- NOTE -->
+
+            <div class="savings-form-group">
+
+
+                <label for="goalNote">
+                    Note
+                    <span class="optional-text">
+                        Optional
+                    </span>
+                </label>
+
+
+                <textarea
+                    id="goalNote"
+                    maxlength="200"
+                    rows="3"
+                    placeholder="Why are you saving for this goal?"
+                ></textarea>
+
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="savings-form-actions">
+
+
+                <button
+                    type="button"
+                    id="cancelGoalButton"
+                    class="secondary-goal-btn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    id="saveGoalButton"
+                    class="save-goal-btn"
+                >
+                    Create Goal
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     ADD MONEY MODAL
+===================================================== -->
+
+<div
+    id="addSavingsModal"
+    class="savings-modal"
+    aria-hidden="true"
+>
+
+
+    <div
+        class="savings-modal-backdrop"
+        data-close-add-modal
+    >
+    </div>
+
+
+    <div
+        class="savings-modal-dialog small-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="addSavingsModalTitle"
+    >
+
+
+        <div class="savings-modal-header">
+
+
+            <div>
+
+                <p class="modal-label">
+                    ADD SAVINGS
+                </p>
+
+                <h2 id="addSavingsModalTitle">
+                    Add Money
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="closeAddSavingsButton"
+                class="modal-close-btn"
+                aria-label="Close add savings form"
+            >
+                ×
+            </button>
+
+
+        </div>
+
+
+        <form id="addSavingsForm">
+
+
+            <input
+                type="hidden"
+                id="addSavingsGoalId"
+            >
+
+
+            <div class="add-goal-information">
+
+
+                <span>
+                    Adding money to
+                </span>
+
+
+                <strong id="addSavingsGoalName">
+                    Savings Goal
+                </strong>
+
+
+                <p id="addSavingsGoalProgress">
+                    ₹0.00 of ₹0.00 saved
+                </p>
+
+
+            </div>
+
+
+            <div class="savings-form-group">
+
+
+                <label for="addSavingsAmount">
+                    Amount to Add
+                </label>
+
+
+                <div class="savings-money-input">
+
+
+                    <span>
+                        ₹
+                    </span>
+
+
+                    <input
+                        type="number"
+                        id="addSavingsAmount"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="Enter amount"
+                        required
+                    >
+
+
+                </div>
+
+
+            </div>
+
+
+            <div class="savings-form-actions">
+
+
+                <button
+                    type="button"
+                    id="cancelAddSavingsButton"
+                    class="secondary-goal-btn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    id="confirmAddSavingsButton"
+                    class="save-goal-btn"
+                >
+                    Add Savings
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     DELETE CONFIRMATION MODAL
+===================================================== -->
+
+<div
+    id="deleteGoalModal"
+    class="savings-modal"
+    aria-hidden="true"
+>
+
+
+    <div
+        class="savings-modal-backdrop"
+        data-close-delete-modal
+    >
+    </div>
+
+
+    <div
+        class="savings-modal-dialog small-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="deleteGoalTitle"
+    >
+
+
+        <div class="delete-goal-content">
+
+
+            <div class="delete-goal-icon">
+                !
+            </div>
+
+
+            <h2 id="deleteGoalTitle">
+                Delete Savings Goal?
+            </h2>
+
+
+            <p>
+                You're about to delete
+
+                <strong id="deleteGoalName">
+                    this goal
+                </strong>.
+
+                This action cannot be undone.
+            </p>
+
+
+            <input
+                type="hidden"
+                id="deleteGoalId"
+            >
+
+
+            <div class="savings-form-actions">
+
+
+                <button
+                    type="button"
+                    id="cancelDeleteGoalButton"
+                    class="secondary-goal-btn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="button"
+                    id="confirmDeleteGoalButton"
+                    class="delete-goal-btn"
+                >
+                    Delete Goal
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     LOADING OVERLAY
+===================================================== -->
+
+<div
+    id="savingsLoading"
+    class="savings-loading"
+>
+
+
+    <div class="savings-loader">
+        Loading savings goals...
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script
+    type="module"
+    src="../JS/savings.js"
+></script>
+
+
+</body>
+
+</html>

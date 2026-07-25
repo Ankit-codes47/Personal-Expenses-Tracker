@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Budget | Expense Tracker</title>
+
+
+    <!-- SHARED DASHBOARD CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../CSS/dashboard.css"
+    >
+
+
+    <!-- BUDGET CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../CSS/budget.css"
+    >
+
+
+    <!-- SHARED RESPONSIVE CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../CSS/responsive.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     BUDGET PAGE
+===================================================== -->
+
+<div
+    id="budgetPage"
+    class="app-container"
+    style="display: none;"
+>
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                ₹
+            </div>
+
+
+            <div>
+
+                <h2>
+                    Expense
+                </h2>
+
+                <span>
+                    Tracker
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+
+            <a
+                href="dashboard.html"
+                class="nav-link"
+            >
+                <span>⌂</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="transactions.html"
+                class="nav-link"
+            >
+                <span>↔</span>
+                Transactions
+            </a>
+
+
+            <a
+                href="reports.html"
+                class="nav-link"
+            >
+                <span>▥</span>
+                Reports
+            </a>
+
+
+            <a
+                href="budget.html"
+                class="nav-link active"
+            >
+                <span>₹</span>
+                Budget
+            </a>
+
+
+            <a
+                href="savings.html"
+                class="nav-link"
+            >
+                <span>◎</span>
+                Savings Goals
+            </a>
+
+
+            <a
+                href="settings.html"
+                class="nav-link"
+            >
+                <span>⚙</span>
+                Settings
+            </a>
+
+
+        </nav>
+
+
+        <!-- USER -->
+
+        <div class="sidebar-bottom">
+
+
+            <div class="user-info">
+
+
+                <div
+                    class="user-avatar"
+                    id="userAvatar"
+                >
+                    U
+                </div>
+
+
+                <div>
+
+                    <small>
+                        Signed in as
+                    </small>
+
+                    <p id="userEmail">
+                        Loading...
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- MOBILE HEADER -->
+
+        <header class="mobile-header">
+
+
+            <div class="mobile-brand">
+
+                <span>
+                    ₹
+                </span>
+
+                Expense Tracker
+
+            </div>
+
+
+            <button
+                type="button"
+                id="menuButton"
+                class="menu-button"
+                aria-label="Open navigation menu"
+            >
+                ☰
+            </button>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+        <section class="budget-header">
+
+
+            <div>
+
+
+                <p class="page-label">
+                    MONEY MANAGEMENT
+                </p>
+
+
+                <h1>
+                    Monthly Budget
+                </h1>
+
+
+                <p>
+                    Set a monthly spending limit and track
+                    how much of your budget you have used.
+                </p>
+
+
+            </div>
+
+
+            <a
+                href="dashboard.html"
+                class="back-dashboard-btn"
+            >
+                ← Dashboard
+            </a>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             MESSAGE
+        ================================================== -->
+
+        <div
+            id="budgetMessage"
+            class="budget-message"
+        >
+        </div>
+
+
+
+        <!-- =================================================
+             MONTH / YEAR SELECTOR
+        ================================================== -->
+
+        <section class="budget-period-panel">
+
+
+            <div class="budget-period-controls">
+
+
+                <div class="budget-filter-group">
+
+
+                    <label for="budgetMonth">
+                        Month
+                    </label>
+
+
+                    <select id="budgetMonth">
+                    </select>
+
+
+                </div>
+
+
+                <div class="budget-filter-group">
+
+
+                    <label for="budgetYear">
+                        Year
+                    </label>
+
+
+                    <select id="budgetYear">
+                    </select>
+
+
+                </div>
+
+
+            </div>
+
+
+            <div class="budget-current-period">
+
+                Budget period:
+
+                <strong id="budgetPeriodText">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SUMMARY CARDS
+        ================================================== -->
+
+        <section class="budget-summary-grid">
+
+
+            <!-- TOTAL BUDGET -->
+
+            <article class="budget-summary-card total-budget-card">
+
+
+                <span class="budget-card-label">
+                    Monthly Budget
+                </span>
+
+
+                <strong
+                    id="totalBudgetAmount"
+                    class="budget-card-value"
+                >
+                    ₹0.00
+                </strong>
+
+
+                <p>
+                    Your spending limit
+                </p>
+
+
+            </article>
+
+
+
+            <!-- SPENT -->
+
+            <article class="budget-summary-card spent-card">
+
+
+                <span class="budget-card-label">
+                    Spent
+                </span>
+
+
+                <strong
+                    id="totalSpentAmount"
+                    class="budget-card-value"
+                >
+                    ₹0.00
+                </strong>
+
+
+                <p>
+                    Expenses recorded this month
+                </p>
+
+
+            </article>
+
+
+
+            <!-- REMAINING -->
+
+            <article class="budget-summary-card remaining-card">
+
+
+                <span class="budget-card-label">
+                    Remaining
+                </span>
+
+
+                <strong
+                    id="remainingBudgetAmount"
+                    class="budget-card-value"
+                >
+                    ₹0.00
+                </strong>
+
+
+                <p>
+                    Budget still available
+                </p>
+
+
+            </article>
+
+
+
+            <!-- USED -->
+
+            <article class="budget-summary-card usage-card">
+
+
+                <span class="budget-card-label">
+                    Budget Used
+                </span>
+
+
+                <strong
+                    id="budgetUsagePercentage"
+                    class="budget-card-value"
+                >
+                    0.0%
+                </strong>
+
+
+                <p>
+                    Percentage of budget spent
+                </p>
+
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             MAIN BUDGET GRID
+        ================================================== -->
+
+        <section class="budget-main-grid">
+
+
+            <!-- =============================================
+                 BUDGET PROGRESS
+            ============================================== -->
+
+            <article class="budget-panel">
+
+
+                <div class="budget-panel-header">
+
+
+                    <div>
+
+                        <h2>
+                            Budget Progress
+                        </h2>
+
+                        <p>
+                            Your overall spending progress
+                            for the selected month.
+                        </p>
+
+                    </div>
+
+
+                    <span
+                        id="budgetStatusBadge"
+                        class="budget-status-badge"
+                    >
+                        No Budget
+                    </span>
+
+
+                </div>
+
+
+
+                <div class="main-budget-progress">
+
+
+                    <div class="progress-info">
+
+
+                        <span>
+                            Spending
+                        </span>
+
+
+                        <strong id="progressPercentage">
+                            0.0%
+                        </strong>
+
+
+                    </div>
+
+
+                    <div class="budget-progress-track">
+
+
+                        <div
+                            id="budgetProgressBar"
+                            class="budget-progress-bar"
+                            style="width: 0%;"
+                        >
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="progress-values">
+
+
+                        <span id="progressSpent">
+                            ₹0.00 spent
+                        </span>
+
+
+                        <span id="progressLimit">
+                            ₹0.00 budget
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- BUDGET ALERT -->
+
+                <div
+                    id="budgetAlert"
+                    class="budget-alert"
+                >
+
+
+                    <div
+                        id="budgetAlertIcon"
+                        class="budget-alert-icon"
+                    >
+                        ₹
+                    </div>
+
+
+                    <div>
+
+
+                        <strong id="budgetAlertTitle">
+                            Set your monthly budget
+                        </strong>
+
+
+                        <p id="budgetAlertText">
+                            Create a spending limit to start
+                            tracking your monthly budget.
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </article>
+
+
+
+            <!-- =============================================
+                 SET BUDGET
+            ============================================== -->
+
+            <article class="budget-panel budget-form-panel">
+
+
+                <div class="budget-panel-header">
+
+
+                    <div>
+
+                        <h2>
+                            Set Monthly Budget
+                        </h2>
+
+                        <p>
+                            Create or update your budget
+                            for the selected period.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <form id="budgetForm">
+
+
+                    <div class="budget-form-group">
+
+
+                        <label for="monthlyBudgetInput">
+                            Monthly Budget Amount
+                        </label>
+
+
+                        <div class="budget-input-wrapper">
+
+
+                            <span>
+                                ₹
+                            </span>
+
+
+                            <input
+                                type="number"
+                                id="monthlyBudgetInput"
+                                min="1"
+                                step="0.01"
+                                placeholder="Enter budget amount"
+                                required
+                            >
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <p class="budget-form-help">
+
+                        Your expenses are calculated automatically
+                        from transactions recorded during the
+                        selected month.
+
+                    </p>
+
+
+
+                    <button
+                        type="submit"
+                        id="saveBudgetButton"
+                        class="save-budget-btn"
+                    >
+                        Save Budget
+                    </button>
+
+
+                </form>
+
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             CATEGORY SPENDING
+        ================================================== -->
+
+        <section class="category-budget-panel">
+
+
+            <div class="category-budget-header">
+
+
+                <div>
+
+                    <h2>
+                        Category Spending
+                    </h2>
+
+
+                    <p>
+                        See how much you spent in each
+                        category during this budget period.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div
+                id="categoryBudgetList"
+                class="category-budget-list"
+            >
+
+
+                <div class="budget-loading-placeholder">
+
+                    Loading category spending...
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- EMPTY STATE -->
+
+            <div
+                id="categoryBudgetEmpty"
+                class="category-budget-empty"
+                hidden
+            >
+
+
+                <div class="category-empty-icon">
+                    ₹
+                </div>
+
+
+                <h3>
+                    No expenses this month
+                </h3>
+
+
+                <p>
+                    Add expense transactions and their
+                    category spending will appear here.
+                </p>
+
+
+                <a
+                    href="dashboard.html"
+                    class="category-dashboard-btn"
+                >
+                    Add Expense
+                </a>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             BUDGET INSIGHTS
+        ================================================== -->
+
+        <section class="budget-insights-panel">
+
+
+            <div class="budget-insights-header">
+
+
+                <h2>
+                    Budget Insights
+                </h2>
+
+
+                <p>
+                    Useful information based on your
+                    current monthly spending.
+                </p>
+
+
+            </div>
+
+
+
+            <div class="budget-insights-grid">
+
+
+                <!-- DAILY AVERAGE -->
+
+                <article class="budget-insight-card">
+
+
+                    <span>
+                        Daily Average
+                    </span>
+
+
+                    <strong id="dailyAverageExpense">
+                        ₹0.00
+                    </strong>
+
+
+                    <p>
+                        Average spending per day
+                    </p>
+
+
+                </article>
+
+
+
+                <!-- TOP CATEGORY -->
+
+                <article class="budget-insight-card">
+
+
+                    <span>
+                        Top Spending Category
+                    </span>
+
+
+                    <strong id="topBudgetCategory">
+                        No data
+                    </strong>
+
+
+                    <p id="topBudgetCategoryAmount">
+                        ₹0.00
+                    </p>
+
+
+                </article>
+
+
+
+                <!-- EXPENSE COUNT -->
+
+                <article class="budget-insight-card">
+
+
+                    <span>
+                        Expense Transactions
+                    </span>
+
+
+                    <strong id="budgetExpenseCount">
+                        0
+                    </strong>
+
+
+                    <p>
+                        Expenses recorded this month
+                    </p>
+
+
+                </article>
+
+
+
+                <!-- SAFE DAILY SPEND -->
+
+                <article class="budget-insight-card">
+
+
+                    <span>
+                        Daily Budget Available
+                    </span>
+
+
+                    <strong id="dailyBudgetAvailable">
+                        ₹0.00
+                    </strong>
+
+
+                    <p>
+                        Remaining budget divided by
+                        days left in the month
+                    </p>
+
+
+                </article>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     LOADING OVERLAY
+===================================================== -->
+
+<div
+    id="budgetLoading"
+    class="budget-loading"
+>
+
+
+    <div class="budget-loader">
+
+        Loading budget...
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     BUDGET JAVASCRIPT
+===================================================== -->
+
+<script
+    type="module"
+    src="../JS/budget.js"
+></script>
+
+
+</body>
+
+</html>

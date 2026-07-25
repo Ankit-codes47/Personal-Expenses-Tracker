@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Transactions | Expense Tracker</title>
+
+    <link
+        rel="stylesheet"
+        href="../CSS/dashboard.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../CSS/transactions.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../CSS/responsive.css"
+    >
+
+</head>
+
+<body>
+
+
+<div
+    id="transactionsPage"
+    class="app-container"
+    style="display: none;"
+>
+
+
+    <!-- =====================================
+         SIDEBAR
+    ====================================== -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                ₹
+            </div>
+
+            <div>
+
+                <h2>Expense</h2>
+
+                <span>Tracker</span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+
+            <a
+                href="dashboard.html"
+                class="nav-link"
+            >
+                <span>⌂</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="transactions.html"
+                class="nav-link active"
+            >
+                <span>↔</span>
+                Transactions
+            </a>
+
+
+            <a
+                href="reports.html"
+                class="nav-link"
+            >
+                <span>▥</span>
+                Reports
+            </a>
+
+
+            <a
+                href="budget.html"
+                class="nav-link"
+            >
+                <span>₹</span>
+                Budget
+            </a>
+
+
+            <a
+                href="savings.html"
+                class="nav-link"
+            >
+                <span>◎</span>
+                Savings Goals
+            </a>
+
+
+            <a
+                href="settings.html"
+                class="nav-link"
+            >
+                <span>⚙</span>
+                Settings
+            </a>
+
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+
+            <div class="user-info">
+
+                <div
+                    class="user-avatar"
+                    id="userAvatar"
+                >
+                    U
+                </div>
+
+                <div>
+
+                    <small>
+                        Signed in as
+                    </small>
+
+                    <p id="userEmail">
+                        Loading...
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- =====================================
+         MAIN CONTENT
+    ====================================== -->
+
+    <main class="main-content">
+
+
+        <!-- MOBILE HEADER -->
+
+        <header class="mobile-header">
+
+            <div class="mobile-brand">
+
+                <span>₹</span>
+
+                Expense Tracker
+
+            </div>
+
+
+            <button
+                type="button"
+                id="menuButton"
+                class="menu-button"
+                aria-label="Open navigation menu"
+            >
+                ☰
+            </button>
+
+        </header>
+
+
+        <!-- PAGE HEADER -->
+
+        <section class="transactions-header">
+
+            <div>
+
+                <p class="page-label">
+                    FINANCIAL HISTORY
+                </p>
+
+                <h1>
+                    My Transactions
+                </h1>
+
+                <p>
+                    View, search, filter and manage your
+                    income and expense records.
+                </p>
+
+            </div>
+
+
+            <a
+                href="dashboard.html"
+                class="back-dashboard-btn"
+            >
+                ← Dashboard
+            </a>
+
+        </section>
+
+
+        <!-- =====================================
+             SUMMARY
+        ====================================== -->
+
+        <section class="transaction-summary-grid">
+
+
+            <article class="transaction-summary-card">
+
+                <span>
+                    Total Transactions
+                </span>
+
+                <strong id="transactionCount">
+                    0
+                </strong>
+
+            </article>
+
+
+            <article class="transaction-summary-card income-summary">
+
+                <span>
+                    Total Income
+                </span>
+
+                <strong id="transactionIncome">
+                    ₹0.00
+                </strong>
+
+            </article>
+
+
+            <article class="transaction-summary-card expense-summary">
+
+                <span>
+                    Total Expenses
+                </span>
+
+                <strong id="transactionExpenses">
+                    ₹0.00
+                </strong>
+
+            </article>
+
+
+            <article class="transaction-summary-card">
+
+                <span>
+                    Balance
+                </span>
+
+                <strong id="transactionBalance">
+                    ₹0.00
+                </strong>
+
+            </article>
+
+
+        </section>
+
+
+        <!-- =====================================
+             SEARCH + FILTERS
+        ====================================== -->
+
+        <section class="transaction-tools">
+
+
+            <div class="transaction-search">
+
+                <label for="transactionSearch">
+                    Search
+                </label>
+
+                <input
+                    type="search"
+                    id="transactionSearch"
+                    placeholder="Search title, category or payment method..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label for="typeFilter">
+                    Type
+                </label>
+
+                <select id="typeFilter">
+
+                    <option value="all">
+                        All Types
+                    </option>
+
+                    <option value="income">
+                        Income
+                    </option>
+
+                    <option value="expense">
+                        Expense
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label for="categoryFilter">
+                    Category
+                </label>
+
+                <select id="categoryFilter">
+
+                    <option value="all">
+                        All Categories
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label for="dateFrom">
+                    From
+                </label>
+
+                <input
+                    type="date"
+                    id="dateFrom"
+                >
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label for="dateTo">
+                    To
+                </label>
+
+                <input
+                    type="date"
+                    id="dateTo"
+                >
+
+            </div>
+
+
+            <button
+                type="button"
+                id="clearFiltersButton"
+                class="clear-filters-btn"
+            >
+                Clear Filters
+            </button>
+
+
+        </section>
+
+
+        <!-- FILTER RESULT -->
+
+        <div class="transaction-result-info">
+
+            <p id="resultCount">
+                Loading transactions...
+            </p>
+
+        </div>
+
+
+        <!-- =====================================
+             DESKTOP TABLE
+        ====================================== -->
+
+        <section class="transactions-panel">
+
+
+            <div class="transactions-table-wrapper">
+
+
+                <table class="transactions-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Transaction
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Payment
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="transactionsTableBody">
+
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                class="loading-row"
+                            >
+                                Loading your transactions...
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+            <!-- MOBILE TRANSACTION CARDS -->
+
+            <div
+                id="mobileTransactionList"
+                class="mobile-transaction-list"
+            >
+            </div>
+
+
+            <!-- EMPTY STATE -->
+
+            <div
+                id="transactionsEmptyState"
+                class="transactions-empty-state"
+                hidden
+            >
+
+                <div class="empty-icon">
+                    ↔
+                </div>
+
+                <h2>
+                    No transactions found
+                </h2>
+
+                <p>
+                    Add income or expenses from your dashboard,
+                    or change the current filters.
+                </p>
+
+                <a
+                    href="dashboard.html"
+                    class="empty-dashboard-btn"
+                >
+                    Go to Dashboard
+                </a>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+<!-- =========================================
+     EDIT TRANSACTION MODAL
+========================================== -->
+
+<div
+    id="editTransactionModal"
+    class="modal-overlay"
+    style="display: none;"
+>
+
+
+    <div class="transaction-modal">
+
+
+        <div class="modal-header">
+
+
+            <div>
+
+                <p class="modal-label">
+                    UPDATE TRANSACTION
+                </p>
+
+                <h2>
+                    Edit Transaction
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="closeEditModalButton"
+                class="close-modal"
+                aria-label="Close edit transaction form"
+            >
+                ×
+            </button>
+
+
+        </div>
+
+
+        <form id="editTransactionForm">
+
+
+            <div class="form-group">
+
+                <label for="editTransactionTitle">
+                    Title
+                </label>
+
+                <input
+                    type="text"
+                    id="editTransactionTitle"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="editTransactionAmount">
+                    Amount
+                </label>
+
+                <input
+                    type="number"
+                    id="editTransactionAmount"
+                    min="0.01"
+                    step="0.01"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="editTransactionType">
+                    Type
+                </label>
+
+                <select
+                    id="editTransactionType"
+                    required
+                >
+
+                    <option value="income">
+                        Income
+                    </option>
+
+                    <option value="expense">
+                        Expense
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="editTransactionCategory">
+                    Category
+                </label>
+
+                <select
+                    id="editTransactionCategory"
+                    required
+                >
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="editTransactionDate">
+                    Date
+                </label>
+
+                <input
+                    type="date"
+                    id="editTransactionDate"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="editPaymentMethod">
+                    Payment Method
+                </label>
+
+                <select
+                    id="editPaymentMethod"
+                    required
+                >
+
+                    <option value="Cash">
+                        Cash
+                    </option>
+
+                    <option value="UPI">
+                        UPI
+                    </option>
+
+                    <option value="Debit Card">
+                        Debit Card
+                    </option>
+
+                    <option value="Credit Card">
+                        Credit Card
+                    </option>
+
+                    <option value="Bank Transfer">
+                        Bank Transfer
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="editTransactionNotes">
+
+                    Notes
+
+                    <span>
+                        (Optional)
+                    </span>
+
+                </label>
+
+                <textarea
+                    id="editTransactionNotes"
+                    rows="3"
+                ></textarea>
+
+            </div>
+
+
+            <p
+                id="editTransactionMessage"
+                class="transaction-message"
+            >
+            </p>
+
+
+            <div class="edit-modal-actions">
+
+
+                <button
+                    type="button"
+                    id="cancelEditButton"
+                    class="cancel-edit-btn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    id="updateTransactionButton"
+                    class="save-transaction-btn"
+                >
+                    Update Transaction
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================================
+     DELETE CONFIRMATION
+========================================== -->
+
+<div
+    id="deleteModal"
+    class="delete-modal-overlay"
+    style="display: none;"
+>
+
+
+    <div class="delete-modal">
+
+
+        <div class="delete-icon">
+            !
+        </div>
+
+
+        <h2>
+            Delete Transaction?
+        </h2>
+
+
+        <p>
+            This transaction will be permanently removed
+            from your account.
+        </p>
+
+
+        <div
+            id="deleteTransactionPreview"
+            class="delete-transaction-preview"
+        >
+        </div>
+
+
+        <p
+            id="deleteMessage"
+            class="transaction-message"
+        >
+        </p>
+
+
+        <div class="delete-actions">
+
+
+            <button
+                type="button"
+                id="cancelDeleteButton"
+                class="cancel-delete-btn"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                id="confirmDeleteButton"
+                class="confirm-delete-btn"
+            >
+                Delete
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<script
+    type="module"
+    src="../JS/transactions-page.js"
+></script>
+
+
+</body>
+
+</html>

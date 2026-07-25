@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Reports | Expense Tracker</title>
+
+
+    <!-- SHARED DASHBOARD CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../CSS/dashboard.css"
+    >
+
+
+    <!-- REPORTS CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../CSS/reports.css"
+    >
+
+
+    <!-- RESPONSIVE CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../CSS/responsive.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     REPORTS PAGE
+===================================================== -->
+
+<div
+    id="reportsPage"
+    class="app-container"
+    style="display: none;"
+>
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                ₹
+            </div>
+
+
+            <div>
+
+                <h2>
+                    Expense
+                </h2>
+
+                <span>
+                    Tracker
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+
+            <a
+                href="dashboard.html"
+                class="nav-link"
+            >
+
+                <span>
+                    ⌂
+                </span>
+
+                Dashboard
+
+            </a>
+
+
+
+            <a
+                href="transactions.html"
+                class="nav-link"
+            >
+
+                <span>
+                    ↔
+                </span>
+
+                Transactions
+
+            </a>
+
+
+
+            <a
+                href="reports.html"
+                class="nav-link active"
+            >
+
+                <span>
+                    ▥
+                </span>
+
+                Reports
+
+            </a>
+
+
+
+            <a
+                href="budget.html"
+                class="nav-link"
+            >
+
+                <span>
+                    ₹
+                </span>
+
+                Budget
+
+            </a>
+
+
+
+            <a
+                href="savings.html"
+                class="nav-link"
+            >
+
+                <span>
+                    ◎
+                </span>
+
+                Savings Goals
+
+            </a>
+
+
+
+            <a
+                href="settings.html"
+                class="nav-link"
+            >
+
+                <span>
+                    ⚙
+                </span>
+
+                Settings
+
+            </a>
+
+
+        </nav>
+
+
+
+        <!-- SIDEBAR USER -->
+
+        <div class="sidebar-bottom">
+
+
+            <div class="user-info">
+
+
+                <div
+                    class="user-avatar"
+                    id="userAvatar"
+                >
+                    U
+                </div>
+
+
+                <div>
+
+                    <small>
+                        Signed in as
+                    </small>
+
+                    <p id="userEmail">
+                        Loading...
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =============================================
+             MOBILE HEADER
+        ============================================== -->
+
+        <header class="mobile-header">
+
+
+            <div class="mobile-brand">
+
+                <span>
+                    ₹
+                </span>
+
+                Expense Tracker
+
+            </div>
+
+
+            <button
+                type="button"
+                id="menuButton"
+                class="menu-button"
+                aria-label="Open navigation menu"
+            >
+                ☰
+            </button>
+
+
+        </header>
+
+
+
+        <!-- =============================================
+             REPORT HEADER
+        ============================================== -->
+
+        <section class="reports-header">
+
+
+            <div>
+
+
+                <p class="page-label">
+                    FINANCIAL ANALYTICS
+                </p>
+
+
+                <h1>
+                    Reports & Analytics
+                </h1>
+
+
+                <p>
+                    Understand your income, expenses,
+                    spending categories and monthly
+                    financial performance.
+                </p>
+
+
+            </div>
+
+
+
+            <a
+                href="dashboard.html"
+                class="back-dashboard-btn"
+            >
+                ← Dashboard
+            </a>
+
+
+        </section>
+
+
+
+        <!-- =============================================
+             ERROR MESSAGE
+        ============================================== -->
+
+        <div
+            id="reportMessage"
+            class="report-message"
+        >
+        </div>
+
+
+
+        <!-- =============================================
+             FILTERS
+        ============================================== -->
+
+        <section class="report-filters">
+
+
+            <div class="report-filter-controls">
+
+
+                <!-- MONTH -->
+
+                <div class="report-filter-group">
+
+
+                    <label for="reportMonth">
+                        Month
+                    </label>
+
+
+                    <select id="reportMonth">
+
+                        <option value="all">
+                            All Months
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+
+
+                <!-- YEAR -->
+
+                <div class="report-filter-group">
+
+
+                    <label for="reportYear">
+                        Year
+                    </label>
+
+
+                    <select id="reportYear">
+
+                        <option value="all">
+                            All Years
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+
+
+                <!-- RESET -->
+
+                <button
+                    type="button"
+                    id="resetReportButton"
+                    class="reset-report-btn"
+                >
+                    Reset Filter
+                </button>
+
+
+            </div>
+
+
+
+            <!-- CURRENT PERIOD -->
+
+            <div class="report-period">
+
+                Showing:
+
+                <strong id="reportPeriod">
+                    All Time
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =============================================
+             SUMMARY CARDS
+        ============================================== -->
+
+        <section class="report-summary-grid">
+
+
+            <!-- INCOME -->
+
+            <article
+                class="report-summary-card income-card"
+            >
+
+
+                <span class="report-card-label">
+                    Total Income
+                </span>
+
+
+                <strong
+                    id="reportIncome"
+                    class="report-card-value"
+                >
+                    ₹0.00
+                </strong>
+
+
+                <p class="report-card-info">
+                    Income for selected period
+                </p>
+
+
+            </article>
+
+
+
+            <!-- EXPENSE -->
+
+            <article
+                class="report-summary-card expense-card"
+            >
+
+
+                <span class="report-card-label">
+                    Total Expenses
+                </span>
+
+
+                <strong
+                    id="reportExpenses"
+                    class="report-card-value"
+                >
+                    ₹0.00
+                </strong>
+
+
+                <p class="report-card-info">
+                    Expenses for selected period
+                </p>
+
+
+            </article>
+
+
+
+            <!-- BALANCE -->
+
+            <article
+                class="report-summary-card balance-card"
+            >
+
+
+                <span class="report-card-label">
+                    Net Balance
+                </span>
+
+
+                <strong
+                    id="reportBalance"
+                    class="report-card-value"
+                >
+                    ₹0.00
+                </strong>
+
+
+                <p class="report-card-info">
+                    Income minus expenses
+                </p>
+
+
+            </article>
+
+
+
+            <!-- SAVINGS RATE -->
+
+            <article
+                class="report-summary-card savings-card"
+            >
+
+
+                <span class="report-card-label">
+                    Savings Rate
+                </span>
+
+
+                <strong
+                    id="reportSavingsRate"
+                    class="report-card-value"
+                >
+                    0.0%
+                </strong>
+
+
+                <p class="report-card-info">
+                    Percentage of income retained
+                </p>
+
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =============================================
+             CHARTS
+        ============================================== -->
+
+        <section class="reports-chart-grid">
+
+
+            <!-- INCOME VS EXPENSE -->
+
+            <article class="report-chart-card">
+
+
+                <div class="report-chart-header">
+
+
+                    <div>
+
+                        <h2>
+                            Income vs Expenses
+                        </h2>
+
+                        <p>
+                            Compare total money earned
+                            and spent.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="chart-container">
+
+
+                    <canvas
+                        id="incomeExpenseChart"
+                    ></canvas>
+
+
+
+                    <div
+                        id="incomeExpenseEmpty"
+                        class="chart-empty-state"
+                    >
+
+
+                        <div class="chart-empty-icon">
+                            ₹
+                        </div>
+
+
+                        <strong>
+                            No financial data
+                        </strong>
+
+
+                        <span>
+                            Add income or expense transactions
+                            to generate this chart.
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </article>
+
+
+
+            <!-- EXPENSE BY CATEGORY -->
+
+            <article class="report-chart-card">
+
+
+                <div class="report-chart-header">
+
+
+                    <div>
+
+                        <h2>
+                            Expenses by Category
+                        </h2>
+
+                        <p>
+                            See where most of your
+                            money is being spent.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="chart-container">
+
+
+                    <canvas
+                        id="categoryChart"
+                    ></canvas>
+
+
+
+                    <div
+                        id="categoryEmpty"
+                        class="chart-empty-state"
+                    >
+
+
+                        <div class="chart-empty-icon">
+                            ◎
+                        </div>
+
+
+                        <strong>
+                            No expense data
+                        </strong>
+
+
+                        <span>
+                            Expense categories will appear
+                            here after you add expenses.
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </article>
+
+
+
+            <!-- MONTHLY CHART -->
+
+            <article
+                class="report-chart-card full-width"
+            >
+
+
+                <div class="report-chart-header">
+
+
+                    <div>
+
+                        <h2>
+                            Monthly Financial Overview
+                        </h2>
+
+                        <p>
+                            Compare income and expenses
+                            across different months.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div
+                    class="chart-container large"
+                >
+
+
+                    <canvas
+                        id="monthlyChart"
+                    ></canvas>
+
+
+
+                    <div
+                        id="monthlyEmpty"
+                        class="chart-empty-state"
+                    >
+
+
+                        <div class="chart-empty-icon">
+                            ▥
+                        </div>
+
+
+                        <strong>
+                            No monthly data
+                        </strong>
+
+
+                        <span>
+                            Monthly analytics will appear
+                            when transaction data is available.
+                        </span>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- =============================================
+             FINANCIAL INSIGHTS
+        ============================================== -->
+
+        <section class="report-insights">
+
+
+            <div class="report-insights-header">
+
+
+                <h2>
+                    Financial Insights
+                </h2>
+
+
+                <p>
+                    Quick information calculated from
+                    the selected transactions.
+                </p>
+
+
+            </div>
+
+
+
+            <div class="insights-grid">
+
+
+                <!-- TOP CATEGORY -->
+
+                <article class="insight-card">
+
+
+                    <span>
+                        Highest Expense Category
+                    </span>
+
+
+                    <strong id="highestExpenseCategory">
+                        No data
+                    </strong>
+
+
+                    <p>
+
+                        Total:
+
+                        <strong id="highestExpenseAmount">
+                            ₹0.00
+                        </strong>
+
+                    </p>
+
+
+                </article>
+
+
+
+                <!-- BIGGEST EXPENSE -->
+
+                <article class="insight-card">
+
+
+                    <span>
+                        Biggest Expense
+                    </span>
+
+
+                    <strong id="biggestExpense">
+                        No data
+                    </strong>
+
+
+                    <p>
+
+                        Amount:
+
+                        <strong id="biggestExpenseAmount">
+                            ₹0.00
+                        </strong>
+
+                    </p>
+
+
+                </article>
+
+
+
+                <!-- TRANSACTION COUNT -->
+
+                <article class="insight-card">
+
+
+                    <span>
+                        Transactions
+                    </span>
+
+
+                    <strong id="reportTransactionCount">
+                        0
+                    </strong>
+
+
+                    <p>
+                        Transactions in selected period
+                    </p>
+
+
+                </article>
+
+
+
+                <!-- AVERAGE EXPENSE -->
+
+                <article class="insight-card">
+
+
+                    <span>
+                        Average Expense
+                    </span>
+
+
+                    <strong id="averageExpense">
+                        ₹0.00
+                    </strong>
+
+
+                    <p>
+                        Average amount per expense
+                    </p>
+
+
+                </article>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     LOADING OVERLAY
+===================================================== -->
+
+<div
+    id="reportsLoading"
+    class="reports-loading"
+>
+
+
+    <div class="reports-loader">
+        Loading financial reports...
+    </div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     CHART.JS
+
+     IMPORTANT:
+     Chart.js must load BEFORE reports.js.
+===================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/chart.js"
+></script>
+
+
+
+<!-- =====================================================
+     REPORT JAVASCRIPT
+===================================================== -->
+
+<script
+    type="module"
+    src="../JS/reports.js"
+></script>
+
+
+</body>
+
+</html>
