@@ -135,6 +135,15 @@
 
 
             <a
+                href="payment-history.html"
+                class="nav-link"
+            >
+                <span>↻</span>
+                Payment History
+            </a>
+
+
+            <a
                 href="settings.html"
                 class="nav-link"
             >
@@ -343,11 +352,11 @@
                     </span>
 
                     <strong>
-                        Enter UPI ID
+                        Enter UPI Details
                     </strong>
 
                     <p>
-                        Create a payment request manually.
+                        Pay using a UPI ID or UPI Number.
                     </p>
 
                 </div>
@@ -420,7 +429,9 @@
                 >
 
 
-                    <!-- RECIPIENT NAME -->
+                    <!-- =====================================
+                         RECIPIENT NAME
+                    ====================================== -->
 
                     <div class="payment-form-group">
 
@@ -440,9 +451,102 @@
                     </div>
 
 
-                    <!-- UPI ID -->
+                    <!-- =====================================
+                         PAY USING
+                    ====================================== -->
 
                     <div class="payment-form-group">
+
+                        <label>
+                            Pay Using
+                        </label>
+
+
+                        <div class="upi-type-selector">
+
+
+                            <!-- UPI ID OPTION -->
+
+                            <label
+                                class="upi-type-option active"
+                                id="upiIdOption"
+                            >
+
+                                <input
+                                    type="radio"
+                                    name="recipientType"
+                                    id="upiIdType"
+                                    value="upi-id"
+                                    checked
+                                >
+
+                                <span class="upi-type-icon">
+                                    @
+                                </span>
+
+
+                                <span class="upi-type-text">
+
+                                    <strong>
+                                        UPI ID
+                                    </strong>
+
+                                    <small>
+                                        Enter recipient's UPI ID
+                                    </small>
+
+                                </span>
+
+                            </label>
+
+
+                            <!-- UPI NUMBER OPTION -->
+
+                            <label
+                                class="upi-type-option"
+                                id="upiNumberOption"
+                            >
+
+                                <input
+                                    type="radio"
+                                    name="recipientType"
+                                    id="upiNumberType"
+                                    value="upi-number"
+                                >
+
+                                <span class="upi-type-icon">
+                                    #
+                                </span>
+
+
+                                <span class="upi-type-text">
+
+                                    <strong>
+                                        UPI Number
+                                    </strong>
+
+                                    <small>
+                                        Enter recipient's UPI Number
+                                    </small>
+
+                                </span>
+
+                            </label>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         UPI ID
+                    ====================================== -->
+
+                    <div
+                        class="payment-form-group"
+                        id="upiIdField"
+                    >
 
                         <label for="upiId">
                             UPI ID
@@ -456,7 +560,6 @@
                             autocapitalize="none"
                             spellcheck="false"
                             placeholder="example@upi"
-                            required
                         >
 
                         <small>
@@ -467,7 +570,40 @@
                     </div>
 
 
-                    <!-- AMOUNT -->
+                    <!-- =====================================
+                         UPI NUMBER
+                    ====================================== -->
+
+                    <div
+                        class="payment-form-group"
+                        id="upiNumberField"
+                        hidden
+                    >
+
+                        <label for="upiNumber">
+                            UPI Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="upiNumber"
+                            maxlength="15"
+                            autocomplete="tel"
+                            inputmode="numeric"
+                            placeholder="Enter UPI Number"
+                        >
+
+                        <small>
+                            Enter the recipient's registered
+                            UPI Number.
+                        </small>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         AMOUNT
+                    ====================================== -->
 
                     <div class="payment-form-group">
 
@@ -496,7 +632,9 @@
                     </div>
 
 
-                    <!-- NOTE -->
+                    <!-- =====================================
+                         NOTE
+                    ====================================== -->
 
                     <div class="payment-form-group">
 
@@ -527,7 +665,9 @@
                     </div>
 
 
-                    <!-- ACTIONS -->
+                    <!-- =====================================
+                         ACTIONS
+                    ====================================== -->
 
                     <div class="payment-form-actions">
 
@@ -664,7 +804,7 @@
 
                         <div class="payment-preview-row">
 
-                            <span>
+                            <span id="previewPaymentAddressLabel">
                                 UPI ID
                             </span>
 
@@ -722,7 +862,7 @@
                             id="copyUpiButton"
                             class="payment-secondary-btn"
                         >
-                            Copy UPI ID
+                            Copy Payment Address
                         </button>
 
                     </div>
@@ -799,8 +939,8 @@
                         </strong>
 
                         <p>
-                            Scan a UPI QR using the camera
-                            or manually enter a UPI ID.
+                            Scan a UPI QR using the camera,
+                            enter a UPI ID, or use a UPI Number.
                         </p>
 
                     </div>
@@ -821,7 +961,7 @@
                         </strong>
 
                         <p>
-                            Check the recipient, UPI ID,
+                            Check the recipient, payment address,
                             amount and payment note.
                         </p>
 

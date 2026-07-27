@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Payment History | Expense Tracker</title>
+
+
+    <!-- SHARED CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../CSS/dashboard.css"
+    >
+
+
+    <!-- PAYMENT HISTORY CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../CSS/payment-history.css"
+    >
+
+
+    <!-- RESPONSIVE CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../CSS/responsive.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     PAYMENT HISTORY PAGE
+===================================================== -->
+
+<div
+    id="paymentHistoryPage"
+    class="app-container"
+    style="display: none;"
+>
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                ₹
+            </div>
+
+
+            <div>
+
+                <h2>
+                    Expense
+                </h2>
+
+                <span>
+                    Tracker
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             NAVIGATION
+        ================================================== -->
+
+        <nav class="sidebar-nav">
+
+
+            <a
+                href="dashboard.html"
+                class="nav-link"
+            >
+
+                <span>
+                    ⌂
+                </span>
+
+                Dashboard
+
+            </a>
+
+
+            <a
+                href="transactions.html"
+                class="nav-link"
+            >
+
+                <span>
+                    ↔
+                </span>
+
+                Transactions
+
+            </a>
+
+
+            <a
+                href="reports.html"
+                class="nav-link"
+            >
+
+                <span>
+                    ▥
+                </span>
+
+                Reports
+
+            </a>
+
+
+            <a
+                href="budget.html"
+                class="nav-link"
+            >
+
+                <span>
+                    ₹
+                </span>
+
+                Budget
+
+            </a>
+
+
+            <a
+                href="savings.html"
+                class="nav-link"
+            >
+
+                <span>
+                    ◎
+                </span>
+
+                Savings Goals
+
+            </a>
+
+
+            <a
+                href="payments.html"
+                class="nav-link"
+            >
+
+                <span>
+                    ▣
+                </span>
+
+                Payments
+
+            </a>
+
+
+            <a
+                href="payment-history.html"
+                class="nav-link active"
+            >
+
+                <span>
+                    ◷
+                </span>
+
+                Payment History
+
+            </a>
+
+
+            <a
+                href="settings.html"
+                class="nav-link"
+            >
+
+                <span>
+                    ⚙
+                </span>
+
+                Settings
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- =================================================
+             USER
+        ================================================== -->
+
+        <div class="sidebar-bottom">
+
+
+            <div class="user-info">
+
+
+                <div
+                    class="user-avatar"
+                    id="userAvatar"
+                >
+                    U
+                </div>
+
+
+                <div>
+
+                    <small>
+                        Signed in as
+                    </small>
+
+                    <p id="userEmail">
+                        Loading...
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+
+        </div>
+
+
+    </aside>
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             MOBILE HEADER
+        ================================================== -->
+
+        <header class="mobile-header">
+
+
+            <div class="mobile-brand">
+
+                <span>
+                    ₹
+                </span>
+
+                Expense Tracker
+
+            </div>
+
+
+            <button
+                type="button"
+                id="menuButton"
+                class="menu-button"
+                aria-label="Open navigation menu"
+            >
+                ☰
+            </button>
+
+
+        </header>
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+        <section class="history-header">
+
+
+            <div>
+
+                <p class="page-label">
+                    PAYMENT ACTIVITY
+                </p>
+
+
+                <h1>
+                    Payment History
+                </h1>
+
+
+                <p>
+                    Review your saved UPI payment activity,
+                    confirm payment outcomes and record
+                    completed payments as expenses.
+                </p>
+
+            </div>
+
+
+            <div class="history-header-actions">
+
+
+                <a
+                    href="payments.html"
+                    class="history-secondary-action"
+                >
+                    <span>
+                        ▣
+                    </span>
+
+                    Scan & Pay
+                </a>
+
+
+                <a
+                    href="payments.html"
+                    class="history-primary-action"
+                >
+                    <span>
+                        +
+                    </span>
+
+                    New Payment
+                </a>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             IMPORTANT NOTICE
+        ================================================== -->
+
+        <section class="history-verification-notice">
+
+
+            <div class="history-notice-icon">
+                i
+            </div>
+
+
+            <div>
+
+                <strong>
+                    Payment status is user-confirmed
+                </strong>
+
+
+                <p>
+                    Expense Tracker does not independently
+                    verify your bank or UPI transaction.
+                    Mark a payment as confirmed only after
+                    checking the final status in your UPI
+                    application.
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             SUMMARY CARDS
+        ================================================== -->
+
+        <section class="history-summary-grid">
+
+
+            <!-- TOTAL -->
+
+            <article class="history-summary-card">
+
+
+                <div class="history-summary-top">
+
+
+                    <div class="history-summary-icon">
+                        ₹
+                    </div>
+
+
+                    <span>
+                        ALL
+                    </span>
+
+
+                </div>
+
+
+                <p>
+                    Total Payments
+                </p>
+
+
+                <strong id="totalPaymentsCount">
+                    0
+                </strong>
+
+
+                <small id="totalPaymentsAmount">
+                    ₹0.00 total value
+                </small>
+
+
+            </article>
+
+
+            <!-- CONFIRMED -->
+
+            <article class="history-summary-card">
+
+
+                <div class="history-summary-top">
+
+
+                    <div
+                        class="
+                            history-summary-icon
+                            history-summary-success
+                        "
+                    >
+                        ✓
+                    </div>
+
+
+                    <span>
+                        CONFIRMED
+                    </span>
+
+
+                </div>
+
+
+                <p>
+                    Confirmed
+                </p>
+
+
+                <strong id="confirmedPaymentsCount">
+                    0
+                </strong>
+
+
+                <small id="confirmedPaymentsAmount">
+                    ₹0.00 confirmed
+                </small>
+
+
+            </article>
+
+
+            <!-- PENDING -->
+
+            <article class="history-summary-card">
+
+
+                <div class="history-summary-top">
+
+
+                    <div
+                        class="
+                            history-summary-icon
+                            history-summary-pending
+                        "
+                    >
+                        ◷
+                    </div>
+
+
+                    <span>
+                        PENDING
+                    </span>
+
+
+                </div>
+
+
+                <p>
+                    Pending
+                </p>
+
+
+                <strong id="pendingPaymentsCount">
+                    0
+                </strong>
+
+
+                <small>
+                    Awaiting confirmation
+                </small>
+
+
+            </article>
+
+
+            <!-- FAILED -->
+
+            <article class="history-summary-card">
+
+
+                <div class="history-summary-top">
+
+
+                    <div
+                        class="
+                            history-summary-icon
+                            history-summary-failed
+                        "
+                    >
+                        ×
+                    </div>
+
+
+                    <span>
+                        FAILED
+                    </span>
+
+
+                </div>
+
+
+                <p>
+                    Failed / Cancelled
+                </p>
+
+
+                <strong id="failedPaymentsCount">
+                    0
+                </strong>
+
+
+                <small>
+                    Not recorded as expenses
+                </small>
+
+
+            </article>
+
+
+        </section>
+
+
+        <!-- =================================================
+             HISTORY CARD
+        ================================================== -->
+
+        <section class="history-card">
+
+
+            <!-- =================================================
+                 CARD HEADER
+            ================================================== -->
+
+            <div class="history-card-header">
+
+
+                <div>
+
+                    <span class="history-section-label">
+                        PAYMENT RECORDS
+                    </span>
+
+
+                    <h2>
+                        Recent Payments
+                    </h2>
+
+
+                    <p>
+                        Search, filter and manage your saved
+                        payment records.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="refreshPaymentsButton"
+                    class="history-refresh-button"
+                >
+
+                    <span>
+                        ↻
+                    </span>
+
+                    Refresh
+
+                </button>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 FILTERS
+            ================================================== -->
+
+            <div class="history-filters">
+
+
+                <!-- SEARCH -->
+
+                <div class="history-search">
+
+
+                    <span>
+                        ⌕
+                    </span>
+
+
+                    <input
+                        type="search"
+                        id="paymentSearchInput"
+                        placeholder="Search recipient, UPI ID or note..."
+                        autocomplete="off"
+                        aria-label="Search payment history"
+                    >
+
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="history-filter-group">
+
+
+                    <label for="paymentStatusFilter">
+                        Status
+                    </label>
+
+
+                    <select id="paymentStatusFilter">
+
+                        <option value="all">
+                            All Statuses
+                        </option>
+
+                        <option value="pending">
+                            Pending
+                        </option>
+
+                        <option value="confirmed">
+                            Confirmed
+                        </option>
+
+                        <option value="failed">
+                            Failed / Cancelled
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+
+                <!-- EXPENSE -->
+
+                <div class="history-filter-group">
+
+
+                    <label for="expenseStatusFilter">
+                        Expense
+                    </label>
+
+
+                    <select id="expenseStatusFilter">
+
+                        <option value="all">
+                            All
+                        </option>
+
+                        <option value="recorded">
+                            Recorded
+                        </option>
+
+                        <option value="not-recorded">
+                            Not Recorded
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+
+                <!-- SORT -->
+
+                <div class="history-filter-group">
+
+
+                    <label for="paymentSortFilter">
+                        Sort
+                    </label>
+
+
+                    <select id="paymentSortFilter">
+
+                        <option value="newest">
+                            Newest First
+                        </option>
+
+                        <option value="oldest">
+                            Oldest First
+                        </option>
+
+                        <option value="highest">
+                            Highest Amount
+                        </option>
+
+                        <option value="lowest">
+                            Lowest Amount
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 RESULTS INFORMATION
+            ================================================== -->
+
+            <div class="history-results-bar">
+
+
+                <p>
+
+                    Showing
+
+                    <strong id="visiblePaymentsCount">
+                        0
+                    </strong>
+
+                    of
+
+                    <strong id="allPaymentsCount">
+                        0
+                    </strong>
+
+                    payments
+
+                </p>
+
+
+                <button
+                    type="button"
+                    id="clearHistoryFiltersButton"
+                    class="history-clear-filters"
+                >
+                    Clear Filters
+                </button>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 DESKTOP TABLE
+            ================================================== -->
+
+            <div
+                id="paymentTableContainer"
+                class="history-table-container"
+            >
+
+
+                <table class="history-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Recipient
+                            </th>
+
+                            <th>
+                                Payment
+                            </th>
+
+                            <th>
+                                Amount
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Expense
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="paymentHistoryTableBody">
+
+                        <!--
+                            Payment rows will be rendered
+                            by payment-history.js
+                        -->
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 MOBILE LIST
+            ================================================== -->
+
+            <div
+                id="paymentHistoryMobileList"
+                class="history-mobile-list"
+            >
+
+                <!--
+                    Mobile payment cards will be rendered
+                    by payment-history.js
+                -->
+
+            </div>
+
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <div
+                id="paymentHistoryEmptyState"
+                class="history-empty-state"
+                hidden
+            >
+
+
+                <div class="history-empty-icon">
+                    ◷
+                </div>
+
+
+                <h3>
+                    No payment history yet
+                </h3>
+
+
+                <p id="paymentHistoryEmptyText">
+                    Payments you save will appear here.
+                </p>
+
+
+                <a
+                    href="payments.html"
+                    class="history-primary-action"
+                >
+                    Make a Payment
+                </a>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 LOADING STATE
+            ================================================== -->
+
+            <div
+                id="paymentHistoryLoadingState"
+                class="history-list-loading"
+            >
+
+
+                <div class="history-loading-spinner">
+                </div>
+
+
+                <p>
+                    Loading payment history...
+                </p>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- =================================================
+             PAYMENT DETAILS MODAL
+        ================================================== -->
+
+        <div
+            id="paymentDetailsModal"
+            class="history-modal"
+            aria-hidden="true"
+        >
+
+
+            <div
+                id="paymentDetailsBackdrop"
+                class="history-modal-backdrop"
+            >
+            </div>
+
+
+            <div
+                class="history-modal-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="paymentDetailsTitle"
+            >
+
+
+                <!-- MODAL HEADER -->
+
+                <div class="history-modal-header">
+
+
+                    <div>
+
+                        <span>
+                            PAYMENT DETAILS
+                        </span>
+
+
+                        <h2 id="paymentDetailsTitle">
+                            Payment
+                        </h2>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="closePaymentDetailsButton"
+                        class="history-modal-close"
+                        aria-label="Close payment details"
+                    >
+                        ×
+                    </button>
+
+
+                </div>
+
+
+                <!-- MODAL BODY -->
+
+                <div class="history-modal-body">
+
+
+                    <!-- AMOUNT -->
+
+                    <div class="history-detail-amount">
+
+
+                        <span>
+                            Payment Amount
+                        </span>
+
+
+                        <strong id="detailPaymentAmount">
+                            ₹0.00
+                        </strong>
+
+
+                        <div
+                            id="detailPaymentStatus"
+                            class="
+                                history-status-badge
+                                pending
+                            "
+                        >
+                            Pending
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- DETAILS GRID -->
+
+                    <div class="history-detail-grid">
+
+
+                        <div class="history-detail-item">
+
+                            <span>
+                                Recipient
+                            </span>
+
+                            <strong id="detailRecipient">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="history-detail-item">
+
+                            <span>
+                                UPI ID
+                            </span>
+
+                            <strong id="detailUpiId">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="history-detail-item">
+
+                            <span>
+                                Date
+                            </span>
+
+                            <strong id="detailDate">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="history-detail-item">
+
+                            <span>
+                                Time
+                            </span>
+
+                            <strong id="detailTime">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="history-detail-item">
+
+                            <span>
+                                Expense Status
+                            </span>
+
+                            <strong id="detailExpenseStatus">
+                                Not Recorded
+                            </strong>
+
+                        </div>
+
+
+                        <div class="history-detail-item">
+
+                            <span>
+                                Payment ID
+                            </span>
+
+                            <strong id="detailPaymentId">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- NOTE -->
+
+                    <div class="history-detail-note">
+
+
+                        <span>
+                            Payment Note
+                        </span>
+
+
+                        <p id="detailPaymentNote">
+                            No note
+                        </p>
+
+
+                    </div>
+
+
+                    <!-- VERIFICATION -->
+
+                    <div class="history-detail-warning">
+
+
+                        <span>
+                            !
+                        </span>
+
+
+                        <p>
+                            The status shown here is based on
+                            your confirmation. Expense Tracker
+                            does not independently verify the
+                            bank transaction.
+                        </p>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- MODAL ACTIONS -->
+
+                <div class="history-modal-actions">
+
+
+                    <button
+                        type="button"
+                        id="detailCloseButton"
+                        class="history-secondary-button"
+                    >
+                        Close
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="detailRecordExpenseButton"
+                        class="history-primary-button"
+                    >
+                        Record as Expense
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             CONFIRM PAYMENT MODAL
+        ================================================== -->
+
+        <div
+            id="confirmPaymentModal"
+            class="history-modal"
+            aria-hidden="true"
+        >
+
+
+            <div
+                id="confirmPaymentBackdrop"
+                class="history-modal-backdrop"
+            >
+            </div>
+
+
+            <div
+                class="
+                    history-modal-dialog
+                    history-confirm-dialog
+                "
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="confirmPaymentTitle"
+            >
+
+
+                <!-- HEADER -->
+
+                <div class="history-modal-header">
+
+
+                    <div>
+
+                        <span>
+                            PAYMENT STATUS
+                        </span>
+
+
+                        <h2 id="confirmPaymentTitle">
+                            Confirm Payment
+                        </h2>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="closeConfirmPaymentButton"
+                        class="history-modal-close"
+                        aria-label="Close payment confirmation"
+                    >
+                        ×
+                    </button>
+
+
+                </div>
+
+
+                <!-- BODY -->
+
+                <div class="history-modal-body">
+
+
+                    <div class="history-confirm-icon">
+                        ?
+                    </div>
+
+
+                    <h3>
+                        What happened to this payment?
+                    </h3>
+
+
+                    <p>
+                        Check your UPI application first,
+                        then select the correct outcome.
+                    </p>
+
+
+                    <div class="history-confirm-payment">
+
+
+                        <span id="confirmRecipient">
+                            Recipient
+                        </span>
+
+
+                        <strong id="confirmAmount">
+                            ₹0.00
+                        </strong>
+
+
+                    </div>
+
+
+                    <div class="history-confirm-warning">
+
+                        Do not mark the payment as confirmed
+                        unless your UPI application shows the
+                        transaction as successful.
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div
+                    class="
+                        history-modal-actions
+                        history-status-actions
+                    "
+                >
+
+
+                    <button
+                        type="button"
+                        id="markPaymentFailedButton"
+                        class="history-failed-button"
+                    >
+                        Failed / Cancelled
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="keepPaymentPendingButton"
+                        class="history-secondary-button"
+                    >
+                        Keep Pending
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="markPaymentConfirmedButton"
+                        class="history-primary-button"
+                    >
+                        Confirm Payment
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             RECORD EXPENSE MODAL
+        ================================================== -->
+
+        <div
+            id="recordExpenseModal"
+            class="history-modal"
+            aria-hidden="true"
+        >
+
+
+            <div
+                id="recordExpenseBackdrop"
+                class="history-modal-backdrop"
+            >
+            </div>
+
+
+            <div
+                class="history-modal-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="recordExpenseTitle"
+            >
+
+
+                <!-- HEADER -->
+
+                <div class="history-modal-header">
+
+
+                    <div>
+
+                        <span>
+                            ADD TO EXPENSES
+                        </span>
+
+
+                        <h2 id="recordExpenseTitle">
+                            Record Payment
+                        </h2>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="closeRecordExpenseButton"
+                        class="history-modal-close"
+                        aria-label="Close record expense form"
+                    >
+                        ×
+                    </button>
+
+
+                </div>
+
+
+                <!-- FORM -->
+
+                <form
+                    id="recordExpenseForm"
+                    novalidate
+                >
+
+
+                    <div class="history-modal-body">
+
+
+                        <!-- PAYMENT -->
+
+                        <div class="history-expense-payment">
+
+
+                            <div>
+
+                                <span>
+                                    Payment
+                                </span>
+
+                                <strong id="expenseRecipient">
+                                    -
+                                </strong>
+
+                            </div>
+
+
+                            <strong id="expenseAmount">
+                                ₹0.00
+                            </strong>
+
+
+                        </div>
+
+
+                        <!-- TITLE -->
+
+                        <div class="history-form-group">
+
+
+                            <label for="expenseTitle">
+                                Expense Title
+                            </label>
+
+
+                            <input
+                                type="text"
+                                id="expenseTitle"
+                                maxlength="80"
+                                placeholder="Example: Grocery payment"
+                                required
+                            >
+
+
+                        </div>
+
+
+                        <!-- CATEGORY -->
+
+                        <div class="history-form-group">
+
+
+                            <label for="expenseCategory">
+                                Category
+                            </label>
+
+
+                            <select
+                                id="expenseCategory"
+                                required
+                            >
+
+                                <option value="">
+                                    Select category
+                                </option>
+
+                                <option value="Food">
+                                    Food
+                                </option>
+
+                                <option value="Transport">
+                                    Transport
+                                </option>
+
+                                <option value="Shopping">
+                                    Shopping
+                                </option>
+
+                                <option value="Bills">
+                                    Bills
+                                </option>
+
+                                <option value="Entertainment">
+                                    Entertainment
+                                </option>
+
+                                <option value="Health">
+                                    Health
+                                </option>
+
+                                <option value="Education">
+                                    Education
+                                </option>
+
+                                <option value="Travel">
+                                    Travel
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+
+                        </div>
+
+
+                        <!-- DATE -->
+
+                        <div class="history-form-group">
+
+
+                            <label for="expenseDate">
+                                Expense Date
+                            </label>
+
+
+                            <input
+                                type="date"
+                                id="expenseDate"
+                                required
+                            >
+
+
+                        </div>
+
+
+                        <!-- NOTE -->
+
+                        <div class="history-form-group">
+
+
+                            <label for="expenseNote">
+                                Note
+                            </label>
+
+
+                            <textarea
+                                id="expenseNote"
+                                rows="3"
+                                maxlength="150"
+                                placeholder="Optional expense note"
+                            ></textarea>
+
+
+                        </div>
+
+
+                        <!-- MESSAGE -->
+
+                        <div
+                            id="recordExpenseMessage"
+                            class="history-form-message"
+                            role="status"
+                            aria-live="polite"
+                        >
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="history-modal-actions">
+
+
+                        <button
+                            type="button"
+                            id="cancelRecordExpenseButton"
+                            class="history-secondary-button"
+                        >
+                            Cancel
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            id="saveExpenseButton"
+                            class="history-primary-button"
+                        >
+                            Record Expense
+                        </button>
+
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             PAGE MESSAGE
+        ================================================== -->
+
+        <div
+            id="historyToast"
+            class="history-toast"
+            role="status"
+            aria-live="polite"
+        >
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+<!-- =====================================================
+     PAGE LOADING
+===================================================== -->
+
+<div
+    id="historyPageLoading"
+    class="history-page-loading"
+>
+
+
+    <div class="history-page-loader">
+
+
+        <div class="history-loading-spinner">
+        </div>
+
+
+        <span>
+            Loading payment history...
+        </span>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script
+    type="module"
+    src="../JS/payment-history.js"
+></script>
+
+
+</body>
+
+</html>
