@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Payments | Expense Tracker</title>
+
+    <!-- SHARED CSS -->
+    <link
+        rel="stylesheet"
+        href="../CSS/dashboard.css"
+    >
+
+    <!-- PAYMENT CSS -->
+    <link
+        rel="stylesheet"
+        href="../CSS/payments.css"
+    >
+
+    <!-- RESPONSIVE CSS -->
+    <link
+        rel="stylesheet"
+        href="../CSS/responsive.css"
+    >
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     PAYMENTS PAGE
+===================================================== -->
+
+<div
+    id="paymentsPage"
+    class="app-container"
+    style="display: none;"
+>
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                ₹
+            </div>
+
+            <div>
+
+                <h2>
+                    Expense
+                </h2>
+
+                <span>
+                    Tracker
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="dashboard.html"
+                class="nav-link"
+            >
+                <span>⌂</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="transactions.html"
+                class="nav-link"
+            >
+                <span>↔</span>
+                Transactions
+            </a>
+
+
+            <a
+                href="reports.html"
+                class="nav-link"
+            >
+                <span>▥</span>
+                Reports
+            </a>
+
+
+            <a
+                href="budget.html"
+                class="nav-link"
+            >
+                <span>₹</span>
+                Budget
+            </a>
+
+
+            <a
+                href="savings.html"
+                class="nav-link"
+            >
+                <span>◎</span>
+                Savings Goals
+            </a>
+
+
+            <a
+                href="payments.html"
+                class="nav-link active"
+            >
+                <span>▣</span>
+                Payments
+            </a>
+
+
+            <a
+                href="settings.html"
+                class="nav-link"
+            >
+                <span>⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+
+        <!-- USER -->
+
+        <div class="sidebar-bottom">
+
+            <div class="user-info">
+
+                <div
+                    class="user-avatar"
+                    id="userAvatar"
+                >
+                    U
+                </div>
+
+                <div>
+
+                    <small>
+                        Signed in as
+                    </small>
+
+                    <p id="userEmail">
+                        Loading...
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             MOBILE HEADER
+        ================================================== -->
+
+        <header class="mobile-header">
+
+            <div class="mobile-brand">
+
+                <span>
+                    ₹
+                </span>
+
+                Expense Tracker
+
+            </div>
+
+
+            <button
+                type="button"
+                id="menuButton"
+                class="menu-button"
+                aria-label="Open navigation menu"
+            >
+                ☰
+            </button>
+
+        </header>
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+        <section class="payments-header">
+
+            <div>
+
+                <p class="page-label">
+                    UPI PAYMENT
+                </p>
+
+                <h1>
+                    Payments
+                </h1>
+
+                <p>
+                    Scan a UPI QR code or manually create
+                    a payment request.
+                </p>
+
+            </div>
+
+
+            <div class="payment-security-badge">
+
+                <span>
+                    ✓
+                </span>
+
+                <div>
+
+                    <strong>
+                        External Payment
+                    </strong>
+
+                    <small>
+                        Payment is completed in your UPI app
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             MESSAGE
+        ================================================== -->
+
+        <div
+            id="paymentMessage"
+            class="payment-message"
+            role="status"
+            aria-live="polite"
+        >
+        </div>
+
+
+        <!-- =================================================
+             QUICK ACTIONS
+        ================================================== -->
+
+        <section class="payment-quick-actions">
+
+
+            <!-- SCAN QR -->
+
+            <button
+                type="button"
+                id="scanQrButton"
+                class="payment-quick-action payment-scan-action"
+            >
+
+                <div class="payment-quick-icon">
+                    ▣
+                </div>
+
+                <div>
+
+                    <span>
+                        SCAN & PAY
+                    </span>
+
+                    <strong>
+                        Scan QR Code
+                    </strong>
+
+                    <p>
+                        Use your camera to scan a UPI QR.
+                    </p>
+
+                </div>
+
+                <div class="payment-action-arrow">
+                    →
+                </div>
+
+            </button>
+
+
+            <!-- MANUAL -->
+
+            <button
+                type="button"
+                id="manualPaymentButton"
+                class="payment-quick-action"
+            >
+
+                <div class="payment-quick-icon">
+                    ₹
+                </div>
+
+                <div>
+
+                    <span>
+                        MANUAL PAYMENT
+                    </span>
+
+                    <strong>
+                        Enter UPI ID
+                    </strong>
+
+                    <p>
+                        Create a payment request manually.
+                    </p>
+
+                </div>
+
+                <div class="payment-action-arrow">
+                    →
+                </div>
+
+            </button>
+
+
+        </section>
+
+
+        <!-- =================================================
+             PAYMENT GRID
+        ================================================== -->
+
+        <div class="payments-grid">
+
+
+            <!-- =============================================
+                 CREATE PAYMENT
+            ============================================== -->
+
+            <section
+                id="manualPaymentSection"
+                class="payment-card"
+            >
+
+                <div class="payment-card-header">
+
+                    <div>
+
+                        <span class="payment-section-label">
+                            NEW PAYMENT
+                        </span>
+
+                        <h2>
+                            Create UPI Request
+                        </h2>
+
+                        <p>
+                            Enter the recipient and payment
+                            details below, or scan their QR
+                            code to fill available details.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        id="scanQrSmallButton"
+                        class="payment-header-scan-btn"
+                    >
+                        <span>
+                            ▣
+                        </span>
+
+                        Scan QR
+                    </button>
+
+                </div>
+
+
+                <form
+                    id="paymentForm"
+                    novalidate
+                >
+
+
+                    <!-- RECIPIENT NAME -->
+
+                    <div class="payment-form-group">
+
+                        <label for="recipientName">
+                            Recipient Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="recipientName"
+                            maxlength="60"
+                            autocomplete="name"
+                            placeholder="Example: Grocery Store"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- UPI ID -->
+
+                    <div class="payment-form-group">
+
+                        <label for="upiId">
+                            UPI ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="upiId"
+                            maxlength="100"
+                            autocomplete="off"
+                            autocapitalize="none"
+                            spellcheck="false"
+                            placeholder="example@upi"
+                            required
+                        >
+
+                        <small>
+                            Enter the recipient's UPI ID or
+                            scan their UPI QR code.
+                        </small>
+
+                    </div>
+
+
+                    <!-- AMOUNT -->
+
+                    <div class="payment-form-group">
+
+                        <label for="paymentAmount">
+                            Amount
+                        </label>
+
+                        <div class="amount-input">
+
+                            <span>
+                                ₹
+                            </span>
+
+                            <input
+                                type="number"
+                                id="paymentAmount"
+                                min="0.01"
+                                step="0.01"
+                                inputmode="decimal"
+                                placeholder="0.00"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NOTE -->
+
+                    <div class="payment-form-group">
+
+                        <label for="paymentNote">
+                            Payment Note
+                        </label>
+
+                        <textarea
+                            id="paymentNote"
+                            maxlength="100"
+                            rows="3"
+                            placeholder="Example: Grocery payment"
+                        ></textarea>
+
+
+                        <div class="payment-field-footer">
+
+                            <small>
+                                Optional
+                            </small>
+
+                            <small id="noteCounter">
+                                0 / 100
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="payment-form-actions">
+
+                        <button
+                            type="button"
+                            id="clearPaymentButton"
+                            class="payment-secondary-btn"
+                        >
+                            Clear
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            id="generatePaymentButton"
+                            class="payment-primary-btn"
+                        >
+                            Generate Payment
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- =============================================
+                 PAYMENT PREVIEW
+            ============================================== -->
+
+            <section
+                class="payment-card payment-preview-card"
+            >
+
+                <div class="payment-card-header">
+
+                    <div>
+
+                        <span class="payment-section-label">
+                            PREVIEW
+                        </span>
+
+                        <h2>
+                            Payment Request
+                        </h2>
+
+                        <p>
+                            Review the details before opening
+                            your UPI app.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- EMPTY -->
+
+                <div
+                    id="paymentEmptyState"
+                    class="payment-empty-state"
+                >
+
+                    <div class="payment-empty-icon">
+                        ▣
+                    </div>
+
+                    <h3>
+                        No payment generated
+                    </h3>
+
+                    <p>
+                        Scan a UPI QR code or enter the
+                        payment details manually.
+                    </p>
+
+
+                    <button
+                        type="button"
+                        id="emptyStateScanButton"
+                        class="payment-secondary-btn"
+                    >
+                        Scan QR
+                    </button>
+
+                </div>
+
+
+                <!-- GENERATED -->
+
+                <div
+                    id="paymentPreview"
+                    class="payment-preview"
+                    hidden
+                >
+
+
+                    <!-- QR -->
+
+                    <div class="qr-section">
+
+                        <div
+                            id="qrCode"
+                            class="qr-code"
+                            aria-label="UPI payment QR code"
+                        >
+                        </div>
+
+                        <p>
+                            Scan using a compatible UPI app
+                        </p>
+
+                    </div>
+
+
+                    <!-- DETAILS -->
+
+                    <div class="payment-preview-details">
+
+
+                        <div class="payment-preview-row">
+
+                            <span>
+                                Recipient
+                            </span>
+
+                            <strong id="previewRecipient">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="payment-preview-row">
+
+                            <span>
+                                UPI ID
+                            </span>
+
+                            <strong id="previewUpiId">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <div class="payment-preview-row">
+
+                            <span>
+                                Amount
+                            </span>
+
+                            <strong id="previewAmount">
+                                ₹0.00
+                            </strong>
+
+                        </div>
+
+
+                        <div class="payment-preview-row">
+
+                            <span>
+                                Note
+                            </span>
+
+                            <strong id="previewNote">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="payment-preview-actions">
+
+                        <button
+                            type="button"
+                            id="openUpiButton"
+                            class="payment-primary-btn"
+                        >
+                            Open UPI App
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="copyUpiButton"
+                            class="payment-secondary-btn"
+                        >
+                            Copy UPI ID
+                        </button>
+
+                    </div>
+
+
+                    <!-- WARNING -->
+
+                    <div class="payment-warning">
+
+                        <span>
+                            !
+                        </span>
+
+                        <p>
+                            Opening a UPI app does not mean
+                            the payment succeeded. Complete
+                            and verify the transaction in
+                            your payment app.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+        <!-- =================================================
+             HOW IT WORKS
+        ================================================== -->
+
+        <section class="payment-card payment-guide">
+
+            <div class="payment-card-header">
+
+                <div>
+
+                    <span class="payment-section-label">
+                        HOW IT WORKS
+                    </span>
+
+                    <h2>
+                        Scan & Pay Flow
+                    </h2>
+
+                    <p>
+                        Scan a UPI QR or manually enter the
+                        recipient details before continuing
+                        to your payment app.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="payment-steps">
+
+
+                <div class="payment-step">
+
+                    <span class="payment-step-number">
+                        1
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Scan or Enter
+                        </strong>
+
+                        <p>
+                            Scan a UPI QR using the camera
+                            or manually enter a UPI ID.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="payment-step">
+
+                    <span class="payment-step-number">
+                        2
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Review Details
+                        </strong>
+
+                        <p>
+                            Check the recipient, UPI ID,
+                            amount and payment note.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="payment-step">
+
+                    <span class="payment-step-number">
+                        3
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Open UPI App
+                        </strong>
+
+                        <p>
+                            Send the payment request to a
+                            compatible UPI application.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="payment-step">
+
+                    <span class="payment-step-number">
+                        4
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Verify Payment
+                        </strong>
+
+                        <p>
+                            Confirm the final status inside
+                            the UPI app before recording the
+                            expense.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             NOTICE
+        ================================================== -->
+
+        <section class="payment-notice">
+
+            <div class="payment-notice-icon">
+                i
+            </div>
+
+            <div>
+
+                <strong>
+                    Payment Notice
+                </strong>
+
+                <p>
+                    Expense Tracker does not process,
+                    authorize, receive or independently
+                    verify UPI payments. The external UPI
+                    app handles the actual transaction.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     QR SCANNER MODAL
+===================================================== -->
+
+<div
+    id="qrScannerModal"
+    class="qr-scanner-modal"
+    aria-hidden="true"
+>
+
+
+    <!-- BACKDROP -->
+
+    <div
+        id="qrScannerBackdrop"
+        class="qr-scanner-backdrop"
+    >
+    </div>
+
+
+    <!-- DIALOG -->
+
+    <div
+        class="qr-scanner-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="qrScannerTitle"
+    >
+
+
+        <!-- HEADER -->
+
+        <div class="qr-scanner-header">
+
+            <div>
+
+                <span>
+                    SCAN & PAY
+                </span>
+
+                <h2 id="qrScannerTitle">
+                    Scan UPI QR
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="closeQrScannerButton"
+                class="qr-scanner-close"
+                aria-label="Close QR scanner"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- CAMERA AREA -->
+
+        <div class="qr-camera-container">
+
+
+            <!-- VIDEO -->
+
+            <video
+                id="qrScannerVideo"
+                class="qr-scanner-video"
+                autoplay
+                muted
+                playsinline
+            >
+            </video>
+
+
+            <!-- SCAN OVERLAY -->
+
+            <div class="qr-camera-overlay">
+
+                <div class="qr-scan-frame">
+
+                    <span class="qr-corner qr-corner-tl">
+                    </span>
+
+                    <span class="qr-corner qr-corner-tr">
+                    </span>
+
+                    <span class="qr-corner qr-corner-bl">
+                    </span>
+
+                    <span class="qr-corner qr-corner-br">
+                    </span>
+
+
+                    <div class="qr-scan-line">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CAMERA START STATE -->
+
+            <div
+                id="qrCameraStartState"
+                class="qr-camera-state"
+            >
+
+                <div class="qr-camera-state-icon">
+                    ▣
+                </div>
+
+                <h3>
+                    Ready to Scan
+                </h3>
+
+                <p>
+                    Allow camera access to scan a UPI
+                    payment QR code.
+                </p>
+
+
+                <button
+                    type="button"
+                    id="startCameraButton"
+                    class="payment-primary-btn"
+                >
+                    Start Camera
+                </button>
+
+            </div>
+
+
+            <!-- CAMERA ERROR STATE -->
+
+            <div
+                id="qrCameraErrorState"
+                class="qr-camera-state"
+                hidden
+            >
+
+                <div class="qr-camera-state-icon">
+                    !
+                </div>
+
+                <h3>
+                    Camera Unavailable
+                </h3>
+
+                <p id="qrCameraErrorMessage">
+                    Camera access could not be started.
+                </p>
+
+
+                <button
+                    type="button"
+                    id="retryCameraButton"
+                    class="payment-secondary-btn"
+                >
+                    Try Again
+                </button>
+
+            </div>
+
+
+            <!-- SCANNING STATUS -->
+
+            <div
+                id="qrScanningBadge"
+                class="qr-scanning-badge"
+                hidden
+            >
+
+                <span>
+                </span>
+
+                Scanning...
+
+            </div>
+
+
+        </div>
+
+
+        <!-- INSTRUCTIONS -->
+
+        <div class="qr-scanner-instructions">
+
+            <strong>
+                Position the QR inside the frame
+            </strong>
+
+            <p>
+                Keep the QR code visible and steady.
+                Expense Tracker will read the payment
+                details when a supported QR is detected.
+            </p>
+
+        </div>
+
+
+        <!-- RESULT -->
+
+        <div
+            id="qrScanResult"
+            class="qr-scan-result"
+            hidden
+        >
+
+            <div class="qr-result-icon">
+                ✓
+            </div>
+
+
+            <div>
+
+                <strong>
+                    QR detected
+                </strong>
+
+                <p id="qrScanResultText">
+                    Payment information found.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ERROR MESSAGE -->
+
+        <div
+            id="qrScanMessage"
+            class="qr-scan-message"
+            role="status"
+            aria-live="polite"
+        >
+        </div>
+
+
+        <!-- ACTIONS -->
+
+        <div class="qr-scanner-actions">
+
+            <button
+                type="button"
+                id="cancelQrScannerButton"
+                class="payment-secondary-btn"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                id="useScannedQrButton"
+                class="payment-primary-btn"
+                disabled
+            >
+                Use Payment Details
+            </button>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LOADING
+===================================================== -->
+
+<div
+    id="paymentLoading"
+    class="payment-loading"
+>
+
+    <div class="payment-loader">
+        Loading payments...
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script
+    type="module"
+    src="../JS/payments.js"
+></script>
+
+
+</body>
+
+</html>
