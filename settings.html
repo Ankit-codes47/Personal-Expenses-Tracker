@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Settings | Expense Tracker</title>
+
+    <!-- SHARED DASHBOARD CSS -->
+    <link
+        rel="stylesheet"
+        href="../CSS/dashboard.css"
+    >
+
+    <!-- SETTINGS CSS -->
+    <link
+        rel="stylesheet"
+        href="../CSS/settings.css"
+    >
+
+    <!-- RESPONSIVE CSS -->
+    <link
+        rel="stylesheet"
+        href="../CSS/responsive.css"
+    >
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     SETTINGS PAGE
+===================================================== -->
+
+<div
+    id="settingsPage"
+    class="app-container"
+    style="display: none;"
+>
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="sidebar">
+
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                ₹
+            </div>
+
+            <div>
+
+                <h2>
+                    Expense
+                </h2>
+
+                <span>
+                    Tracker
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+            <a
+                href="dashboard.html"
+                class="nav-link"
+            >
+                <span>⌂</span>
+                Dashboard
+            </a>
+
+
+            <a
+                href="transactions.html"
+                class="nav-link"
+            >
+                <span>↔</span>
+                Transactions
+            </a>
+
+
+            <a
+                href="reports.html"
+                class="nav-link"
+            >
+                <span>▥</span>
+                Reports
+            </a>
+
+
+            <a
+                href="budget.html"
+                class="nav-link"
+            >
+                <span>₹</span>
+                Budget
+            </a>
+
+
+            <a
+                href="savings.html"
+                class="nav-link"
+            >
+                <span>◎</span>
+                Savings Goals
+            </a>
+
+
+            <a
+                href="settings.html"
+                class="nav-link active"
+            >
+                <span>⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+
+        <!-- USER -->
+
+        <div class="sidebar-bottom">
+
+            <div class="user-info">
+
+                <div
+                    class="user-avatar"
+                    id="userAvatar"
+                >
+                    U
+                </div>
+
+                <div>
+
+                    <small>
+                        Signed in as
+                    </small>
+
+                    <p id="userEmail">
+                        Loading...
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="logout-btn"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- MOBILE HEADER -->
+
+        <header class="mobile-header">
+
+            <div class="mobile-brand">
+
+                <span>
+                    ₹
+                </span>
+
+                Expense Tracker
+
+            </div>
+
+
+            <button
+                type="button"
+                id="menuButton"
+                class="menu-button"
+                aria-label="Open navigation menu"
+            >
+                ☰
+            </button>
+
+        </header>
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+        <section class="settings-header">
+
+            <div>
+
+                <p class="page-label">
+                    ACCOUNT & APP
+                </p>
+
+                <h1>
+                    Settings
+                </h1>
+
+                <p>
+                    Manage your profile, security and
+                    Expense Tracker preferences.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             MESSAGE
+        ================================================== -->
+
+        <div
+            id="settingsMessage"
+            class="settings-message"
+            role="status"
+        >
+        </div>
+
+
+        <!-- =================================================
+             PROFILE OVERVIEW
+        ================================================== -->
+
+        <section class="settings-profile-card">
+
+            <div
+                class="settings-profile-avatar"
+                id="settingsProfileAvatar"
+            >
+                U
+            </div>
+
+
+            <div class="settings-profile-details">
+
+                <span>
+                    YOUR ACCOUNT
+                </span>
+
+                <h2 id="settingsDisplayName">
+                    Expense Tracker User
+                </h2>
+
+                <p id="settingsProfileEmail">
+                    Loading...
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SETTINGS GRID
+        ================================================== -->
+
+        <div class="settings-grid">
+
+
+            <!-- =============================================
+                 PROFILE
+            ============================================== -->
+
+            <section class="settings-card">
+
+                <div class="settings-card-header">
+
+                    <div>
+
+                        <span class="settings-section-label">
+                            PROFILE
+                        </span>
+
+                        <h2>
+                            Personal Information
+                        </h2>
+
+                        <p>
+                            Manage the information displayed
+                            on your Expense Tracker account.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form id="profileForm">
+
+
+                    <!-- DISPLAY NAME -->
+
+                    <div class="settings-form-group">
+
+                        <label for="displayName">
+                            Display Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="displayName"
+                            maxlength="50"
+                            autocomplete="name"
+                            placeholder="Enter your name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="settings-form-group">
+
+                        <label for="accountEmail">
+                            Email Address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="accountEmail"
+                            autocomplete="email"
+                            readonly
+                        >
+
+                        <small>
+                            This is the email connected to
+                            your Expense Tracker account.
+                        </small>
+
+                    </div>
+
+
+                    <div class="settings-form-actions">
+
+                        <button
+                            type="submit"
+                            id="saveProfileButton"
+                            class="settings-primary-btn"
+                        >
+                            Save Profile
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- =============================================
+                 SECURITY
+            ============================================== -->
+
+            <section class="settings-card">
+
+                <div class="settings-card-header">
+
+                    <div>
+
+                        <span class="settings-section-label">
+                            SECURITY
+                        </span>
+
+                        <h2>
+                            Change Password
+                        </h2>
+
+                        <p>
+                            Update the password used to
+                            access your account.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form id="passwordForm">
+
+
+                    <!-- CURRENT PASSWORD -->
+
+                    <div class="settings-form-group">
+
+                        <label for="currentPassword">
+                            Current Password
+                        </label>
+
+                        <div class="password-field">
+
+                            <input
+                                type="password"
+                                id="currentPassword"
+                                autocomplete="current-password"
+                                placeholder="Enter current password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-target="currentPassword"
+                                aria-label="Show current password"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NEW PASSWORD -->
+
+                    <div class="settings-form-group">
+
+                        <label for="newPassword">
+                            New Password
+                        </label>
+
+                        <div class="password-field">
+
+                            <input
+                                type="password"
+                                id="newPassword"
+                                minlength="6"
+                                autocomplete="new-password"
+                                placeholder="Enter new password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-target="newPassword"
+                                aria-label="Show new password"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                        <small>
+                            Use at least 6 characters.
+                        </small>
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="settings-form-group">
+
+                        <label for="confirmPassword">
+                            Confirm New Password
+                        </label>
+
+                        <div class="password-field">
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                minlength="6"
+                                autocomplete="new-password"
+                                placeholder="Enter new password again"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-target="confirmPassword"
+                                aria-label="Show confirmed password"
+                            >
+                                Show
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-form-actions">
+
+                        <button
+                            type="submit"
+                            id="changePasswordButton"
+                            class="settings-primary-btn"
+                        >
+                            Change Password
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- =============================================
+                 APP PREFERENCES
+            ============================================== -->
+
+            <section class="settings-card">
+
+                <div class="settings-card-header">
+
+                    <div>
+
+                        <span class="settings-section-label">
+                            PREFERENCES
+                        </span>
+
+                        <h2>
+                            App Preferences
+                        </h2>
+
+                        <p>
+                            Configure how information is
+                            displayed inside the app.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form id="preferencesForm">
+
+
+                    <!-- CURRENCY -->
+
+                    <div class="settings-form-group">
+
+                        <label for="currencyPreference">
+                            Currency
+                        </label>
+
+                        <select id="currencyPreference">
+
+                            <option value="INR">
+                                ₹ Indian Rupee (INR)
+                            </option>
+
+                            <option value="USD">
+                                $ US Dollar (USD)
+                            </option>
+
+                            <option value="EUR">
+                                € Euro (EUR)
+                            </option>
+
+                            <option value="GBP">
+                                £ British Pound (GBP)
+                            </option>
+
+                        </select>
+
+                        <small>
+                            V1 currently uses INR throughout
+                            the financial pages. Other
+                            currencies are prepared for
+                            future support.
+                        </small>
+
+                    </div>
+
+
+                    <!-- DATE FORMAT -->
+
+                    <div class="settings-form-group">
+
+                        <label for="dateFormatPreference">
+                            Date Format
+                        </label>
+
+                        <select id="dateFormatPreference">
+
+                            <option value="DD/MM/YYYY">
+                                DD/MM/YYYY
+                            </option>
+
+                            <option value="MM/DD/YYYY">
+                                MM/DD/YYYY
+                            </option>
+
+                            <option value="YYYY-MM-DD">
+                                YYYY-MM-DD
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- THEME -->
+
+                    <div class="settings-form-group">
+
+                        <label for="themePreference">
+                            Theme
+                        </label>
+
+                        <select id="themePreference">
+
+                            <option value="dark">
+                                Dark
+                            </option>
+
+                            <option value="light">
+                                Light
+                            </option>
+
+                            <option value="system">
+                                System Default
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Theme switching will be connected
+                            through the settings JavaScript.
+                        </small>
+
+                    </div>
+
+
+                    <div class="settings-form-actions">
+
+                        <button
+                            type="submit"
+                            id="savePreferencesButton"
+                            class="settings-primary-btn"
+                        >
+                            Save Preferences
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </section>
+
+
+            <!-- =============================================
+                 ACCOUNT INFORMATION
+            ============================================== -->
+
+            <section class="settings-card">
+
+                <div class="settings-card-header">
+
+                    <div>
+
+                        <span class="settings-section-label">
+                            ACCOUNT
+                        </span>
+
+                        <h2>
+                            Account Information
+                        </h2>
+
+                        <p>
+                            Basic information about your
+                            authenticated account.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="account-info-list">
+
+
+                    <div class="account-info-row">
+
+                        <div>
+
+                            <span>
+                                Account Email
+                            </span>
+
+                            <strong id="accountInfoEmail">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="account-info-row">
+
+                        <div>
+
+                            <span>
+                                Email Status
+                            </span>
+
+                            <strong id="emailVerificationStatus">
+                                Checking...
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="account-info-row">
+
+                        <div>
+
+                            <span>
+                                Account Created
+                            </span>
+
+                            <strong id="accountCreatedDate">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="account-info-row">
+
+                        <div>
+
+                            <span>
+                                Last Sign In
+                            </span>
+
+                            <strong id="lastSignInDate">
+                                Loading...
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+        <!-- =================================================
+             SESSION
+        ================================================== -->
+
+        <section class="settings-card settings-session-card">
+
+            <div class="settings-card-header">
+
+                <div>
+
+                    <span class="settings-section-label">
+                        SESSION
+                    </span>
+
+                    <h2>
+                        Sign Out
+                    </h2>
+
+                    <p>
+                        End your current Expense Tracker
+                        session on this device.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="session-action">
+
+                <div>
+
+                    <strong>
+                        Current Session
+                    </strong>
+
+                    <p>
+                        You are currently signed in to
+                        Expense Tracker.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="settingsLogoutButton"
+                    class="settings-secondary-btn"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             DANGER ZONE
+        ================================================== -->
+
+        <section class="settings-card danger-zone">
+
+            <div class="settings-card-header">
+
+                <div>
+
+                    <span class="settings-section-label danger-label">
+                        DANGER ZONE
+                    </span>
+
+                    <h2>
+                        Account Actions
+                    </h2>
+
+                    <p>
+                        Sensitive actions related to your
+                        Expense Tracker account.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="danger-action">
+
+                <div>
+
+                    <strong>
+                        Delete Account
+                    </strong>
+
+                    <p>
+                        Permanently delete your account.
+                        This action requires confirmation.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="openDeleteAccountButton"
+                    class="settings-danger-btn"
+                >
+                    Delete Account
+                </button>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     DELETE ACCOUNT MODAL
+===================================================== -->
+
+<div
+    id="deleteAccountModal"
+    class="settings-modal"
+    aria-hidden="true"
+>
+
+    <div
+        class="settings-modal-backdrop"
+        data-close-delete-account
+    >
+    </div>
+
+
+    <div
+        class="settings-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="deleteAccountTitle"
+    >
+
+        <div class="delete-account-icon">
+            !
+        </div>
+
+
+        <h2 id="deleteAccountTitle">
+            Delete Account?
+        </h2>
+
+
+        <p>
+            This action is permanent. Your account cannot
+            be restored after deletion.
+        </p>
+
+
+        <div class="settings-form-group">
+
+            <label for="deleteAccountPassword">
+                Confirm Password
+            </label>
+
+            <input
+                type="password"
+                id="deleteAccountPassword"
+                autocomplete="current-password"
+                placeholder="Enter your password"
+            >
+
+        </div>
+
+
+        <div
+            id="deleteAccountMessage"
+            class="delete-account-message"
+        >
+        </div>
+
+
+        <div class="settings-modal-actions">
+
+            <button
+                type="button"
+                id="cancelDeleteAccountButton"
+                class="settings-secondary-btn"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                id="confirmDeleteAccountButton"
+                class="settings-danger-btn"
+            >
+                Delete Account
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LOADING OVERLAY
+===================================================== -->
+
+<div
+    id="settingsLoading"
+    class="settings-loading"
+>
+
+    <div class="settings-loader">
+        Loading settings...
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script
+    type="module"
+    src="../JS/settings.js"
+></script>
+
+
+</body>
+
+</html>
