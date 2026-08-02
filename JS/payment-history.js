@@ -994,39 +994,28 @@ paymentSortFilter?.addEventListener(
 // =====================================================
 
 function applyFilters() {
-// =====================================================
-// PAYMENT-HISTORY.JS
-// Expense Tracker - Day 12
-// Payment Confirmation + UTR + Expense Integration
-// =====================================================
+    import {
+        auth,
+        db
+    } from "./firebase-config.js";
 
 
-// =====================================================
-// FIREBASE
-// =====================================================
-
-import {
-    auth,
-    db
-} from "./firebase-config.js";
+    import {
+        onAuthStateChanged,
+        signOut
+    }   from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
 
 
-import {
-    onAuthStateChanged,
-    signOut
-} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-
-
-import {
-    collection,
-    addDoc,
-    getDocs,
-    doc,
-    updateDoc,
-    query,
-    orderBy,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+    import {
+        collection,
+        addDoc,
+        getDocs,
+        doc,
+        updateDoc,
+        query,
+        orderBy,
+        serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
 
 // =====================================================
