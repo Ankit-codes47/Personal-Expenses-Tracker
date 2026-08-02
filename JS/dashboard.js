@@ -12,7 +12,6 @@ import {
 import {
     collection,
     query,
-    where,
     orderBy,
     getDocs,
     addDoc,
@@ -322,12 +321,22 @@ async function loadTransactions() {
 
     try {
 
-        const q = query(
-            collection(db, "transactions"),
-            where("uid", "==", currentUser.uid),
-            orderBy("createdAt", "desc")
-        );
+        if (!currentUser){
+            transactions = [];
+            return;
+        };
 
+        const transactionReference =
+            collection(
+                db,
+                "users",
+                currentUser.uid,
+                "transactions"
+            );
+
+        const q = query(
+            transactionReference,
+            orderBy("createdAt", "desc"));
 
         const snapshot =
             await getDocs(q);
@@ -1015,6 +1024,8 @@ async function saveTransaction(event) {
         await addDoc(
             collection(
                 db,
+                "users",
+                currentUser.uid,
                 "transactions"
             ),
             {
