@@ -2724,3 +2724,382 @@ body.history-modal-open {
     outline: 2px solid #22c55e;
     outline-offset: 2px;
 }
+/* =====================================================
+   DAY 13 - PAYMENT HISTORY MOBILE OVERFLOW FIX
+===================================================== */
+
+@media screen and (max-width: 850px) {
+
+    /* Prevent this page from creating horizontal overflow */
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+
+    #paymentHistoryPage {
+        width: 100%;
+        max-width: 100%;
+
+        overflow-x: hidden;
+    }
+
+
+    #paymentHistoryPage *,
+    #paymentHistoryPage *::before,
+    #paymentHistoryPage *::after {
+        box-sizing: border-box;
+    }
+
+
+    /* Main page must be allowed to shrink */
+    #paymentHistoryPage .main-content {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        margin-left: 0;
+    }
+
+
+    /* Header */
+    .history-header {
+        width: 100%;
+        min-width: 0;
+    }
+
+
+    .history-header > div {
+        width: 100%;
+        min-width: 0;
+    }
+
+
+    .history-header p {
+        max-width: 100%;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* Header buttons */
+    .history-header-actions {
+        width: 100%;
+        min-width: 0;
+    }
+
+
+    .history-header-actions > a {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+
+    /* Verification notice */
+    .history-verification-notice {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+
+    .history-verification-notice > div {
+        min-width: 0;
+    }
+
+
+    .history-verification-notice p,
+    .history-verification-notice strong {
+        overflow-wrap: anywhere;
+    }
+
+
+    /* Summary */
+    .history-summary-grid {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+
+    .history-summary-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+
+    /* Main history card */
+    .history-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+
+    .history-card-header,
+    .history-filters,
+    .history-results-bar,
+    .history-mobile-list {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+
+    /* Inputs/selects */
+    .history-search,
+    .history-filter-group,
+    .history-filter-group select {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+
+    /* Mobile payment cards */
+    .history-mobile-card {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+
+    .history-mobile-card-top {
+        min-width: 0;
+    }
+
+
+    .history-mobile-card-recipient {
+        flex: 1;
+        min-width: 0;
+    }
+
+
+    /* Modals */
+    .history-modal-dialog,
+    .history-confirm-dialog {
+        width: 100%;
+        max-width: 540px;
+        min-width: 0;
+    }
+}
+
+
+/* =====================================================
+   DAY 13 - SMALL MOBILE
+===================================================== */
+
+@media screen and (max-width: 600px) {
+
+    #paymentHistoryPage .main-content {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+
+    .history-header {
+        gap: 16px;
+    }
+
+
+    .history-header-actions {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .history-header-actions > a {
+        width: 100%;
+    }
+
+
+    .history-verification-notice {
+        padding: 14px;
+    }
+
+
+    .history-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .history-card {
+        padding: 16px;
+    }
+
+
+    .history-mobile-card {
+        padding: 14px;
+    }
+
+
+    .history-modal {
+        padding: 10px;
+    }
+
+
+    .history-modal-dialog {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+
+/* =====================================================
+   DAY 13 - VERY SMALL MOBILE
+   320px / 360px / 375px
+===================================================== */
+
+@media screen and (max-width: 420px) {
+
+    #paymentHistoryPage .main-content {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+
+    .history-header {
+        gap: 14px;
+    }
+
+
+    .history-header h1 {
+        font-size: 24px;
+        line-height: 1.2;
+    }
+
+
+    .history-header > div:first-child > p:last-child {
+        font-size: 12px;
+        line-height: 1.55;
+    }
+
+
+    /* Stack buttons on narrow phones */
+    .history-header-actions {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+
+    .history-primary-action,
+    .history-secondary-action {
+        width: 100%;
+        max-width: 100%;
+    }
+
+
+    /* Warning card */
+    .history-verification-notice {
+        gap: 10px;
+
+        padding: 12px;
+    }
+
+
+    .history-notice-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+
+    /* Summary cards */
+    .history-summary-grid {
+        gap: 12px;
+    }
+
+
+    .history-summary-card {
+        padding: 15px;
+    }
+
+
+    /* Recent payments */
+    .history-card {
+        padding: 14px;
+
+        border-radius: 13px;
+    }
+
+
+    .history-card-header {
+        gap: 12px;
+    }
+
+
+    /* Payment card */
+    .history-mobile-card {
+        padding: 12px;
+    }
+
+
+    .history-mobile-card-top {
+        gap: 10px;
+    }
+
+
+    .history-mobile-card-recipient strong,
+    .history-mobile-card-recipient small {
+        max-width: 100%;
+    }
+
+
+    .history-mobile-meta {
+        grid-template-columns: 1fr;
+    }
+
+
+    .history-mobile-actions {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* Modal */
+    .history-modal-header,
+    .history-modal-body {
+        padding: 14px;
+    }
+
+
+    .history-modal-actions {
+        grid-template-columns: 1fr;
+
+        padding: 12px 14px 14px;
+    }
+
+
+    .history-confirm-payment,
+    .history-expense-payment {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+
+    .history-expense-toggle {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+
+    .history-expense-toggle-content {
+        min-width: 0;
+    }
+
+
+    .history-expense-toggle-content strong,
+    .history-expense-toggle-content small {
+        overflow-wrap: anywhere;
+    }
+
+
+    .history-confirm-warning {
+        width: 100%;
+        max-width: 100%;
+    }
+}
