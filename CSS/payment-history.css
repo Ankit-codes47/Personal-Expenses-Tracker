@@ -1,7 +1,7 @@
 /* =====================================================
    PAYMENT-HISTORY.CSS
-   Expense Tracker - Day 11
-   Payment History
+   Expense Tracker - Day 12
+   Payment History + Confirmation + Expense Integration
 ===================================================== */
 
 
@@ -19,9 +19,11 @@
     margin-bottom: 22px;
 }
 
+
 .history-header > div:first-child {
     min-width: 0;
 }
+
 
 .history-header h1 {
     margin: 4px 0 8px;
@@ -31,6 +33,7 @@
     font-size: 32px;
     line-height: 1.2;
 }
+
 
 .history-header > div:first-child > p:last-child {
     max-width: 650px;
@@ -54,6 +57,7 @@
 
     flex-shrink: 0;
 }
+
 
 .history-primary-action,
 .history-secondary-action {
@@ -80,6 +84,7 @@
         background 0.2s ease;
 }
 
+
 .history-primary-action {
     border: 1px solid var(--primary);
 
@@ -88,9 +93,11 @@
     color: #ffffff;
 }
 
+
 .history-primary-action:hover {
     transform: translateY(-1px);
 }
+
 
 .history-secondary-action {
     border: 1px solid var(--border);
@@ -99,6 +106,7 @@
 
     color: var(--text);
 }
+
 
 .history-secondary-action:hover {
     border-color: var(--primary);
@@ -127,6 +135,7 @@
     background: rgba(245, 158, 11, 0.06);
 }
 
+
 .history-notice-icon {
     display: flex;
     align-items: center;
@@ -147,6 +156,7 @@
     font-weight: 800;
 }
 
+
 .history-verification-notice strong {
     display: block;
 
@@ -156,6 +166,7 @@
 
     font-size: 11px;
 }
+
 
 .history-verification-notice p {
     max-width: 850px;
@@ -182,6 +193,7 @@
     margin-bottom: 20px;
 }
 
+
 .history-summary-card {
     min-width: 0;
 
@@ -196,6 +208,7 @@
         0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
+
 .history-summary-top {
     display: flex;
     align-items: center;
@@ -206,6 +219,7 @@
     margin-bottom: 14px;
 }
 
+
 .history-summary-top > span {
     color: var(--muted);
 
@@ -214,6 +228,7 @@
 
     letter-spacing: 0.7px;
 }
+
 
 .history-summary-icon {
     display: flex;
@@ -235,11 +250,13 @@
     font-weight: 800;
 }
 
+
 .history-summary-success {
     background: rgba(34, 197, 94, 0.1);
 
     color: #4ade80;
 }
+
 
 .history-summary-pending {
     background: rgba(245, 158, 11, 0.1);
@@ -247,11 +264,13 @@
     color: #f59e0b;
 }
 
+
 .history-summary-failed {
     background: rgba(239, 68, 68, 0.1);
 
     color: #f87171;
 }
+
 
 .history-summary-card > p {
     margin-bottom: 5px;
@@ -260,6 +279,7 @@
 
     font-size: 10px;
 }
+
 
 .history-summary-card > strong {
     display: block;
@@ -273,6 +293,7 @@
     font-size: 25px;
     line-height: 1.2;
 }
+
 
 .history-summary-card > small {
     display: block;
@@ -323,6 +344,7 @@
     border-bottom: 1px solid var(--border);
 }
 
+
 .history-section-label {
     display: block;
 
@@ -336,6 +358,7 @@
     letter-spacing: 0.8px;
 }
 
+
 .history-card-header h2 {
     margin-bottom: 5px;
 
@@ -343,6 +366,7 @@
 
     font-size: 18px;
 }
+
 
 .history-card-header p {
     color: var(--muted);
@@ -387,6 +411,7 @@
         background 0.2s ease;
 }
 
+
 .history-refresh-button:hover {
     border-color: var(--primary);
 
@@ -412,6 +437,7 @@
     margin-bottom: 15px;
 }
 
+
 .history-search {
     display: flex;
     align-items: center;
@@ -430,12 +456,14 @@
         box-shadow 0.2s ease;
 }
 
+
 .history-search:focus-within {
     border-color: var(--primary);
 
     box-shadow:
         0 0 0 3px rgba(34, 197, 94, 0.1);
 }
+
 
 .history-search > span {
     display: flex;
@@ -451,6 +479,7 @@
 
     font-size: 16px;
 }
+
 
 .history-search input {
     flex: 1;
@@ -472,17 +501,21 @@
     outline: none;
 }
 
+
 .history-search input::placeholder {
     color: var(--muted);
 }
+
 
 .history-filter-group {
     min-width: 0;
 }
 
+
 .history-filter-group label {
     display: none;
 }
+
 
 .history-filter-group select {
     width: 100%;
@@ -508,6 +541,7 @@
         border-color 0.2s ease,
         box-shadow 0.2s ease;
 }
+
 
 .history-filter-group select:focus {
     border-color: var(--primary);
@@ -535,15 +569,18 @@
     border-bottom: 1px solid var(--border);
 }
 
+
 .history-results-bar p {
     color: var(--muted);
 
     font-size: 9px;
 }
 
+
 .history-results-bar strong {
     color: var(--text);
 }
+
 
 .history-clear-filters {
     padding: 0;
@@ -572,6 +609,7 @@
     overflow-x: auto;
 }
 
+
 .history-table {
     width: 100%;
 
@@ -579,6 +617,7 @@
 
     table-layout: auto;
 }
+
 
 .history-table th {
     padding: 12px 10px;
@@ -598,6 +637,7 @@
     white-space: nowrap;
 }
 
+
 .history-table td {
     padding: 14px 10px;
 
@@ -610,14 +650,17 @@
     vertical-align: middle;
 }
 
+
 .history-table tbody tr {
     transition:
         background 0.2s ease;
 }
 
+
 .history-table tbody tr:hover {
     background: rgba(255, 255, 255, 0.015);
 }
+
 
 .history-table tbody tr:last-child td {
     border-bottom: none;
@@ -636,6 +679,7 @@
 
     min-width: 150px;
 }
+
 
 .history-recipient-avatar {
     display: flex;
@@ -657,6 +701,7 @@
     font-weight: 800;
 }
 
+
 .history-recipient strong {
     display: block;
 
@@ -674,6 +719,7 @@
     white-space: nowrap;
 }
 
+
 .history-recipient small {
     display: block;
 
@@ -689,9 +735,11 @@
     white-space: nowrap;
 }
 
+
 .history-payment-info {
     min-width: 130px;
 }
+
 
 .history-payment-info strong {
     display: block;
@@ -710,11 +758,13 @@
     white-space: nowrap;
 }
 
+
 .history-payment-info small {
     color: var(--muted);
 
     font-size: 8px;
 }
+
 
 .history-amount {
     color: var(--text);
@@ -724,6 +774,7 @@
 
     white-space: nowrap;
 }
+
 
 .history-date strong {
     display: block;
@@ -736,6 +787,7 @@
 
     white-space: nowrap;
 }
+
 
 .history-date small {
     color: var(--muted);
@@ -770,6 +822,7 @@
     white-space: nowrap;
 }
 
+
 .history-status-badge.confirmed {
     border-color: rgba(34, 197, 94, 0.25);
 
@@ -778,6 +831,7 @@
     color: #4ade80;
 }
 
+
 .history-status-badge.pending {
     border-color: rgba(245, 158, 11, 0.25);
 
@@ -785,6 +839,7 @@
 
     color: #f59e0b;
 }
+
 
 .history-status-badge.failed {
     border-color: rgba(239, 68, 68, 0.25);
@@ -816,13 +871,19 @@
     white-space: nowrap;
 }
 
+
 .history-expense-badge.recorded {
+    border: 1px solid rgba(59, 130, 246, 0.18);
+
     background: rgba(59, 130, 246, 0.08);
 
     color: #60a5fa;
 }
 
+
 .history-expense-badge.not-recorded {
+    border: 1px solid rgba(148, 163, 184, 0.12);
+
     background: rgba(148, 163, 184, 0.08);
 
     color: var(--muted);
@@ -841,6 +902,7 @@
 
     white-space: nowrap;
 }
+
 
 .history-row-button {
     display: inline-flex;
@@ -869,11 +931,13 @@
         background 0.2s ease;
 }
 
+
 .history-row-button:hover {
     border-color: var(--primary);
 
     background: rgba(34, 197, 94, 0.05);
 }
+
 
 .history-row-button.primary {
     border-color: rgba(34, 197, 94, 0.3);
@@ -881,11 +945,13 @@
     color: var(--primary);
 }
 
+
 .history-row-button.danger {
     border-color: rgba(239, 68, 68, 0.25);
 
     color: #f87171;
 }
+
 
 .history-row-button:disabled {
     opacity: 0.45;
@@ -902,6 +968,7 @@
     display: none;
 }
 
+
 .history-mobile-card {
     padding: 15px;
 
@@ -913,9 +980,11 @@
     background: var(--bg);
 }
 
+
 .history-mobile-card:last-child {
     margin-bottom: 0;
 }
+
 
 .history-mobile-card-top {
     display: flex;
@@ -927,9 +996,11 @@
     margin-bottom: 13px;
 }
 
+
 .history-mobile-card-recipient {
     min-width: 0;
 }
+
 
 .history-mobile-card-recipient strong {
     display: block;
@@ -946,6 +1017,7 @@
     white-space: nowrap;
 }
 
+
 .history-mobile-card-recipient small {
     display: block;
 
@@ -956,6 +1028,7 @@
     font-size: 9px;
 }
 
+
 .history-mobile-card-amount {
     flex-shrink: 0;
 
@@ -964,6 +1037,7 @@
     font-size: 14px;
     font-weight: 800;
 }
+
 
 .history-mobile-meta {
     display: grid;
@@ -981,6 +1055,7 @@
     border-bottom: 1px solid var(--border);
 }
 
+
 .history-mobile-meta-item span {
     display: block;
 
@@ -993,6 +1068,7 @@
     text-transform: uppercase;
 }
 
+
 .history-mobile-meta-item strong {
     display: block;
 
@@ -1002,6 +1078,7 @@
 
     font-size: 9px;
 }
+
 
 .history-mobile-actions {
     display: grid;
@@ -1030,9 +1107,11 @@
     text-align: center;
 }
 
+
 .history-empty-state[hidden] {
     display: none !important;
 }
+
 
 .history-empty-icon {
     display: flex;
@@ -1054,6 +1133,7 @@
     font-size: 25px;
 }
 
+
 .history-empty-state h3 {
     margin-bottom: 7px;
 
@@ -1061,6 +1141,7 @@
 
     font-size: 16px;
 }
+
 
 .history-empty-state p {
     max-width: 350px;
@@ -1091,9 +1172,11 @@
     padding: 30px;
 }
 
+
 .history-list-loading[hidden] {
     display: none !important;
 }
+
 
 .history-list-loading p {
     color: var(--muted);
@@ -1117,6 +1200,7 @@
     animation:
         historySpinner 0.8s linear infinite;
 }
+
 
 @keyframes historySpinner {
 
@@ -1146,9 +1230,11 @@
     padding: 20px;
 }
 
+
 .history-modal.open {
     display: flex;
 }
+
 
 .history-modal-backdrop {
     position: absolute;
@@ -1159,6 +1245,7 @@
 
     backdrop-filter: blur(6px);
 }
+
 
 .history-modal-dialog {
     position: relative;
@@ -1178,6 +1265,7 @@
     box-shadow:
         0 30px 90px rgba(0, 0, 0, 0.5);
 }
+
 
 .history-confirm-dialog {
     width: min(100%, 500px);
@@ -1200,6 +1288,7 @@
     border-bottom: 1px solid var(--border);
 }
 
+
 .history-modal-header > div > span {
     display: block;
 
@@ -1213,11 +1302,13 @@
     letter-spacing: 0.8px;
 }
 
+
 .history-modal-header h2 {
     color: var(--text);
 
     font-size: 18px;
 }
+
 
 .history-modal-close {
     display: flex;
@@ -1244,6 +1335,7 @@
         border-color 0.2s ease,
         color 0.2s ease;
 }
+
 
 .history-modal-close:hover {
     border-color: #ef4444;
@@ -1275,6 +1367,7 @@
     text-align: center;
 }
 
+
 .history-detail-amount > span {
     margin-bottom: 5px;
 
@@ -1282,6 +1375,7 @@
 
     font-size: 9px;
 }
+
 
 .history-detail-amount > strong {
     margin-bottom: 10px;
@@ -1306,6 +1400,7 @@
     border-left: 1px solid var(--border);
 }
 
+
 .history-detail-item {
     min-width: 0;
 
@@ -1314,6 +1409,7 @@
     border-right: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
 }
+
 
 .history-detail-item span {
     display: block;
@@ -1327,6 +1423,7 @@
     text-transform: uppercase;
 }
 
+
 .history-detail-item strong {
     display: block;
 
@@ -1335,6 +1432,12 @@
     color: var(--text);
 
     font-size: 10px;
+}
+
+
+#detailTransactionId,
+#detailExpenseId {
+    overflow-wrap: anywhere;
 }
 
 
@@ -1348,6 +1451,7 @@
     border-bottom: 1px solid var(--border);
 }
 
+
 .history-detail-note span {
     display: block;
 
@@ -1359,6 +1463,7 @@
 
     text-transform: uppercase;
 }
+
 
 .history-detail-note p {
     overflow-wrap: anywhere;
@@ -1390,6 +1495,7 @@
     background: rgba(245, 158, 11, 0.06);
 }
 
+
 .history-detail-warning > span {
     display: flex;
     align-items: center;
@@ -1409,6 +1515,7 @@
     font-size: 9px;
     font-weight: 800;
 }
+
 
 .history-detail-warning p {
     color: var(--muted);
@@ -1434,6 +1541,7 @@
 
     border-top: 1px solid var(--border);
 }
+
 
 .history-primary-button,
 .history-secondary-button,
@@ -1461,6 +1569,7 @@
         opacity 0.2s ease;
 }
 
+
 .history-primary-button {
     border: 1px solid var(--primary);
 
@@ -1469,9 +1578,11 @@
     color: #ffffff;
 }
 
+
 .history-primary-button:hover {
     transform: translateY(-1px);
 }
+
 
 .history-secondary-button {
     border: 1px solid var(--border);
@@ -1481,11 +1592,13 @@
     color: var(--text);
 }
 
+
 .history-secondary-button:hover {
     border-color: var(--primary);
 
     background: rgba(34, 197, 94, 0.05);
 }
+
 
 .history-failed-button {
     border: 1px solid rgba(239, 68, 68, 0.3);
@@ -1495,9 +1608,11 @@
     color: #f87171;
 }
 
+
 .history-failed-button:hover {
     border-color: #ef4444;
 }
+
 
 .history-primary-button:disabled,
 .history-secondary-button:disabled,
@@ -1535,6 +1650,7 @@
     font-weight: 800;
 }
 
+
 .history-confirm-dialog .history-modal-body > h3 {
     margin-bottom: 7px;
 
@@ -1544,6 +1660,7 @@
 
     text-align: center;
 }
+
 
 .history-confirm-dialog .history-modal-body > p {
     max-width: 380px;
@@ -1557,6 +1674,7 @@
 
     text-align: center;
 }
+
 
 .history-confirm-payment {
     display: flex;
@@ -1575,40 +1693,309 @@
     background: var(--bg);
 }
 
-.history-confirm-payment span {
+
+.history-confirm-payment > div {
     min-width: 0;
+}
+
+
+.history-confirm-payment > div:first-child {
+    flex: 1;
+}
+
+
+.history-confirm-payment > div:last-child {
+    flex-shrink: 0;
+
+    text-align: right;
+}
+
+
+.history-confirm-payment > div > span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--muted);
+
+    font-size: 8px;
+    font-weight: 500;
+
+    text-transform: uppercase;
+}
+
+
+.history-confirm-payment > div > strong {
+    display: block;
 
     overflow-wrap: anywhere;
 
     color: var(--text);
 
-    font-size: 10px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
 }
 
-.history-confirm-payment strong {
-    flex-shrink: 0;
+
+.history-confirm-payment
+> div:last-child
+> strong {
+    color: var(--primary);
+
+    font-size: 15px;
+    font-weight: 800;
+
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   DAY 12 - TRANSACTION ID FIELD
+===================================================== */
+
+.history-confirm-dialog .history-form-group {
+    margin-top: 16px;
+    margin-bottom: 14px;
+}
+
+
+.history-confirm-dialog .history-form-group label {
+    display: block;
+
+    margin-bottom: 7px;
 
     color: var(--text);
 
-    font-size: 14px;
+    font-size: 10px;
+    font-weight: 700;
 }
 
+
+.history-confirm-dialog .history-form-group input {
+    width: 100%;
+    height: 43px;
+
+    padding: 0 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    background: var(--bg);
+
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 11px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.history-confirm-dialog .history-form-group input:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+
+.history-confirm-dialog .history-form-group input::placeholder {
+    color: var(--muted);
+}
+
+
+.history-confirm-dialog .history-form-group small {
+    display: block;
+
+    margin-top: 6px;
+
+    color: var(--muted);
+
+    font-size: 8px;
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   DAY 12 - RECORD AS EXPENSE TOGGLE
+===================================================== */
+
+.history-expense-toggle {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 11px;
+
+    padding: 13px;
+
+    margin-bottom: 14px;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: var(--bg);
+
+    cursor: pointer;
+
+    user-select: none;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.history-expense-toggle:hover {
+    border-color: rgba(34, 197, 94, 0.4);
+
+    background: rgba(34, 197, 94, 0.04);
+}
+
+
+.history-expense-toggle:focus-within {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(34, 197, 94, 0.08);
+}
+
+
+.history-expense-toggle > input {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    overflow: hidden;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+.history-expense-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 21px;
+    height: 21px;
+
+    flex-shrink: 0;
+
+    margin-top: 1px;
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: transparent;
+
+    font-size: 10px;
+    font-weight: 900;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.history-expense-toggle
+> input:checked
++ .history-expense-checkbox {
+    border-color: var(--primary);
+
+    background: var(--primary);
+
+    color: #ffffff;
+}
+
+
+.history-expense-toggle
+> input:focus-visible
++ .history-expense-checkbox {
+    box-shadow:
+        0 0 0 3px rgba(34, 197, 94, 0.15);
+}
+
+
+.history-expense-toggle-content {
+    display: block;
+
+    min-width: 0;
+}
+
+
+.history-expense-toggle-content strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: var(--text);
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+
+.history-expense-toggle-content small {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 8px;
+    line-height: 1.55;
+}
+
+
+/* =====================================================
+   CONFIRM WARNING
+===================================================== */
+
 .history-confirm-warning {
-    padding: 11px;
+    padding: 12px;
+
+    margin-top: 2px;
 
     border: 1px solid rgba(245, 158, 11, 0.25);
     border-radius: 9px;
 
     background: rgba(245, 158, 11, 0.06);
 
-    color: var(--muted);
+    text-align: left;
+}
+
+
+.history-confirm-warning strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #f59e0b;
 
     font-size: 9px;
-    line-height: 1.6;
-
-    text-align: center;
+    font-weight: 800;
 }
+
+
+.history-confirm-warning p {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 8px;
+    line-height: 1.6;
+}
+
 
 .history-status-actions {
     grid-template-columns:
@@ -1637,9 +2024,11 @@
     background: rgba(34, 197, 94, 0.05);
 }
 
+
 .history-expense-payment > div {
     min-width: 0;
 }
+
 
 .history-expense-payment span {
     display: block;
@@ -1653,6 +2042,7 @@
     text-transform: uppercase;
 }
 
+
 .history-expense-payment > div > strong {
     display: block;
 
@@ -1662,6 +2052,7 @@
 
     font-size: 10px;
 }
+
 
 .history-expense-payment > strong {
     flex-shrink: 0;
@@ -1680,9 +2071,11 @@
     margin-bottom: 15px;
 }
 
+
 .history-form-group:last-of-type {
     margin-bottom: 0;
 }
+
 
 .history-form-group label {
     display: block;
@@ -1694,6 +2087,7 @@
     font-size: 10px;
     font-weight: 600;
 }
+
 
 .history-form-group input,
 .history-form-group select,
@@ -1717,12 +2111,14 @@
         box-shadow 0.2s ease;
 }
 
+
 .history-form-group input,
 .history-form-group select {
     height: 42px;
 
     padding: 0 11px;
 }
+
 
 .history-form-group textarea {
     min-height: 80px;
@@ -1734,6 +2130,7 @@
     line-height: 1.5;
 }
 
+
 .history-form-group input:focus,
 .history-form-group select:focus,
 .history-form-group textarea:focus {
@@ -1743,9 +2140,54 @@
         0 0 0 3px rgba(34, 197, 94, 0.1);
 }
 
+
 .history-form-group input::placeholder,
 .history-form-group textarea::placeholder {
     color: var(--muted);
+}
+
+
+/* =====================================================
+   DAY 12 - EXPENSE PAYMENT REFERENCE
+===================================================== */
+
+.history-expense-reference {
+    padding: 12px 13px;
+
+    margin-top: 15px;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    background: var(--bg);
+}
+
+
+.history-expense-reference span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--muted);
+
+    font-size: 8px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.4px;
+}
+
+
+.history-expense-reference strong {
+    display: block;
+
+    overflow-wrap: anywhere;
+
+    color: var(--text);
+
+    font-size: 9px;
+    font-weight: 600;
 }
 
 
@@ -1767,9 +2209,11 @@
     line-height: 1.5;
 }
 
+
 .history-form-message.visible {
     display: block;
 }
+
 
 .history-form-message.error {
     border-color: rgba(239, 68, 68, 0.3);
@@ -1779,12 +2223,79 @@
     color: #f87171;
 }
 
+
 .history-form-message.success {
     border-color: rgba(34, 197, 94, 0.3);
 
     background: rgba(34, 197, 94, 0.07);
 
     color: #4ade80;
+}
+
+
+.history-form-message.info {
+    border-color: rgba(59, 130, 246, 0.3);
+
+    background: rgba(59, 130, 246, 0.07);
+
+    color: #60a5fa;
+}
+
+
+#confirmPaymentMessage {
+    margin-top: 13px;
+}
+
+
+/* =====================================================
+   DAY 12 - BUTTON LOADING STATES
+===================================================== */
+
+.history-primary-button.is-loading,
+.history-secondary-button.is-loading,
+.history-failed-button.is-loading {
+    position: relative;
+
+    pointer-events: none;
+
+    opacity: 0.7;
+}
+
+
+.history-primary-button.is-loading::after,
+.history-secondary-button.is-loading::after,
+.history-failed-button.is-loading::after {
+    content: "";
+
+    width: 12px;
+    height: 12px;
+
+    margin-left: 8px;
+
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+
+    animation:
+        historyButtonSpinner 0.7s linear infinite;
+}
+
+
+@keyframes historyButtonSpinner {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+#detailRecordExpenseButton:disabled {
+    opacity: 0.5;
+
+    cursor: not-allowed;
+
+    transform: none;
 }
 
 
@@ -1820,17 +2331,21 @@
         0 20px 60px rgba(0, 0, 0, 0.35);
 }
 
+
 .history-toast.visible {
     display: block;
 }
+
 
 .history-toast.success {
     border-color: rgba(34, 197, 94, 0.3);
 }
 
+
 .history-toast.error {
     border-color: rgba(239, 68, 68, 0.3);
 }
+
 
 .history-toast.info {
     border-color: rgba(59, 130, 246, 0.3);
@@ -1855,9 +2370,11 @@
     background: var(--bg);
 }
 
+
 .history-page-loading.hidden {
     display: none;
 }
+
 
 .history-page-loader {
     display: flex;
@@ -1868,6 +2385,7 @@
 
     padding: 20px;
 }
+
 
 .history-page-loader span {
     color: var(--muted);
@@ -1896,10 +2414,12 @@ body.history-modal-open {
             repeat(2, minmax(0, 1fr));
     }
 
+
     .history-filters {
         grid-template-columns:
             repeat(3, minmax(0, 1fr));
     }
+
 
     .history-search {
         grid-column:
@@ -1920,17 +2440,21 @@ body.history-modal-open {
         flex-direction: column;
     }
 
+
     .history-header-actions {
         width: 100%;
     }
+
 
     .history-header-actions > a {
         flex: 1;
     }
 
+
     .history-table-container {
         display: none;
     }
+
 
     .history-mobile-list {
         display: block;
@@ -1949,6 +2473,7 @@ body.history-modal-open {
         font-size: 27px;
     }
 
+
     .history-header-actions {
         display: grid;
 
@@ -1956,29 +2481,36 @@ body.history-modal-open {
             repeat(2, minmax(0, 1fr));
     }
 
+
     .history-summary-grid {
         grid-template-columns: 1fr;
     }
+
 
     .history-card {
         padding: 17px;
     }
 
+
     .history-card-header {
         flex-direction: column;
     }
+
 
     .history-refresh-button {
         width: 100%;
     }
 
+
     .history-filters {
         grid-template-columns: 1fr;
     }
 
+
     .history-search {
         grid-column: auto;
     }
+
 
     .history-filter-group label {
         display: block;
@@ -1990,18 +2522,22 @@ body.history-modal-open {
         font-size: 8px;
     }
 
+
     .history-results-bar {
         align-items: flex-start;
         flex-direction: column;
     }
 
+
     .history-detail-grid {
         grid-template-columns: 1fr;
     }
 
+
     .history-modal {
         padding: 10px;
     }
+
 
     .history-modal-dialog {
         max-height: calc(100vh - 20px);
@@ -2009,9 +2545,46 @@ body.history-modal-open {
         border-radius: 14px;
     }
 
+
     .history-status-actions {
         grid-template-columns: 1fr;
     }
+
+
+    .history-expense-toggle {
+        padding: 12px;
+    }
+
+
+    .history-confirm-payment {
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+
+    .history-confirm-payment > div:last-child {
+        width: 100%;
+
+        text-align: left;
+    }
+
+
+    /*
+       Prevent mobile browsers from zooming
+       automatically when focusing the input.
+    */
+
+    .history-confirm-dialog .history-form-group input {
+        font-size: 16px;
+    }
+
+
+    .history-expense-reference {
+        padding: 11px;
+    }
+
 
     .history-toast {
         right: 15px;
@@ -2033,26 +2606,32 @@ body.history-modal-open {
         font-size: 24px;
     }
 
+
     .history-header-actions {
         grid-template-columns: 1fr;
     }
+
 
     .history-summary-card {
         padding: 15px;
     }
 
+
     .history-mobile-meta {
         grid-template-columns: 1fr;
     }
+
 
     .history-mobile-actions {
         grid-template-columns: 1fr;
     }
 
+
     .history-modal-header,
     .history-modal-body {
         padding: 16px;
     }
+
 
     .history-modal-actions {
         grid-template-columns: 1fr;
@@ -2060,9 +2639,11 @@ body.history-modal-open {
         padding: 14px 16px 16px;
     }
 
+
     .history-status-actions {
         grid-template-columns: 1fr;
     }
+
 
     .history-confirm-payment,
     .history-expense-payment {
@@ -2070,6 +2651,29 @@ body.history-modal-open {
         flex-direction: column;
 
         gap: 8px;
+    }
+
+
+    .history-expense-toggle {
+        gap: 9px;
+
+        padding: 11px;
+    }
+
+
+    .history-expense-checkbox {
+        width: 20px;
+        height: 20px;
+    }
+
+
+    .history-expense-toggle-content strong {
+        font-size: 9px;
+    }
+
+
+    .history-expense-toggle-content small {
+        font-size: 8px;
     }
 
 }

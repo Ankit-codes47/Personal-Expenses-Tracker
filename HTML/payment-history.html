@@ -328,11 +328,13 @@
                     href="payments.html"
                     class="history-secondary-action"
                 >
+
                     <span>
                         ▣
                     </span>
 
                     Scan & Pay
+
                 </a>
 
 
@@ -340,11 +342,13 @@
                     href="payments.html"
                     class="history-primary-action"
                 >
+
                     <span>
                         +
                     </span>
 
                     New Payment
+
                 </a>
 
 
@@ -575,9 +579,7 @@
         <section class="history-card">
 
 
-            <!-- =================================================
-                 CARD HEADER
-            ================================================== -->
+            <!-- CARD HEADER -->
 
             <div class="history-card-header">
 
@@ -640,7 +642,7 @@
                     <input
                         type="search"
                         id="paymentSearchInput"
-                        placeholder="Search recipient, UPI ID or note..."
+                        placeholder="Search recipient, UPI ID, UPI number or note..."
                         autocomplete="off"
                         aria-label="Search payment history"
                     >
@@ -1045,7 +1047,7 @@
 
                         <div class="history-detail-item">
 
-                            <span>
+                            <span id="detailPaymentAddressLabel">
                                 UPI ID
                             </span>
 
@@ -1102,6 +1104,36 @@
                             </span>
 
                             <strong id="detailPaymentId">
+                                -
+                            </strong>
+
+                        </div>
+
+
+                        <!-- DAY 12 TRANSACTION ID -->
+
+                        <div class="history-detail-item">
+
+                            <span>
+                                Transaction ID / UTR
+                            </span>
+
+                            <strong id="detailTransactionId">
+                                Not Added
+                            </strong>
+
+                        </div>
+
+
+                        <!-- DAY 12 EXPENSE ID -->
+
+                        <div class="history-detail-item">
+
+                            <span>
+                                Expense Record
+                            </span>
+
+                            <strong id="detailExpenseId">
                                 -
                             </strong>
 
@@ -1187,6 +1219,7 @@
 
         <!-- =================================================
              CONFIRM PAYMENT MODAL
+             DAY 12
         ================================================== -->
 
         <div
@@ -1251,44 +1284,156 @@
                 <div class="history-modal-body">
 
 
+                    <!-- ICON -->
+
                     <div class="history-confirm-icon">
-                        ?
+                        ✓
                     </div>
 
 
                     <h3>
-                        What happened to this payment?
+                        Confirm payment outcome
                     </h3>
 
 
                     <p>
-                        Check your UPI application first,
-                        then select the correct outcome.
+                        Check the final transaction status in your
+                        UPI application before confirming this payment.
                     </p>
 
+
+                    <!-- PAYMENT SUMMARY -->
 
                     <div class="history-confirm-payment">
 
 
-                        <span id="confirmRecipient">
-                            Recipient
-                        </span>
+                        <div>
+
+                            <span>
+                                Recipient
+                            </span>
+
+                            <strong id="confirmRecipient">
+                                -
+                            </strong>
+
+                        </div>
 
 
-                        <strong id="confirmAmount">
-                            ₹0.00
-                        </strong>
+                        <div>
+
+                            <span>
+                                Amount
+                            </span>
+
+                            <strong id="confirmAmount">
+                                ₹0.00
+                            </strong>
+
+                        </div>
 
 
                     </div>
 
 
+                    <!-- TRANSACTION ID / UTR -->
+
+                    <div class="history-form-group">
+
+
+                        <label for="confirmTransactionId">
+                            UPI Transaction ID / UTR
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="confirmTransactionId"
+                            maxlength="50"
+                            autocomplete="off"
+                            placeholder="Enter transaction or reference ID"
+                        >
+
+
+                        <small>
+                            Optional, but recommended for
+                            confirmed payments.
+                        </small>
+
+
+                    </div>
+
+
+                    <!-- RECORD AS EXPENSE -->
+
+                    <label
+                        class="history-expense-toggle"
+                        for="confirmRecordExpense"
+                    >
+
+
+                        <input
+                            type="checkbox"
+                            id="confirmRecordExpense"
+                            checked
+                        >
+
+
+                        <span class="history-expense-checkbox">
+                            ✓
+                        </span>
+
+
+                        <span class="history-expense-toggle-content">
+
+
+                            <strong>
+                                Record this payment as an expense
+                            </strong>
+
+
+                            <small>
+                                After confirmation, open the expense
+                                form using this payment's details.
+                            </small>
+
+
+                        </span>
+
+
+                    </label>
+
+
+                    <!-- WARNING -->
+
                     <div class="history-confirm-warning">
 
-                        Do not mark the payment as confirmed
-                        unless your UPI application shows the
-                        transaction as successful.
 
+                        <strong>
+                            Important
+                        </strong>
+
+
+                        <p>
+                            Expense Tracker does not verify the
+                            transaction with your bank or UPI
+                            provider. Confirm it only when your
+                            payment application shows the
+                            transaction as successful.
+                        </p>
+
+
+                    </div>
+
+
+                    <!-- MESSAGE -->
+
+                    <div
+                        id="confirmPaymentMessage"
+                        class="history-form-message"
+                        role="status"
+                        aria-live="polite"
+                    >
                     </div>
 
 
@@ -1451,6 +1596,7 @@
                                 id="expenseTitle"
                                 maxlength="80"
                                 placeholder="Example: Grocery payment"
+                                autocomplete="off"
                                 required
                             >
 
@@ -1555,6 +1701,24 @@
                                 maxlength="150"
                                 placeholder="Optional expense note"
                             ></textarea>
+
+
+                        </div>
+
+
+                        <!-- PAYMENT REFERENCE -->
+
+                        <div class="history-expense-reference">
+
+
+                            <span>
+                                Payment Reference
+                            </span>
+
+
+                            <strong id="expensePaymentReference">
+                                -
+                            </strong>
 
 
                         </div>
