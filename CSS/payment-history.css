@@ -2677,3 +2677,50 @@ body.history-modal-open {
     }
 
 }
+/* =====================================================
+   PAYMENT HISTORY ACTION BUTTONS
+===================================================== */
+
+.history-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.history-action-button {
+    min-width: 52px;
+    padding: 8px 12px;
+
+    border: 1px solid #2a3b55;
+    border-radius: 8px;
+
+    background: #101b30;
+    color: #dbeafe;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.history-action-button:hover {
+    background: #162640;
+    border-color: #22c55e;
+    color: #22c55e;
+    transform: translateY(-1px);
+}
+
+.history-action-button:active {
+    transform: translateY(0);
+}
+
+.history-action-button:focus-visible {
+    outline: 2px solid #22c55e;
+    outline-offset: 2px;
+}
