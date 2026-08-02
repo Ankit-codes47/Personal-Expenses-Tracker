@@ -14,12 +14,10 @@ import {
     db
 } from "./firebase-config.js";
 
-
 import {
     onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-
 
 import {
     collection,
@@ -38,139 +36,72 @@ import {
 // =====================================================
 
 let currentUser = null;
-
 let payments = [];
-
 let filteredPayments = [];
-
 let selectedPayment = null;
-
 let toastTimer = null;
 
 
 // =====================================================
-// PAGE ELEMENTS
+// DOM HELPER
 // =====================================================
 
-const paymentHistoryPage =
-    document.getElementById(
-        "paymentHistoryPage"
-    );
+const byId = id => document.getElementById(id);
 
-const historyPageLoading =
-    document.getElementById(
-        "historyPageLoading"
-    );
+
+// =====================================================
+// PAGE
+// =====================================================
+
+const paymentHistoryPage = byId("paymentHistoryPage");
+const historyPageLoading = byId("historyPageLoading");
 
 
 // =====================================================
 // SIDEBAR
 // =====================================================
 
-const sidebar =
-    document.querySelector(
-        ".sidebar"
-    );
-
-const menuButton =
-    document.getElementById(
-        "menuButton"
-    );
-
-const userEmail =
-    document.getElementById(
-        "userEmail"
-    );
-
-const userAvatar =
-    document.getElementById(
-        "userAvatar"
-    );
-
-const logoutButton =
-    document.getElementById(
-        "logoutButton"
-    );
+const sidebar = document.querySelector(".sidebar");
+const menuButton = byId("menuButton");
+const userEmail = byId("userEmail");
+const userAvatar = byId("userAvatar");
+const logoutButton = byId("logoutButton");
 
 
 // =====================================================
 // SUMMARY
 // =====================================================
 
-const totalPaymentsCount =
-    document.getElementById(
-        "totalPaymentsCount"
-    );
+const totalPaymentsCount = byId("totalPaymentsCount");
+const totalPaymentsAmount = byId("totalPaymentsAmount");
 
-const totalPaymentsAmount =
-    document.getElementById(
-        "totalPaymentsAmount"
-    );
+const confirmedPaymentsCount = byId("confirmedPaymentsCount");
+const confirmedPaymentsAmount = byId("confirmedPaymentsAmount");
 
-const confirmedPaymentsCount =
-    document.getElementById(
-        "confirmedPaymentsCount"
-    );
-
-const confirmedPaymentsAmount =
-    document.getElementById(
-        "confirmedPaymentsAmount"
-    );
-
-const pendingPaymentsCount =
-    document.getElementById(
-        "pendingPaymentsCount"
-    );
-
-const failedPaymentsCount =
-    document.getElementById(
-        "failedPaymentsCount"
-    );
+const pendingPaymentsCount = byId("pendingPaymentsCount");
+const failedPaymentsCount = byId("failedPaymentsCount");
 
 
 // =====================================================
 // FILTERS
 // =====================================================
 
-const paymentSearchInput =
-    document.getElementById(
-        "paymentSearchInput"
-    );
-
-const paymentStatusFilter =
-    document.getElementById(
-        "paymentStatusFilter"
-    );
-
-const expenseStatusFilter =
-    document.getElementById(
-        "expenseStatusFilter"
-    );
-
-const paymentSortFilter =
-    document.getElementById(
-        "paymentSortFilter"
-    );
+const paymentSearchInput = byId("paymentSearchInput");
+const paymentStatusFilter = byId("paymentStatusFilter");
+const expenseStatusFilter = byId("expenseStatusFilter");
+const paymentSortFilter = byId("paymentSortFilter");
 
 const clearHistoryFiltersButton =
-    document.getElementById(
-        "clearHistoryFiltersButton"
-    );
+    byId("clearHistoryFiltersButton");
 
 const refreshPaymentsButton =
-    document.getElementById(
-        "refreshPaymentsButton"
-    );
+    byId("refreshPaymentsButton");
 
 const visiblePaymentsCount =
-    document.getElementById(
-        "visiblePaymentsCount"
-    );
+    byId("visiblePaymentsCount");
 
 const allPaymentsCount =
-    document.getElementById(
-        "allPaymentsCount"
-    );
+    byId("allPaymentsCount");
 
 
 // =====================================================
@@ -178,34 +109,22 @@ const allPaymentsCount =
 // =====================================================
 
 const paymentTableContainer =
-    document.getElementById(
-        "paymentTableContainer"
-    );
+    byId("paymentTableContainer");
 
 const paymentHistoryTableBody =
-    document.getElementById(
-        "paymentHistoryTableBody"
-    );
+    byId("paymentHistoryTableBody");
 
 const paymentHistoryMobileList =
-    document.getElementById(
-        "paymentHistoryMobileList"
-    );
+    byId("paymentHistoryMobileList");
 
 const paymentHistoryEmptyState =
-    document.getElementById(
-        "paymentHistoryEmptyState"
-    );
+    byId("paymentHistoryEmptyState");
 
 const paymentHistoryEmptyText =
-    document.getElementById(
-        "paymentHistoryEmptyText"
-    );
+    byId("paymentHistoryEmptyText");
 
 const paymentHistoryLoadingState =
-    document.getElementById(
-        "paymentHistoryLoadingState"
-    );
+    byId("paymentHistoryLoadingState");
 
 
 // =====================================================
@@ -213,93 +132,55 @@ const paymentHistoryLoadingState =
 // =====================================================
 
 const paymentDetailsModal =
-    document.getElementById(
-        "paymentDetailsModal"
-    );
+    byId("paymentDetailsModal");
 
 const paymentDetailsBackdrop =
-    document.getElementById(
-        "paymentDetailsBackdrop"
-    );
+    byId("paymentDetailsBackdrop");
 
 const closePaymentDetailsButton =
-    document.getElementById(
-        "closePaymentDetailsButton"
-    );
+    byId("closePaymentDetailsButton");
 
 const detailCloseButton =
-    document.getElementById(
-        "detailCloseButton"
-    );
+    byId("detailCloseButton");
 
 const detailPaymentAmount =
-    document.getElementById(
-        "detailPaymentAmount"
-    );
+    byId("detailPaymentAmount");
 
 const detailPaymentStatus =
-    document.getElementById(
-        "detailPaymentStatus"
-    );
+    byId("detailPaymentStatus");
 
 const detailRecipient =
-    document.getElementById(
-        "detailRecipient"
-    );
+    byId("detailRecipient");
 
 const detailUpiId =
-    document.getElementById(
-        "detailUpiId"
-    );
+    byId("detailUpiId");
 
 const detailPaymentAddressLabel =
-    document.getElementById(
-        "detailPaymentAddressLabel"
-    );
+    byId("detailPaymentAddressLabel");
 
 const detailDate =
-    document.getElementById(
-        "detailDate"
-    );
+    byId("detailDate");
 
 const detailTime =
-    document.getElementById(
-        "detailTime"
-    );
+    byId("detailTime");
 
 const detailExpenseStatus =
-    document.getElementById(
-        "detailExpenseStatus"
-    );
+    byId("detailExpenseStatus");
 
 const detailPaymentId =
-    document.getElementById(
-        "detailPaymentId"
-    );
+    byId("detailPaymentId");
 
 const detailPaymentNote =
-    document.getElementById(
-        "detailPaymentNote"
-    );
-
-
-// DAY 12
+    byId("detailPaymentNote");
 
 const detailTransactionId =
-    document.getElementById(
-        "detailTransactionId"
-    );
+    byId("detailTransactionId");
 
 const detailExpenseId =
-    document.getElementById(
-        "detailExpenseId"
-    );
-
+    byId("detailExpenseId");
 
 const detailRecordExpenseButton =
-    document.getElementById(
-        "detailRecordExpenseButton"
-    );
+    byId("detailRecordExpenseButton");
 
 
 // =====================================================
@@ -307,63 +188,37 @@ const detailRecordExpenseButton =
 // =====================================================
 
 const confirmPaymentModal =
-    document.getElementById(
-        "confirmPaymentModal"
-    );
+    byId("confirmPaymentModal");
 
 const confirmPaymentBackdrop =
-    document.getElementById(
-        "confirmPaymentBackdrop"
-    );
+    byId("confirmPaymentBackdrop");
 
 const closeConfirmPaymentButton =
-    document.getElementById(
-        "closeConfirmPaymentButton"
-    );
+    byId("closeConfirmPaymentButton");
 
 const confirmRecipient =
-    document.getElementById(
-        "confirmRecipient"
-    );
+    byId("confirmRecipient");
 
 const confirmAmount =
-    document.getElementById(
-        "confirmAmount"
-    );
-
-
-// DAY 12
+    byId("confirmAmount");
 
 const confirmTransactionId =
-    document.getElementById(
-        "confirmTransactionId"
-    );
+    byId("confirmTransactionId");
 
 const confirmRecordExpense =
-    document.getElementById(
-        "confirmRecordExpense"
-    );
+    byId("confirmRecordExpense");
 
 const confirmPaymentMessage =
-    document.getElementById(
-        "confirmPaymentMessage"
-    );
-
+    byId("confirmPaymentMessage");
 
 const markPaymentFailedButton =
-    document.getElementById(
-        "markPaymentFailedButton"
-    );
+    byId("markPaymentFailedButton");
 
 const keepPaymentPendingButton =
-    document.getElementById(
-        "keepPaymentPendingButton"
-    );
+    byId("keepPaymentPendingButton");
 
 const markPaymentConfirmedButton =
-    document.getElementById(
-        "markPaymentConfirmedButton"
-    );
+    byId("markPaymentConfirmedButton");
 
 
 // =====================================================
@@ -371,78 +226,46 @@ const markPaymentConfirmedButton =
 // =====================================================
 
 const recordExpenseModal =
-    document.getElementById(
-        "recordExpenseModal"
-    );
+    byId("recordExpenseModal");
 
 const recordExpenseBackdrop =
-    document.getElementById(
-        "recordExpenseBackdrop"
-    );
+    byId("recordExpenseBackdrop");
 
 const closeRecordExpenseButton =
-    document.getElementById(
-        "closeRecordExpenseButton"
-    );
+    byId("closeRecordExpenseButton");
 
 const cancelRecordExpenseButton =
-    document.getElementById(
-        "cancelRecordExpenseButton"
-    );
+    byId("cancelRecordExpenseButton");
 
 const recordExpenseForm =
-    document.getElementById(
-        "recordExpenseForm"
-    );
+    byId("recordExpenseForm");
 
 const expenseRecipient =
-    document.getElementById(
-        "expenseRecipient"
-    );
+    byId("expenseRecipient");
 
 const expenseAmount =
-    document.getElementById(
-        "expenseAmount"
-    );
+    byId("expenseAmount");
 
 const expenseTitle =
-    document.getElementById(
-        "expenseTitle"
-    );
+    byId("expenseTitle");
 
 const expenseCategory =
-    document.getElementById(
-        "expenseCategory"
-    );
+    byId("expenseCategory");
 
 const expenseDate =
-    document.getElementById(
-        "expenseDate"
-    );
+    byId("expenseDate");
 
 const expenseNote =
-    document.getElementById(
-        "expenseNote"
-    );
-
-
-// DAY 12
+    byId("expenseNote");
 
 const expensePaymentReference =
-    document.getElementById(
-        "expensePaymentReference"
-    );
-
+    byId("expensePaymentReference");
 
 const recordExpenseMessage =
-    document.getElementById(
-        "recordExpenseMessage"
-    );
+    byId("recordExpenseMessage");
 
 const saveExpenseButton =
-    document.getElementById(
-        "saveExpenseButton"
-    );
+    byId("saveExpenseButton");
 
 
 // =====================================================
@@ -450,48 +273,36 @@ const saveExpenseButton =
 // =====================================================
 
 const historyToast =
-    document.getElementById(
-        "historyToast"
-    );
+    byId("historyToast");
 
 
 // =====================================================
 // AUTHENTICATION
 // =====================================================
 
-onAuthStateChanged(
-    auth,
-    async user => {
+onAuthStateChanged(auth, async user => {
 
-        if (!user) {
+    if (!user) {
 
-            window.location.replace(
-                "login.html"
-            );
+        window.location.replace(
+            "login.html"
+        );
 
-            return;
-        }
-
-
-        currentUser = user;
-
-
-        updateUserInterface();
-
-
-        if (paymentHistoryPage) {
-
-            paymentHistoryPage.style.display =
-                "flex";
-        }
-
-
-        hidePageLoading();
-
-
-        await loadPayments();
+        return;
     }
-);
+
+    currentUser = user;
+
+    updateUserInterface();
+
+    if (paymentHistoryPage) {
+        paymentHistoryPage.style.display = "flex";
+    }
+
+    hidePageLoading();
+
+    await loadPayments();
+});
 
 
 // =====================================================
@@ -504,31 +315,22 @@ function updateUserInterface() {
         return;
     }
 
-
     const email =
-        currentUser.email ||
-        "User";
-
+        currentUser.email || "User";
 
     const name =
         currentUser.displayName?.trim() ||
         email.split("@")[0] ||
         "User";
 
-
     if (userEmail) {
-
-        userEmail.textContent =
-            email;
+        userEmail.textContent = email;
     }
-
 
     if (userAvatar) {
 
         userAvatar.textContent =
-            name
-                .charAt(0)
-                .toUpperCase();
+            name.charAt(0).toUpperCase();
     }
 }
 
@@ -543,9 +345,7 @@ async function loadPayments() {
         return;
     }
 
-
     showListLoading();
-
 
     try {
 
@@ -557,7 +357,6 @@ async function loadPayments() {
                 "payments"
             );
 
-
         const paymentsQuery =
             query(
                 paymentsReference,
@@ -567,57 +366,44 @@ async function loadPayments() {
                 )
             );
 
-
         const snapshot =
             await getDocs(
                 paymentsQuery
             );
 
-
         payments = [];
 
+        snapshot.forEach(documentSnapshot => {
 
-        snapshot.forEach(
-            documentSnapshot => {
-
-                payments.push(
-                    normalizePayment(
-                        documentSnapshot.id,
-                        documentSnapshot.data()
-                    )
-                );
-            }
-        );
-
+            payments.push(
+                normalizePayment(
+                    documentSnapshot.id,
+                    documentSnapshot.data()
+                )
+            );
+        });
 
         updateSummary();
-
         applyFilters();
-    }
 
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Load payments error:",
             error
         );
 
-
         payments = [];
 
-
         updateSummary();
-
         applyFilters();
-
 
         showToast(
             "Unable to load payment history.",
             "error"
         );
-    }
 
-    finally {
+    } finally {
 
         hideListLoading();
     }
@@ -628,21 +414,14 @@ async function loadPayments() {
 // NORMALIZE PAYMENT
 // =====================================================
 
-function normalizePayment(
-    id,
-    data
-) {
+function normalizePayment(id, data) {
 
     const amount =
-        Number(
-            data.amount
-        );
-
+        Number(data.amount);
 
     return {
 
         id,
-
 
         recipient:
             String(
@@ -651,131 +430,113 @@ function normalizePayment(
                 "Unknown Recipient"
             ).trim(),
 
-
         recipientType:
             String(
-                data.recipientType ||
-                ""
+                data.recipientType || ""
             ).trim(),
-
 
         paymentAddress:
             String(
-                data.paymentAddress ||
-                ""
+                data.paymentAddress || ""
             ).trim(),
-
 
         upiId:
             String(
-                data.upiId ||
-                ""
+                data.upiId || ""
             ).trim(),
-
 
         upiNumber:
             String(
-                data.upiNumber ||
-                ""
+                data.upiNumber || ""
             ).trim(),
-
 
         amount:
             Number.isFinite(amount)
                 ? amount
                 : 0,
 
-
         note:
             String(
-                data.note ||
-                ""
+                data.note || ""
             ).trim(),
 
+        source:
+            String(
+                data.source || ""
+            ).trim(),
 
         status:
             normalizeStatus(
                 data.status
             ),
 
-
-        // UPI Transaction ID / UTR
         transactionId:
             String(
-                data.transactionId ||
-                ""
+                data.transactionId || ""
             ).trim(),
 
-
-        // Firestore expense document ID
         expenseId:
             String(
-                data.expenseId ||
-                ""
+                data.expenseId || ""
             ).trim(),
 
-
         expenseRecorded:
-            data.expenseRecorded ===
-            true,
-
+            data.expenseRecorded === true,
 
         createdAt:
-            data.createdAt ||
-            null,
-
+            data.createdAt || null,
 
         updatedAt:
-            data.updatedAt ||
-            null,
-
+            data.updatedAt || null,
 
         confirmedAt:
-            data.confirmedAt ||
-            null,
-
+            data.confirmedAt || null,
 
         expenseRecordedAt:
-            data.expenseRecordedAt ||
-            null
+            data.expenseRecordedAt || null
     };
 }
 
 
 // =====================================================
-// NORMALIZE STATUS
+// STATUS
 // =====================================================
 
 function normalizeStatus(status) {
 
     const value =
         String(
-            status ||
-            "pending"
+            status || "pending"
         )
             .trim()
             .toLowerCase();
 
-
-    if (
-        value ===
-        "confirmed"
-    ) {
-
+    if (value === "confirmed") {
         return "confirmed";
     }
-
 
     if (
         value === "failed" ||
         value === "cancelled"
     ) {
-
         return "failed";
     }
 
-
     return "pending";
+}
+
+
+function getStatusLabel(status) {
+
+    if (status === "confirmed") {
+        return "Confirmed";
+    }
+
+    if (status === "failed") {
+        return "Failed / Cancelled";
+    }
+
+    return "Pending";
 }
 
 
@@ -785,58 +546,38 @@ function normalizeStatus(status) {
 
 function getPaymentAddress(payment) {
 
-    if (
-        payment.paymentAddress
-    ) {
-
+    if (payment.paymentAddress) {
         return payment.paymentAddress;
     }
 
-
-    if (
-        payment.upiId
-    ) {
-
+    if (payment.upiId) {
         return payment.upiId;
     }
 
-
-    if (
-        payment.upiNumber
-    ) {
-
+    if (payment.upiNumber) {
         return payment.upiNumber;
     }
-
 
     return "";
 }
 
 
-function getPaymentAddressLabel(
-    payment
-) {
+function getPaymentAddressLabel(payment) {
 
     const type =
         String(
-            payment.recipientType ||
-            ""
+            payment.recipientType || ""
         ).toLowerCase();
 
-
     if (
-        type.includes(
-            "number"
-        ) ||
+        type.includes("number") ||
         (
             payment.upiNumber &&
             !payment.upiId
         )
     ) {
-
         return "UPI Number";
     }
-
 
     return "UPI ID";
 }
@@ -851,18 +592,12 @@ function updateSummary() {
     const totalCount =
         payments.length;
 
-
     const totalAmount =
         payments.reduce(
-            (
-                total,
-                payment
-            ) =>
-                total +
-                payment.amount,
+            (total, payment) =>
+                total + payment.amount,
             0
         );
-
 
     const confirmed =
         payments.filter(
@@ -871,18 +606,12 @@ function updateSummary() {
                 "confirmed"
         );
 
-
     const confirmedAmount =
         confirmed.reduce(
-            (
-                total,
-                payment
-            ) =>
-                total +
-                payment.amount,
+            (total, payment) =>
+                total + payment.amount,
             0
         );
-
 
     const pending =
         payments.filter(
@@ -891,7 +620,6 @@ function updateSummary() {
                 "pending"
         );
 
-
     const failed =
         payments.filter(
             payment =>
@@ -899,64 +627,39 @@ function updateSummary() {
                 "failed"
         );
 
-
     if (totalPaymentsCount) {
-
         totalPaymentsCount.textContent =
-            String(
-                totalCount
-            );
+            String(totalCount);
     }
 
-
     if (totalPaymentsAmount) {
-
         totalPaymentsAmount.textContent =
             `${formatCurrency(totalAmount)} total value`;
     }
 
-
     if (confirmedPaymentsCount) {
-
         confirmedPaymentsCount.textContent =
-            String(
-                confirmed.length
-            );
+            String(confirmed.length);
     }
-
 
     if (confirmedPaymentsAmount) {
-
         confirmedPaymentsAmount.textContent =
             `${formatCurrency(confirmedAmount)} confirmed`;
-
     }
-
 
     if (pendingPaymentsCount) {
-
         pendingPaymentsCount.textContent =
-            String(
-                pending.length
-            );
+            String(pending.length);
     }
-
 
     if (failedPaymentsCount) {
-
         failedPaymentsCount.textContent =
-            String(
-                failed.length
-            );
+            String(failed.length);
     }
 
-
     if (allPaymentsCount) {
-
         allPaymentsCount.textContent =
-            String(
-                totalCount
-            );
+            String(totalCount);
     }
 }
 
@@ -970,18 +673,15 @@ paymentSearchInput?.addEventListener(
     applyFilters
 );
 
-
 paymentStatusFilter?.addEventListener(
     "change",
     applyFilters
 );
 
-
 expenseStatusFilter?.addEventListener(
     "change",
     applyFilters
 );
-
 
 paymentSortFilter?.addEventListener(
     "change",
@@ -994,993 +694,464 @@ paymentSortFilter?.addEventListener(
 // =====================================================
 
 function applyFilters() {
-    import {
-        auth,
-        db
-    } from "./firebase-config.js";
 
-
-    import {
-        onAuthStateChanged,
-        signOut
-    }   from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
-
-
-    import {
-        collection,
-        addDoc,
-        getDocs,
-        doc,
-        updateDoc,
-        query,
-        orderBy,
-        serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
-
-
-// =====================================================
-// STATE
-// =====================================================
-
-let currentUser = null;
-
-let payments = [];
-
-let filteredPayments = [];
-
-let selectedPayment = null;
-
-let toastTimer = null;
-
-
-// =====================================================
-// PAGE ELEMENTS
-// =====================================================
-
-const paymentHistoryPage =
-    document.getElementById(
-        "paymentHistoryPage"
-    );
-
-const historyPageLoading =
-    document.getElementById(
-        "historyPageLoading"
-    );
-
-
-// =====================================================
-// SIDEBAR
-// =====================================================
-
-const sidebar =
-    document.querySelector(
-        ".sidebar"
-    );
-
-const menuButton =
-    document.getElementById(
-        "menuButton"
-    );
-
-const userEmail =
-    document.getElementById(
-        "userEmail"
-    );
-
-const userAvatar =
-    document.getElementById(
-        "userAvatar"
-    );
-
-const logoutButton =
-    document.getElementById(
-        "logoutButton"
-    );
-
-
-// =====================================================
-// SUMMARY
-// =====================================================
-
-const totalPaymentsCount =
-    document.getElementById(
-        "totalPaymentsCount"
-    );
-
-const totalPaymentsAmount =
-    document.getElementById(
-        "totalPaymentsAmount"
-    );
-
-const confirmedPaymentsCount =
-    document.getElementById(
-        "confirmedPaymentsCount"
-    );
-
-const confirmedPaymentsAmount =
-    document.getElementById(
-        "confirmedPaymentsAmount"
-    );
-
-const pendingPaymentsCount =
-    document.getElementById(
-        "pendingPaymentsCount"
-    );
-
-const failedPaymentsCount =
-    document.getElementById(
-        "failedPaymentsCount"
-    );
-
-
-// =====================================================
-// FILTERS
-// =====================================================
-
-const paymentSearchInput =
-    document.getElementById(
-        "paymentSearchInput"
-    );
-
-const paymentStatusFilter =
-    document.getElementById(
-        "paymentStatusFilter"
-    );
-
-const expenseStatusFilter =
-    document.getElementById(
-        "expenseStatusFilter"
-    );
-
-const paymentSortFilter =
-    document.getElementById(
-        "paymentSortFilter"
-    );
-
-const clearHistoryFiltersButton =
-    document.getElementById(
-        "clearHistoryFiltersButton"
-    );
-
-const refreshPaymentsButton =
-    document.getElementById(
-        "refreshPaymentsButton"
-    );
-
-const visiblePaymentsCount =
-    document.getElementById(
-        "visiblePaymentsCount"
-    );
-
-const allPaymentsCount =
-    document.getElementById(
-        "allPaymentsCount"
-    );
-
-
-// =====================================================
-// HISTORY
-// =====================================================
-
-const paymentTableContainer =
-    document.getElementById(
-        "paymentTableContainer"
-    );
-
-const paymentHistoryTableBody =
-    document.getElementById(
-        "paymentHistoryTableBody"
-    );
-
-const paymentHistoryMobileList =
-    document.getElementById(
-        "paymentHistoryMobileList"
-    );
-
-const paymentHistoryEmptyState =
-    document.getElementById(
-        "paymentHistoryEmptyState"
-    );
-
-const paymentHistoryEmptyText =
-    document.getElementById(
-        "paymentHistoryEmptyText"
-    );
-
-const paymentHistoryLoadingState =
-    document.getElementById(
-        "paymentHistoryLoadingState"
-    );
-
-
-// =====================================================
-// DETAILS MODAL
-// =====================================================
-
-const paymentDetailsModal =
-    document.getElementById(
-        "paymentDetailsModal"
-    );
-
-const paymentDetailsBackdrop =
-    document.getElementById(
-        "paymentDetailsBackdrop"
-    );
-
-const closePaymentDetailsButton =
-    document.getElementById(
-        "closePaymentDetailsButton"
-    );
-
-const detailCloseButton =
-    document.getElementById(
-        "detailCloseButton"
-    );
-
-const detailPaymentAmount =
-    document.getElementById(
-        "detailPaymentAmount"
-    );
-
-const detailPaymentStatus =
-    document.getElementById(
-        "detailPaymentStatus"
-    );
-
-const detailRecipient =
-    document.getElementById(
-        "detailRecipient"
-    );
-
-const detailUpiId =
-    document.getElementById(
-        "detailUpiId"
-    );
-
-const detailPaymentAddressLabel =
-    document.getElementById(
-        "detailPaymentAddressLabel"
-    );
-
-const detailDate =
-    document.getElementById(
-        "detailDate"
-    );
-
-const detailTime =
-    document.getElementById(
-        "detailTime"
-    );
-
-const detailExpenseStatus =
-    document.getElementById(
-        "detailExpenseStatus"
-    );
-
-const detailPaymentId =
-    document.getElementById(
-        "detailPaymentId"
-    );
-
-const detailPaymentNote =
-    document.getElementById(
-        "detailPaymentNote"
-    );
-
-
-// DAY 12
-
-const detailTransactionId =
-    document.getElementById(
-        "detailTransactionId"
-    );
-
-const detailExpenseId =
-    document.getElementById(
-        "detailExpenseId"
-    );
-
-
-const detailRecordExpenseButton =
-    document.getElementById(
-        "detailRecordExpenseButton"
-    );
-
-
-// =====================================================
-// CONFIRM PAYMENT MODAL
-// =====================================================
-
-const confirmPaymentModal =
-    document.getElementById(
-        "confirmPaymentModal"
-    );
-
-const confirmPaymentBackdrop =
-    document.getElementById(
-        "confirmPaymentBackdrop"
-    );
-
-const closeConfirmPaymentButton =
-    document.getElementById(
-        "closeConfirmPaymentButton"
-    );
-
-const confirmRecipient =
-    document.getElementById(
-        "confirmRecipient"
-    );
-
-const confirmAmount =
-    document.getElementById(
-        "confirmAmount"
-    );
-
-
-// DAY 12
-
-const confirmTransactionId =
-    document.getElementById(
-        "confirmTransactionId"
-    );
-
-const confirmRecordExpense =
-    document.getElementById(
-        "confirmRecordExpense"
-    );
-
-const confirmPaymentMessage =
-    document.getElementById(
-        "confirmPaymentMessage"
-    );
-
-
-const markPaymentFailedButton =
-    document.getElementById(
-        "markPaymentFailedButton"
-    );
-
-const keepPaymentPendingButton =
-    document.getElementById(
-        "keepPaymentPendingButton"
-    );
-
-const markPaymentConfirmedButton =
-    document.getElementById(
-        "markPaymentConfirmedButton"
-    );
-
-
-// =====================================================
-// RECORD EXPENSE MODAL
-// =====================================================
-
-const recordExpenseModal =
-    document.getElementById(
-        "recordExpenseModal"
-    );
-
-const recordExpenseBackdrop =
-    document.getElementById(
-        "recordExpenseBackdrop"
-    );
-
-const closeRecordExpenseButton =
-    document.getElementById(
-        "closeRecordExpenseButton"
-    );
-
-const cancelRecordExpenseButton =
-    document.getElementById(
-        "cancelRecordExpenseButton"
-    );
-
-const recordExpenseForm =
-    document.getElementById(
-        "recordExpenseForm"
-    );
-
-const expenseRecipient =
-    document.getElementById(
-        "expenseRecipient"
-    );
-
-const expenseAmount =
-    document.getElementById(
-        "expenseAmount"
-    );
-
-const expenseTitle =
-    document.getElementById(
-        "expenseTitle"
-    );
-
-const expenseCategory =
-    document.getElementById(
-        "expenseCategory"
-    );
-
-const expenseDate =
-    document.getElementById(
-        "expenseDate"
-    );
-
-const expenseNote =
-    document.getElementById(
-        "expenseNote"
-    );
-
-
-// DAY 12
-
-const expensePaymentReference =
-    document.getElementById(
-        "expensePaymentReference"
-    );
-
-
-const recordExpenseMessage =
-    document.getElementById(
-        "recordExpenseMessage"
-    );
-
-const saveExpenseButton =
-    document.getElementById(
-        "saveExpenseButton"
-    );
-
-
-// =====================================================
-// TOAST
-// =====================================================
-
-const historyToast =
-    document.getElementById(
-        "historyToast"
-    );
-
-
-// =====================================================
-// AUTHENTICATION
-// =====================================================
-
-onAuthStateChanged(
-    auth,
-    async user => {
-
-        if (!user) {
-
-            window.location.replace(
-                "login.html"
-            );
-
-            return;
-        }
-
-
-        currentUser = user;
-
-
-        updateUserInterface();
-
-
-        if (paymentHistoryPage) {
-
-            paymentHistoryPage.style.display =
-                "flex";
-        }
-
-
-        hidePageLoading();
-
-
-        await loadPayments();
-    }
-);
-
-
-// =====================================================
-// USER INTERFACE
-// =====================================================
-
-function updateUserInterface() {
-
-    if (!currentUser) {
-        return;
-    }
-
-
-    const email =
-        currentUser.email ||
-        "User";
-
-
-    const name =
-        currentUser.displayName?.trim() ||
-        email.split("@")[0] ||
-        "User";
-
-
-    if (userEmail) {
-
-        userEmail.textContent =
-            email;
-    }
-
-
-    if (userAvatar) {
-
-        userAvatar.textContent =
-            name
-                .charAt(0)
-                .toUpperCase();
-    }
-}
-
-
-// =====================================================
-// LOAD PAYMENTS
-// =====================================================
-
-async function loadPayments() {
-
-    if (!currentUser) {
-        return;
-    }
-
-
-    showListLoading();
-
-
-    try {
-
-        const paymentsReference =
-            collection(
-                db,
-                "users",
-                currentUser.uid,
-                "payments"
-            );
-
-
-        const paymentsQuery =
-            query(
-                paymentsReference,
-                orderBy(
-                    "createdAt",
-                    "desc"
-                )
-            );
-
-
-        const snapshot =
-            await getDocs(
-                paymentsQuery
-            );
-
-
-        payments = [];
-
-
-        snapshot.forEach(
-            documentSnapshot => {
-
-                payments.push(
-                    normalizePayment(
-                        documentSnapshot.id,
-                        documentSnapshot.data()
-                    )
-                );
-            }
-        );
-
-
-        updateSummary();
-
-        applyFilters();
-    }
-
-    catch (error) {
-
-        console.error(
-            "Load payments error:",
-            error
-        );
-
-
-        payments = [];
-
-
-        updateSummary();
-
-        applyFilters();
-
-
-        showToast(
-            "Unable to load payment history.",
-            "error"
-        );
-    }
-
-    finally {
-
-        hideListLoading();
-    }
-}
-
-
-// =====================================================
-// NORMALIZE PAYMENT
-// =====================================================
-
-function normalizePayment(
-    id,
-    data
-) {
-
-    const amount =
-        Number(
-            data.amount
-        );
-
-
-    return {
-
-        id,
-
-
-        recipient:
-            String(
-                data.recipient ||
-                data.recipientName ||
-                "Unknown Recipient"
-            ).trim(),
-
-
-        recipientType:
-            String(
-                data.recipientType ||
-                ""
-            ).trim(),
-
-
-        paymentAddress:
-            String(
-                data.paymentAddress ||
-                ""
-            ).trim(),
-
-
-        upiId:
-            String(
-                data.upiId ||
-                ""
-            ).trim(),
-
-
-        upiNumber:
-            String(
-                data.upiNumber ||
-                ""
-            ).trim(),
-
-
-        amount:
-            Number.isFinite(amount)
-                ? amount
-                : 0,
-
-
-        note:
-            String(
-                data.note ||
-                ""
-            ).trim(),
-
-
-        status:
-            normalizeStatus(
-                data.status
-            ),
-
-
-        // UPI Transaction ID / UTR
-        transactionId:
-            String(
-                data.transactionId ||
-                ""
-            ).trim(),
-
-
-        // Firestore expense document ID
-        expenseId:
-            String(
-                data.expenseId ||
-                ""
-            ).trim(),
-
-
-        expenseRecorded:
-            data.expenseRecorded ===
-            true,
-
-
-        createdAt:
-            data.createdAt ||
-            null,
-
-
-        updatedAt:
-            data.updatedAt ||
-            null,
-
-
-        confirmedAt:
-            data.confirmedAt ||
-            null,
-
-
-        expenseRecordedAt:
-            data.expenseRecordedAt ||
-            null
-    };
-}
-
-
-// =====================================================
-// NORMALIZE STATUS
-// =====================================================
-
-function normalizeStatus(status) {
-
-    const value =
+    const search =
         String(
-            status ||
-            "pending"
+            paymentSearchInput?.value || ""
         )
             .trim()
             .toLowerCase();
 
-
-    if (
-        value ===
-        "confirmed"
-    ) {
-
-        return "confirmed";
-    }
-
-
-    if (
-        value === "failed" ||
-        value === "cancelled"
-    ) {
-
-        return "failed";
-    }
-
-
-    return "pending";
-}
-
-
-// =====================================================
-// PAYMENT ADDRESS
-// =====================================================
-
-function getPaymentAddress(payment) {
-
-    if (
-        payment.paymentAddress
-    ) {
-
-        return payment.paymentAddress;
-    }
-
-
-    if (
-        payment.upiId
-    ) {
-
-        return payment.upiId;
-    }
-
-
-    if (
-        payment.upiNumber
-    ) {
-
-        return payment.upiNumber;
-    }
-
-
-    return "";
-}
-
-
-function getPaymentAddressLabel(
-    payment
-) {
-
-    const type =
+    const status =
         String(
-            payment.recipientType ||
-            ""
+            paymentStatusFilter?.value ||
+            "all"
         ).toLowerCase();
 
+    const expenseStatus =
+        String(
+            expenseStatusFilter?.value ||
+            "all"
+        ).toLowerCase();
 
-    if (
-        type.includes(
-            "number"
-        ) ||
-        (
-            payment.upiNumber &&
-            !payment.upiId
-        )
-    ) {
+    const sort =
+        String(
+            paymentSortFilter?.value ||
+            "newest"
+        ).toLowerCase();
 
-        return "UPI Number";
+    filteredPayments =
+        payments.filter(payment => {
+
+            const searchable =
+                [
+                    payment.recipient,
+                    payment.upiId,
+                    payment.upiNumber,
+                    payment.paymentAddress,
+                    payment.note,
+                    payment.transactionId,
+                    payment.id
+                ]
+                    .join(" ")
+                    .toLowerCase();
+
+            const matchesSearch =
+                !search ||
+                searchable.includes(search);
+
+            const matchesStatus =
+                status === "all" ||
+                payment.status === status;
+
+            let matchesExpense = true;
+
+            if (
+                expenseStatus === "recorded"
+            ) {
+                matchesExpense =
+                    payment.expenseRecorded;
+            }
+
+            if (
+                expenseStatus === "not-recorded" ||
+                expenseStatus === "notrecorded"
+            ) {
+                matchesExpense =
+                    !payment.expenseRecorded;
+            }
+
+            return (
+                matchesSearch &&
+                matchesStatus &&
+                matchesExpense
+            );
+        });
+
+    filteredPayments.sort(
+        (a, b) => {
+
+            if (
+                sort === "oldest" ||
+                sort === "oldest-first"
+            ) {
+                return (
+                    getPaymentTime(a) -
+                    getPaymentTime(b)
+                );
+            }
+
+            if (
+                sort === "amount-high" ||
+                sort === "highest"
+            ) {
+                return b.amount - a.amount;
+            }
+
+            if (
+                sort === "amount-low" ||
+                sort === "lowest"
+            ) {
+                return a.amount - b.amount;
+            }
+
+            return (
+                getPaymentTime(b) -
+                getPaymentTime(a)
+            );
+        }
+    );
+
+    if (visiblePaymentsCount) {
+        visiblePaymentsCount.textContent =
+            String(filteredPayments.length);
     }
 
-
-    return "UPI ID";
+    renderPayments();
 }
 
 
 // =====================================================
-// SUMMARY
+// CLEAR FILTERS
 // =====================================================
 
-function updateSummary() {
+clearHistoryFiltersButton?.addEventListener(
+    "click",
+    () => {
 
-    const totalCount =
-        payments.length;
+        if (paymentSearchInput) {
+            paymentSearchInput.value = "";
+        }
 
+        if (paymentStatusFilter) {
+            paymentStatusFilter.value = "all";
+        }
 
-    const totalAmount =
-        payments.reduce(
-            (
-                total,
-                payment
-            ) =>
-                total +
-                payment.amount,
-            0
-        );
+        if (expenseStatusFilter) {
+            expenseStatusFilter.value = "all";
+        }
 
+        if (paymentSortFilter) {
+            paymentSortFilter.selectedIndex = 0;
+        }
 
-    const confirmed =
-        payments.filter(
-            payment =>
-                payment.status ===
-                "confirmed"
-        );
-
-
-    const confirmedAmount =
-        confirmed.reduce(
-            (
-                total,
-                payment
-            ) =>
-                total +
-                payment.amount,
-            0
-        );
+        applyFilters();
+    }
+);
 
 
-    const pending =
-        payments.filter(
-            payment =>
-                payment.status ===
-                "pending"
-        );
+// =====================================================
+// REFRESH
+// =====================================================
 
+refreshPaymentsButton?.addEventListener(
+    "click",
+    async () => {
 
-    const failed =
-        payments.filter(
-            payment =>
-                payment.status ===
-                "failed"
-        );
+        refreshPaymentsButton.disabled =
+            true;
 
+        try {
 
-    if (totalPaymentsCount) {
+            await loadPayments();
 
-        totalPaymentsCount.textContent =
-            String(
-                totalCount
+            showToast(
+                "Payment history refreshed.",
+                "success"
             );
+
+        } finally {
+
+            refreshPaymentsButton.disabled =
+                false;
+        }
+    }
+);
+
+
+// =====================================================
+// RENDER PAYMENTS
+// =====================================================
+
+function renderPayments() {
+
+    if (paymentHistoryTableBody) {
+        paymentHistoryTableBody.innerHTML = "";
     }
 
-
-    if (totalPaymentsAmount) {
-
-        totalPaymentsAmount.textContent =
-            `${formatCurrency(totalAmount)} total value`;
+    if (paymentHistoryMobileList) {
+        paymentHistoryMobileList.innerHTML = "";
     }
 
+    if (filteredPayments.length === 0) {
 
-    if (confirmedPaymentsCount) {
-
-        confirmedPaymentsCount.textContent =
-            String(
-                confirmed.length
-            );
+        showEmptyState();
+        return;
     }
 
+    hideEmptyState();
 
-    if (confirmedPaymentsAmount) {
+    filteredPayments.forEach(payment => {
 
-        confirmedPaymentsAmount.textContent =
-            `${formatCurrency(confirmedAmount)} confirmed`;
-    }
-
-
-    if (pendingPaymentsCount) {
-
-        pendingPaymentsCount.textContent =
-            String(
-                pending.length
-            );
-    }
-
-
-    if (failedPaymentsCount) {
-
-        failedPaymentsCount.textContent =
-            String(
-                failed.length
-            );
-    }
-
-
-    if (allPaymentsCount) {
-
-        allPaymentsCount.textContent =
-            String(
-                totalCount
-            );
-    }
+        renderDesktopPayment(payment);
+        renderMobilePayment(payment);
+    });
 }
 
 
 // =====================================================
-// FILTER EVENTS
+// DESKTOP PAYMENT ROW
 // =====================================================
 
-paymentSearchInput?.addEventListener(
-    "input",
-    applyFilters
+function renderDesktopPayment(payment) {
+
+    if (!paymentHistoryTableBody) {
+        return;
+    }
+
+    const row =
+        document.createElement("tr");
+
+    const address =
+        getPaymentAddress(payment) || "-";
+
+    const note =
+        payment.note || "UPI Payment";
+
+    const expenseText =
+        payment.expenseRecorded
+            ? "Recorded"
+            : "Not Recorded";
+
+    row.innerHTML = `
+        <td>
+            <div class="history-recipient-cell">
+                <div class="history-recipient-avatar">
+                    ${escapeHtml(getInitial(payment.recipient))}
+                </div>
+
+                <div>
+                    <strong>
+                        ${escapeHtml(payment.recipient)}
+                    </strong>
+
+                    <small>
+                        ${escapeHtml(address)}
+                    </small>
+                </div>
+            </div>
+        </td>
+
+        <td>
+            <strong>
+                ${escapeHtml(note)}
+            </strong>
+
+            <small>
+                ID: ${escapeHtml(shortId(payment.id))}
+            </small>
+        </td>
+
+        <td>
+            <strong>
+                ${escapeHtml(formatCurrency(payment.amount))}
+            </strong>
+        </td>
+
+        <td>
+            <strong>
+                ${escapeHtml(formatDate(payment.createdAt))}
+            </strong>
+
+            <small>
+                ${escapeHtml(formatTime(payment.createdAt))}
+            </small>
+        </td>
+
+        <td>
+            <span class="history-status-badge ${payment.status}">
+                ${escapeHtml(getStatusLabel(payment.status))}
+            </span>
+        </td>
+
+        <td>
+            <span class="history-expense-badge ${payment.expenseRecorded ? "recorded" : ""}">
+                ${escapeHtml(expenseText)}
+            </span>
+        </td>
+
+        <td>
+            <div class="history-actions">
+                <button
+                    type="button"
+                    class="history-action-button view-payment"
+                    data-payment-id="${escapeHtml(payment.id)}"
+                >
+                    View
+                </button>
+
+                <button
+                    type="button"
+                    class="history-action-button confirm-payment"
+                    data-payment-id="${escapeHtml(payment.id)}"
+                >
+                    ${
+                        payment.status === "confirmed"
+                            ? "Edit"
+                            : "Confirm"
+                    }
+                </button>
+            </div>
+        </td>
+    `;
+
+    paymentHistoryTableBody.appendChild(row);
+}
+
+
+// =====================================================
+// MOBILE PAYMENT
+// =====================================================
+
+function renderMobilePayment(payment) {
+
+    if (!paymentHistoryMobileList) {
+        return;
+    }
+
+    const card =
+        document.createElement("article");
+
+    card.className =
+        "history-mobile-card";
+
+    const address =
+        getPaymentAddress(payment) || "-";
+
+    card.innerHTML = `
+        <div class="history-mobile-card-top">
+            <div>
+                <strong>
+                    ${escapeHtml(payment.recipient)}
+                </strong>
+
+                <small>
+                    ${escapeHtml(address)}
+                </small>
+            </div>
+
+            <strong>
+                ${escapeHtml(formatCurrency(payment.amount))}
+            </strong>
+        </div>
+
+        <div class="history-mobile-meta">
+            <span>
+                ${escapeHtml(formatDate(payment.createdAt))}
+            </span>
+
+            <span class="history-status-badge ${payment.status}">
+                ${escapeHtml(getStatusLabel(payment.status))}
+            </span>
+        </div>
+
+        <div class="history-actions">
+            <button
+                type="button"
+                class="history-action-button view-payment"
+                data-payment-id="${escapeHtml(payment.id)}"
+            >
+                View
+            </button>
+
+            <button
+                type="button"
+                class="history-action-button confirm-payment"
+                data-payment-id="${escapeHtml(payment.id)}"
+            >
+                ${
+                    payment.status === "confirmed"
+                        ? "Edit"
+                        : "Confirm"
+                }
+            </button>
+        </div>
+    `;
+
+    paymentHistoryMobileList.appendChild(card);
+}
+
+
+// =====================================================
+// HISTORY ACTIONS
+// =====================================================
+
+function handleHistoryAction(event) {
+
+    const viewButton =
+        event.target.closest(
+            ".view-payment"
+        );
+
+    if (viewButton) {
+
+        openPaymentDetails(
+            viewButton.dataset.paymentId
+        );
+
+        return;
+    }
+
+    const confirmButton =
+        event.target.closest(
+            ".confirm-payment"
+        );
+
+    if (confirmButton) {
+
+        openConfirmPayment(
+            confirmButton.dataset.paymentId
+        );
+    }
+}
+
+
+paymentHistoryTableBody?.addEventListener(
+    "click",
+    handleHistoryAction
 );
 
-
-paymentStatusFilter?.addEventListener(
-    "change",
-    applyFilters
-);
-
-
-expenseStatusFilter?.addEventListener(
-    "change",
-    applyFilters
-);
-
-
-paymentSortFilter?.addEventListener(
-    "change",
-    applyFilters
+paymentHistoryMobileList?.addEventListener(
+    "click",
+    handleHistoryAction
 );
 
 
 // =====================================================
-// APPLY FILTERS
+// EMPTY STATE
 // =====================================================
 
-function applyFilters() {
-            paymentHistoryEmptyText.textContent =
-            payments.length ===
-            0
+function showEmptyState() {
+
+    if (paymentHistoryEmptyState) {
+        paymentHistoryEmptyState.hidden =
+            false;
+    }
+
+    if (paymentTableContainer) {
+        paymentTableContainer.style.display =
+            "none";
+    }
+
+    if (paymentHistoryMobileList) {
+        paymentHistoryMobileList.style.display =
+            "none";
+    }
+
+    if (paymentHistoryEmptyText) {
+
+        paymentHistoryEmptyText.textContent =
+            payments.length === 0
                 ? "Payments you save will appear here."
                 : "No payments match the current filters.";
     }
@@ -1990,21 +1161,16 @@ function applyFilters() {
 function hideEmptyState() {
 
     if (paymentHistoryEmptyState) {
-
         paymentHistoryEmptyState.hidden =
             true;
     }
 
-
     if (paymentTableContainer) {
-
         paymentTableContainer.style.display =
             "";
     }
 
-
     if (paymentHistoryMobileList) {
-
         paymentHistoryMobileList.style.display =
             "";
     }
@@ -2015,33 +1181,22 @@ function hideEmptyState() {
 // DETAILS MODAL
 // =====================================================
 
-function openPaymentDetails(
-    paymentId
-) {
+function openPaymentDetails(paymentId) {
 
     const payment =
-        findPayment(
-            paymentId
-        );
-
+        findPayment(paymentId);
 
     if (!payment) {
         return;
     }
 
-
-    selectedPayment =
-        payment;
-
+    selectedPayment = payment;
 
     if (detailPaymentAmount) {
 
         detailPaymentAmount.textContent =
-            formatCurrency(
-                payment.amount
-            );
+            formatCurrency(payment.amount);
     }
-
 
     if (detailPaymentStatus) {
 
@@ -2050,22 +1205,16 @@ function openPaymentDetails(
                 payment.status
             );
 
-
         detailPaymentStatus.className =
             `history-status-badge ${payment.status}`;
     }
 
-
     if (detailRecipient) {
-
         detailRecipient.textContent =
             payment.recipient;
     }
 
-
-    if (
-        detailPaymentAddressLabel
-    ) {
+    if (detailPaymentAddressLabel) {
 
         detailPaymentAddressLabel.textContent =
             getPaymentAddressLabel(
@@ -2073,16 +1222,12 @@ function openPaymentDetails(
             );
     }
 
-
     if (detailUpiId) {
 
         detailUpiId.textContent =
-            getPaymentAddress(
-                payment
-            ) ||
+            getPaymentAddress(payment) ||
             "-";
     }
-
 
     if (detailDate) {
 
@@ -2092,7 +1237,6 @@ function openPaymentDetails(
             );
     }
 
-
     if (detailTime) {
 
         detailTime.textContent =
@@ -2100,7 +1244,6 @@ function openPaymentDetails(
                 payment.createdAt
             );
     }
-
 
     if (detailExpenseStatus) {
 
@@ -2110,13 +1253,10 @@ function openPaymentDetails(
                 : "Not Recorded";
     }
 
-
     if (detailPaymentId) {
-
         detailPaymentId.textContent =
             payment.id;
     }
-
 
     if (detailPaymentNote) {
 
@@ -2125,18 +1265,12 @@ function openPaymentDetails(
             "No note";
     }
 
-
-    // DAY 12 UTR
-
     if (detailTransactionId) {
 
         detailTransactionId.textContent =
             payment.transactionId ||
             "Not Added";
     }
-
-
-    // DAY 12 EXPENSE DOCUMENT
 
     if (detailExpenseId) {
 
@@ -2145,20 +1279,15 @@ function openPaymentDetails(
             "-";
     }
 
-
-    if (
-        detailRecordExpenseButton
-    ) {
+    if (detailRecordExpenseButton) {
 
         const canRecord =
             payment.status ===
                 "confirmed" &&
             !payment.expenseRecorded;
 
-
         detailRecordExpenseButton.disabled =
             !canRecord;
-
 
         detailRecordExpenseButton.textContent =
             payment.expenseRecorded
@@ -2168,7 +1297,6 @@ function openPaymentDetails(
                     ? "Confirm Payment First"
                     : "Record as Expense";
     }
-
 
     openModal(
         paymentDetailsModal
@@ -2182,34 +1310,26 @@ function openPaymentDetails(
 
 closePaymentDetailsButton?.addEventListener(
     "click",
-    () => {
-
+    () =>
         closeModal(
             paymentDetailsModal
-        );
-    }
+        )
 );
-
 
 detailCloseButton?.addEventListener(
     "click",
-    () => {
-
+    () =>
         closeModal(
             paymentDetailsModal
-        );
-    }
+        )
 );
-
 
 paymentDetailsBackdrop?.addEventListener(
     "click",
-    () => {
-
+    () =>
         closeModal(
             paymentDetailsModal
-        );
-    }
+        )
 );
 
 
@@ -2221,15 +1341,12 @@ detailRecordExpenseButton?.addEventListener(
             return;
         }
 
-
         const paymentId =
             selectedPayment.id;
-
 
         closeModal(
             paymentDetailsModal
         );
-
 
         openRecordExpense(
             paymentId
@@ -2242,34 +1359,23 @@ detailRecordExpenseButton?.addEventListener(
 // OPEN CONFIRM PAYMENT
 // =====================================================
 
-function openConfirmPayment(
-    paymentId
-) {
+function openConfirmPayment(paymentId) {
 
     const payment =
-        findPayment(
-            paymentId
-        );
-
+        findPayment(paymentId);
 
     if (!payment) {
         return;
     }
 
-
-    selectedPayment =
-        payment;
-
+    selectedPayment = payment;
 
     clearConfirmMessage();
 
-
     if (confirmRecipient) {
-
         confirmRecipient.textContent =
             payment.recipient;
     }
-
 
     if (confirmAmount) {
 
@@ -2279,7 +1385,6 @@ function openConfirmPayment(
             );
     }
 
-
     if (confirmTransactionId) {
 
         confirmTransactionId.value =
@@ -2287,27 +1392,20 @@ function openConfirmPayment(
             "";
     }
 
-
     if (confirmRecordExpense) {
 
         confirmRecordExpense.checked =
-            (
-                payment.status !==
-                "failed"
-            ) &&
+            payment.status !== "failed" &&
             !payment.expenseRecorded;
     }
-
 
     if (markPaymentConfirmedButton) {
 
         markPaymentConfirmedButton.textContent =
-            payment.status ===
-            "confirmed"
+            payment.status === "confirmed"
                 ? "Save Confirmation"
                 : "Confirm Payment";
     }
-
 
     openModal(
         confirmPaymentModal
@@ -2321,28 +1419,23 @@ function openConfirmPayment(
 
 closeConfirmPaymentButton?.addEventListener(
     "click",
-    () => {
-
+    () =>
         closeModal(
             confirmPaymentModal
-        );
-    }
+        )
 );
-
 
 confirmPaymentBackdrop?.addEventListener(
     "click",
-    () => {
-
+    () =>
         closeModal(
             confirmPaymentModal
-        );
-    }
+        )
 );
 
 
 // =====================================================
-// KEEP PAYMENT PENDING
+// KEEP PENDING
 // =====================================================
 
 keepPaymentPendingButton?.addEventListener(
@@ -2352,7 +1445,6 @@ keepPaymentPendingButton?.addEventListener(
         if (!selectedPayment) {
             return;
         }
-
 
         if (
             selectedPayment.expenseRecorded
@@ -2366,7 +1458,6 @@ keepPaymentPendingButton?.addEventListener(
             return;
         }
 
-
         await updatePaymentStatus(
             selectedPayment.id,
             "pending"
@@ -2376,7 +1467,7 @@ keepPaymentPendingButton?.addEventListener(
 
 
 // =====================================================
-// MARK PAYMENT FAILED
+// MARK FAILED
 // =====================================================
 
 markPaymentFailedButton?.addEventListener(
@@ -2386,7 +1477,6 @@ markPaymentFailedButton?.addEventListener(
         if (!selectedPayment) {
             return;
         }
-
 
         if (
             selectedPayment.expenseRecorded
@@ -2400,7 +1490,6 @@ markPaymentFailedButton?.addEventListener(
             return;
         }
 
-
         await updatePaymentStatus(
             selectedPayment.id,
             "failed"
@@ -2410,7 +1499,7 @@ markPaymentFailedButton?.addEventListener(
 
 
 // =====================================================
-// CONFIRM PAYMENT - DAY 12
+// CONFIRM PAYMENT
 // =====================================================
 
 markPaymentConfirmedButton?.addEventListener(
@@ -2421,17 +1510,13 @@ markPaymentConfirmedButton?.addEventListener(
             !currentUser ||
             !selectedPayment
         ) {
-
             return;
         }
 
-
         clearConfirmMessage();
-
 
         const paymentId =
             selectedPayment.id;
-
 
         const transactionId =
             String(
@@ -2439,31 +1524,16 @@ markPaymentConfirmedButton?.addEventListener(
                 ""
             ).trim();
 
-
         const recordAsExpense =
             confirmRecordExpense?.checked ===
             true;
 
-
-        /*
-         * Transaction ID is optional in HTML.
-         * We allow confirmation without it.
-         *
-         * If entered, whitespace around it
-         * is removed.
-         */
-
-
-        setStatusButtonsDisabled(
-            true
-        );
-
+        setStatusButtonsDisabled(true);
 
         setButtonLoading(
             markPaymentConfirmedButton,
             true
         );
-
 
         try {
 
@@ -2475,7 +1545,6 @@ markPaymentConfirmedButton?.addEventListener(
                     "payments",
                     paymentId
                 );
-
 
             await updateDoc(
                 paymentReference,
@@ -2493,12 +1562,10 @@ markPaymentConfirmedButton?.addEventListener(
                 }
             );
 
-
             const payment =
                 findPayment(
                     paymentId
                 );
-
 
             if (payment) {
 
@@ -2509,16 +1576,12 @@ markPaymentConfirmedButton?.addEventListener(
                     transactionId;
             }
 
-
             closeModal(
                 confirmPaymentModal
             );
 
-
             updateSummary();
-
             applyFilters();
-
 
             showToast(
                 transactionId
@@ -2526,13 +1589,6 @@ markPaymentConfirmedButton?.addEventListener(
                     : "Payment marked as confirmed.",
                 "success"
             );
-
-
-            /*
-             * IMPORTANT:
-             * Preserve payment selection when
-             * automatically opening expense form.
-             */
 
             if (
                 recordAsExpense &&
@@ -2543,7 +1599,6 @@ markPaymentConfirmedButton?.addEventListener(
                 selectedPayment =
                     payment;
 
-
                 openRecordExpense(
                     paymentId
                 );
@@ -2551,31 +1606,23 @@ markPaymentConfirmedButton?.addEventListener(
                 return;
             }
 
+            selectedPayment = null;
 
-            selectedPayment =
-                null;
-        }
-
-        catch (error) {
+        } catch (error) {
 
             console.error(
                 "Confirm payment error:",
                 error
             );
 
-
             showConfirmMessage(
                 "Unable to confirm this payment. Please try again.",
                 "error"
             );
-        }
 
-        finally {
+        } finally {
 
-            setStatusButtonsDisabled(
-                false
-            );
-
+            setStatusButtonsDisabled(false);
 
             setButtonLoading(
                 markPaymentConfirmedButton,
@@ -2599,19 +1646,12 @@ async function updatePaymentStatus(
         return;
     }
 
-
-    setStatusButtonsDisabled(
-        true
-    );
-
+    setStatusButtonsDisabled(true);
 
     try {
 
         const payment =
-            findPayment(
-                paymentId
-            );
-
+            findPayment(paymentId);
 
         if (!payment) {
 
@@ -2619,7 +1659,6 @@ async function updatePaymentStatus(
                 "Payment not found."
             );
         }
-
 
         if (
             payment.expenseRecorded &&
@@ -2634,7 +1673,6 @@ async function updatePaymentStatus(
             return;
         }
 
-
         const paymentReference =
             doc(
                 db,
@@ -2644,7 +1682,6 @@ async function updatePaymentStatus(
                 paymentId
             );
 
-
         const updateData = {
 
             status,
@@ -2653,48 +1690,28 @@ async function updatePaymentStatus(
                 serverTimestamp()
         };
 
-
-        /*
-         * We keep the UTR if the user
-         * previously entered one.
-         *
-         * Only confirmed status receives
-         * confirmedAt.
-         */
-
-        if (
-            status ===
-            "confirmed"
-        ) {
+        if (status === "confirmed") {
 
             updateData.confirmedAt =
                 serverTimestamp();
         }
-
 
         await updateDoc(
             paymentReference,
             updateData
         );
 
-
         payment.status =
             status;
-
 
         closeModal(
             confirmPaymentModal
         );
 
-
-        selectedPayment =
-            null;
-
+        selectedPayment = null;
 
         updateSummary();
-
         applyFilters();
-
 
         showToast(
             status === "confirmed"
@@ -2704,33 +1721,28 @@ async function updatePaymentStatus(
                     : "Payment kept pending.",
             "success"
         );
-    }
 
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Update payment status error:",
             error
         );
 
-
         showConfirmMessage(
             "Unable to update payment status.",
             "error"
         );
-    }
 
-    finally {
+    } finally {
 
-        setStatusButtonsDisabled(
-            false
-        );
+        setStatusButtonsDisabled(false);
     }
 }
 
 
 // =====================================================
-// STATUS BUTTON STATE
+// STATUS BUTTONS
 // =====================================================
 
 function setStatusButtonsDisabled(
@@ -2738,30 +1750,21 @@ function setStatusButtonsDisabled(
 ) {
 
     if (markPaymentFailedButton) {
-
         markPaymentFailedButton.disabled =
             disabled;
     }
 
-
     if (keepPaymentPendingButton) {
-
         keepPaymentPendingButton.disabled =
             disabled;
     }
 
-
     if (markPaymentConfirmedButton) {
-
         markPaymentConfirmedButton.disabled =
             disabled;
     }
 }
 
-
-// =====================================================
-// BUTTON LOADING
-// =====================================================
 
 function setButtonLoading(
     button,
@@ -2771,7 +1774,6 @@ function setButtonLoading(
     if (!button) {
         return;
     }
-
 
     button.classList.toggle(
         "is-loading",
@@ -2793,10 +1795,8 @@ function showConfirmMessage(
         return;
     }
 
-
     confirmPaymentMessage.textContent =
         message;
-
 
     confirmPaymentMessage.className =
         `history-form-message visible ${type}`;
@@ -2809,10 +1809,8 @@ function clearConfirmMessage() {
         return;
     }
 
-
     confirmPaymentMessage.textContent =
         "";
-
 
     confirmPaymentMessage.className =
         "history-form-message";
@@ -2823,20 +1821,14 @@ function clearConfirmMessage() {
 // OPEN RECORD EXPENSE
 // =====================================================
 
-function openRecordExpense(
-    paymentId
-) {
+function openRecordExpense(paymentId) {
 
     const payment =
-        findPayment(
-            paymentId
-        );
-
+        findPayment(paymentId);
 
     if (!payment) {
         return;
     }
-
 
     if (
         payment.status !==
@@ -2851,10 +1843,7 @@ function openRecordExpense(
         return;
     }
 
-
-    if (
-        payment.expenseRecorded
-    ) {
+    if (payment.expenseRecorded) {
 
         showToast(
             "This payment has already been recorded as an expense.",
@@ -2864,23 +1853,16 @@ function openRecordExpense(
         return;
     }
 
-
-    selectedPayment =
-        payment;
-
+    selectedPayment = payment;
 
     recordExpenseForm?.reset();
 
-
     clearExpenseMessage();
 
-
     if (expenseRecipient) {
-
         expenseRecipient.textContent =
             payment.recipient;
     }
-
 
     if (expenseAmount) {
 
@@ -2890,7 +1872,6 @@ function openRecordExpense(
             );
     }
 
-
     if (expenseTitle) {
 
         expenseTitle.value =
@@ -2898,14 +1879,12 @@ function openRecordExpense(
             `Payment to ${payment.recipient}`;
     }
 
-
     if (expenseNote) {
 
         expenseNote.value =
             payment.note ||
             "";
     }
-
 
     if (expenseDate) {
 
@@ -2915,17 +1894,13 @@ function openRecordExpense(
             );
     }
 
-
-    if (
-        expensePaymentReference
-    ) {
+    if (expensePaymentReference) {
 
         expensePaymentReference.textContent =
             payment.transactionId
                 ? `UTR: ${payment.transactionId}`
                 : `Payment ID: ${payment.id}`;
     }
-
 
     openModal(
         recordExpenseModal
@@ -2934,69 +1909,57 @@ function openRecordExpense(
 
 
 // =====================================================
-// RECORD EXPENSE MODAL EVENTS
+// EXPENSE MODAL EVENTS
 // =====================================================
 
 closeRecordExpenseButton?.addEventListener(
     "click",
-    () => {
-
+    () =>
         closeModal(
             recordExpenseModal
-        );
-    }
+        )
 );
-
 
 cancelRecordExpenseButton?.addEventListener(
     "click",
-    () => {
-
+    () =>
         closeModal(
             recordExpenseModal
-        );
-    }
+        )
 );
-
 
 recordExpenseBackdrop?.addEventListener(
     "click",
-    () => {
-
+    () =>
         closeModal(
             recordExpenseModal
-        );
-    }
+        )
 );
 
 
 // =====================================================
-// RECORD EXPENSE FORM
+// RECORD EXPENSE
 // =====================================================
 
 recordExpenseForm?.addEventListener(
     "submit",
     async event => {
-                event.preventDefault();
 
+        event.preventDefault();
 
         clearExpenseMessage();
-
 
         if (
             !currentUser ||
             !selectedPayment
         ) {
-
             return;
         }
-
 
         const payment =
             findPayment(
                 selectedPayment.id
             );
-
 
         if (!payment) {
 
@@ -3007,7 +1970,6 @@ recordExpenseForm?.addEventListener(
 
             return;
         }
-
 
         if (
             payment.status !==
@@ -3022,14 +1984,7 @@ recordExpenseForm?.addEventListener(
             return;
         }
 
-
-        /*
-         * DAY 12 DUPLICATE PROTECTION
-         */
-
-        if (
-            payment.expenseRecorded
-        ) {
+        if (payment.expenseRecorded) {
 
             showExpenseMessage(
                 "This payment has already been recorded as an expense.",
@@ -3039,34 +1994,25 @@ recordExpenseForm?.addEventListener(
             return;
         }
 
-
         const title =
             String(
-                expenseTitle?.value ||
-                ""
+                expenseTitle?.value || ""
             ).trim();
-
 
         const category =
             String(
-                expenseCategory?.value ||
-                ""
+                expenseCategory?.value || ""
             ).trim();
-
 
         const date =
             String(
-                expenseDate?.value ||
-                ""
+                expenseDate?.value || ""
             ).trim();
-
 
         const notes =
             String(
-                expenseNote?.value ||
-                ""
+                expenseNote?.value || ""
             ).trim();
-
 
         if (!title) {
 
@@ -3075,12 +2021,9 @@ recordExpenseForm?.addEventListener(
                 "error"
             );
 
-
             expenseTitle?.focus();
-
             return;
         }
-
 
         if (!category) {
 
@@ -3089,12 +2032,9 @@ recordExpenseForm?.addEventListener(
                 "error"
             );
 
-
             expenseCategory?.focus();
-
             return;
         }
-
 
         if (!date) {
 
@@ -3103,25 +2043,13 @@ recordExpenseForm?.addEventListener(
                 "error"
             );
 
-
             expenseDate?.focus();
-
             return;
         }
 
-
-        setExpenseSaving(
-            true
-        );
-
+        setExpenseSaving(true);
 
         try {
-
-            /*
-             * Existing Expense Tracker schema:
-             *
-             * users/{uid}/transactions
-             */
 
             const transactionsReference =
                 collection(
@@ -3131,78 +2059,49 @@ recordExpenseForm?.addEventListener(
                     "transactions"
                 );
 
-
             const expenseDocument =
                 await addDoc(
                     transactionsReference,
                     {
-
                         title,
-
 
                         amount:
                             payment.amount,
 
-
                         type:
                             "expense",
 
-
                         category,
 
-
                         date,
-
 
                         paymentMethod:
                             "UPI",
 
-
                         notes,
-
 
                         source:
                             "upi-payment",
 
-
                         paymentId:
                             payment.id,
-
-
-                        /*
-                         * Store real UPI transaction
-                         * reference on expense too.
-                         */
 
                         upiTransactionId:
                             payment.transactionId ||
                             "",
 
-
                         recipient:
                             payment.recipient,
-
 
                         paymentAddress:
                             getPaymentAddress(
                                 payment
                             ),
 
-
                         createdAt:
                             serverTimestamp()
                     }
                 );
-
-
-            /*
-             * Link payment to expense.
-             *
-             * IMPORTANT:
-             *
-             * transactionId = real UPI UTR
-             * expenseId     = Firestore expense ID
-             */
 
             const paymentReference =
                 doc(
@@ -3213,100 +2112,78 @@ recordExpenseForm?.addEventListener(
                     payment.id
                 );
 
-
             await updateDoc(
                 paymentReference,
                 {
-
                     expenseRecorded:
                         true,
-
 
                     expenseId:
                         expenseDocument.id,
 
-
                     expenseRecordedAt:
                         serverTimestamp(),
-
 
                     updatedAt:
                         serverTimestamp()
                 }
             );
 
-
             payment.expenseRecorded =
                 true;
 
-
             payment.expenseId =
                 expenseDocument.id;
-
 
             closeModal(
                 recordExpenseModal
             );
 
-
-            selectedPayment =
-                null;
-
+            selectedPayment = null;
 
             updateSummary();
-
             applyFilters();
-
 
             showToast(
                 "Payment recorded as an expense.",
                 "success"
             );
-        }
 
-        catch (error) {
+        } catch (error) {
 
             console.error(
                 "Record expense error:",
                 error
             );
 
-
             showExpenseMessage(
                 "Unable to record this payment as an expense. Please try again.",
                 "error"
             );
-        }
 
-        finally {
+        } finally {
 
-            setExpenseSaving(
-                false
-            );
+            setExpenseSaving(false);
         }
     }
 );
 
 
 // =====================================================
-// EXPENSE SAVING STATE
+// EXPENSE SAVING
 // =====================================================
 
-function setExpenseSaving(
-    saving
-) {
+function setExpenseSaving(saving) {
 
     if (saveExpenseButton) {
 
         saveExpenseButton.disabled =
             saving;
 
-
         saveExpenseButton.textContent =
             saving
                 ? "Recording..."
                 : "Record Expense";
-
 
         saveExpenseButton.classList.toggle(
             "is-loading",
@@ -3314,16 +2191,12 @@ function setExpenseSaving(
         );
     }
 
-
     if (cancelRecordExpenseButton) {
-
         cancelRecordExpenseButton.disabled =
             saving;
     }
 
-
     if (closeRecordExpenseButton) {
-
         closeRecordExpenseButton.disabled =
             saving;
     }
@@ -3343,10 +2216,8 @@ function showExpenseMessage(
         return;
     }
 
-
     recordExpenseMessage.textContent =
         message;
-
 
     recordExpenseMessage.className =
         `history-form-message visible ${type}`;
@@ -3359,10 +2230,8 @@ function clearExpenseMessage() {
         return;
     }
 
-
     recordExpenseMessage.textContent =
         "";
-
 
     recordExpenseMessage.className =
         "history-form-message";
@@ -3373,9 +2242,7 @@ function clearExpenseMessage() {
 // FIND PAYMENT
 // =====================================================
 
-function findPayment(
-    paymentId
-) {
+function findPayment(paymentId) {
 
     return (
         payments.find(
@@ -3398,17 +2265,12 @@ function openModal(modal) {
         return;
     }
 
-
-    modal.classList.add(
-        "open"
-    );
-
+    modal.classList.add("open");
 
     modal.setAttribute(
         "aria-hidden",
         "false"
     );
-
 
     document.body.classList.add(
         "history-modal-open"
@@ -3422,17 +2284,12 @@ function closeModal(modal) {
         return;
     }
 
-
-    modal.classList.remove(
-        "open"
-    );
-
+    modal.classList.remove("open");
 
     modal.setAttribute(
         "aria-hidden",
         "true"
     );
-
 
     if (
         !document.querySelector(
@@ -3455,21 +2312,14 @@ document.addEventListener(
     "keydown",
     event => {
 
-        if (
-            event.key !==
-            "Escape"
-        ) {
-
+        if (event.key !== "Escape") {
             return;
         }
-
 
         if (
             recordExpenseModal
                 ?.classList
-                .contains(
-                    "open"
-                )
+                .contains("open")
         ) {
 
             closeModal(
@@ -3479,13 +2329,10 @@ document.addEventListener(
             return;
         }
 
-
         if (
             confirmPaymentModal
                 ?.classList
-                .contains(
-                    "open"
-                )
+                .contains("open")
         ) {
 
             closeModal(
@@ -3495,13 +2342,10 @@ document.addEventListener(
             return;
         }
 
-
         if (
             paymentDetailsModal
                 ?.classList
-                .contains(
-                    "open"
-                )
+                .contains("open")
         ) {
 
             closeModal(
@@ -3516,10 +2360,7 @@ document.addEventListener(
 // MOBILE SIDEBAR
 // =====================================================
 
-if (
-    menuButton &&
-    sidebar
-) {
+if (menuButton && sidebar) {
 
     menuButton.addEventListener(
         "click",
@@ -3527,13 +2368,11 @@ if (
 
             event.stopPropagation();
 
-
             sidebar.classList.toggle(
                 "open"
             );
         }
     );
-
 
     document.addEventListener(
         "click",
@@ -3558,25 +2397,20 @@ if (
         }
     );
 
-
     sidebar
-        .querySelectorAll(
-            ".nav-link"
-        )
-        .forEach(
-            link => {
+        .querySelectorAll(".nav-link")
+        .forEach(link => {
 
-                link.addEventListener(
-                    "click",
-                    () => {
+            link.addEventListener(
+                "click",
+                () => {
 
-                        sidebar.classList.remove(
-                            "open"
-                        );
-                    }
-                );
-            }
-        );
+                    sidebar.classList.remove(
+                        "open"
+                    );
+                }
+            );
+        });
 }
 
 
@@ -3592,27 +2426,20 @@ logoutButton?.addEventListener(
 
             showPageLoading();
 
-
-            await signOut(
-                auth
-            );
-
+            await signOut(auth);
 
             window.location.replace(
                 "login.html"
             );
-        }
 
-        catch (error) {
+        } catch (error) {
 
             console.error(
                 "Logout error:",
                 error
             );
 
-
             hidePageLoading();
-
 
             showToast(
                 "Unable to logout. Please try again.",
@@ -3624,28 +2451,17 @@ logoutButton?.addEventListener(
 
 
 // =====================================================
-// FORMAT CURRENCY
+// CURRENCY
 // =====================================================
 
-function formatCurrency(
-    amount
-) {
+function formatCurrency(amount) {
 
     const value =
-        Number(
-            amount
-        );
+        Number(amount);
 
-
-    if (
-        !Number.isFinite(
-            value
-        )
-    ) {
-
+    if (!Number.isFinite(value)) {
         return "₹0.00";
     }
-
 
     return new Intl.NumberFormat(
         "en-IN",
@@ -3662,24 +2478,19 @@ function formatCurrency(
             maximumFractionDigits:
                 2
         }
-    ).format(
-        value
-    );
+    ).format(value);
 }
 
 
 // =====================================================
-// DATE OBJECT
+// DATE
 // =====================================================
 
-function getDateObject(
-    value
-) {
+function getDateObject(value) {
 
     if (!value) {
         return null;
     }
-
 
     if (
         typeof value.toDate ===
@@ -3689,7 +2500,6 @@ function getDateObject(
         const date =
             value.toDate();
 
-
         return Number.isNaN(
             date.getTime()
         )
@@ -3697,10 +2507,7 @@ function getDateObject(
             : date;
     }
 
-
-    if (
-        value instanceof Date
-    ) {
+    if (value instanceof Date) {
 
         return Number.isNaN(
             value.getTime()
@@ -3709,12 +2516,8 @@ function getDateObject(
             : value;
     }
 
-
     const date =
-        new Date(
-            value
-        );
-
+        new Date(value);
 
     return Number.isNaN(
         date.getTime()
@@ -3724,19 +2527,12 @@ function getDateObject(
 }
 
 
-// =====================================================
-// PAYMENT TIME
-// =====================================================
-
-function getPaymentTime(
-    payment
-) {
+function getPaymentTime(payment) {
 
     const date =
         getDateObject(
             payment.createdAt
         );
-
 
     return date
         ? date.getTime()
@@ -3744,25 +2540,14 @@ function getPaymentTime(
 }
 
 
-// =====================================================
-// FORMAT DATE
-// =====================================================
-
-function formatDate(
-    value
-) {
+function formatDate(value) {
 
     const date =
-        getDateObject(
-            value
-        );
-
+        getDateObject(value);
 
     if (!date) {
-
         return "Unknown";
     }
-
 
     return new Intl.DateTimeFormat(
         "en-IN",
@@ -3776,31 +2561,18 @@ function formatDate(
             year:
                 "numeric"
         }
-    ).format(
-        date
-    );
+    ).format(date);
 }
 
 
-// =====================================================
-// FORMAT TIME
-// =====================================================
-
-function formatTime(
-    value
-) {
+function formatTime(value) {
 
     const date =
-        getDateObject(
-            value
-        );
-
+        getDateObject(value);
 
     if (!date) {
-
         return "-";
     }
-
 
     return new Intl.DateTimeFormat(
         "en-IN",
@@ -3811,40 +2583,26 @@ function formatTime(
             minute:
                 "2-digit"
         }
-    ).format(
-        date
-    );
+    ).format(date);
 }
 
 
-// =====================================================
-// DATE INPUT
-// =====================================================
-
-function getDateInputValue(
-    value
-) {
+function getDateInputValue(value) {
 
     const date =
-        getDateObject(
-            value
-        ) ||
+        getDateObject(value) ||
         new Date();
-
 
     const year =
         date.getFullYear();
 
-
     const month =
         String(
-            date.getMonth() +
-            1
+            date.getMonth() + 1
         ).padStart(
             2,
             "0"
         );
-
 
     const day =
         String(
@@ -3854,99 +2612,69 @@ function getDateInputValue(
             "0"
         );
 
-
-    return (
-        `${year}-${month}-${day}`
-    );
+    return `${year}-${month}-${day}`;
 }
 
 
 // =====================================================
-// STATUS LABEL
+// TEXT HELPERS
 // =====================================================
 
-function getStatusLabel(
-    status
-) {
-
-    if (
-        status ===
-        "confirmed"
-    ) {
-
-        return "Confirmed";
-    }
-
-
-    if (
-        status ===
-        "failed"
-    ) {
-
-        return "Failed / Cancelled";
-    }
-
-
-    return "Pending";
-}
-
-
-// =====================================================
-// INITIAL
-// =====================================================
-
-function getInitial(
-    value
-) {
+function getInitial(value) {
 
     const text =
         String(
-            value ||
-            "U"
+            value || "U"
         ).trim();
 
-
     return (
-        text.charAt(0) ||
-        "U"
+        text.charAt(0) || "U"
     ).toUpperCase();
 }
 
 
-// =====================================================
-// SHORT ID
-// =====================================================
-
-function shortId(
-    id
-) {
+function shortId(id) {
 
     const value =
-        String(
-            id ||
-            ""
-        );
+        String(id || "");
 
-
-    if (
-        value.length <=
-        10
-    ) {
-
+    if (value.length <= 10) {
         return value;
     }
 
-
     return (
-        value.slice(
-            0,
-            6
-        ) +
+        value.slice(0, 6) +
         "..." +
-        value.slice(
-            -4
-        )
+        value.slice(-4)
     );
+}
+
+
+function escapeHtml(value) {
+
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 }
 
 
@@ -3956,37 +2684,22 @@ function shortId(
 
 function showListLoading() {
 
-    if (
-        paymentHistoryLoadingState
-    ) {
-
+    if (paymentHistoryLoadingState) {
         paymentHistoryLoadingState.hidden =
             false;
     }
 
-
-    if (
-        paymentHistoryEmptyState
-    ) {
-
+    if (paymentHistoryEmptyState) {
         paymentHistoryEmptyState.hidden =
             true;
     }
 
-
-    if (
-        paymentTableContainer
-    ) {
-
+    if (paymentTableContainer) {
         paymentTableContainer.style.display =
             "none";
     }
 
-
-    if (
-        paymentHistoryMobileList
-    ) {
-
+    if (paymentHistoryMobileList) {
         paymentHistoryMobileList.style.display =
             "none";
     }
@@ -3995,10 +2708,7 @@ function showListLoading() {
 
 function hideListLoading() {
 
-    if (
-        paymentHistoryLoadingState
-    ) {
-
+    if (paymentHistoryLoadingState) {
         paymentHistoryLoadingState.hidden =
             true;
     }
@@ -4013,9 +2723,7 @@ function showPageLoading() {
 
     historyPageLoading
         ?.classList
-        .remove(
-            "hidden"
-        );
+        .remove("hidden");
 }
 
 
@@ -4023,9 +2731,7 @@ function hidePageLoading() {
 
     historyPageLoading
         ?.classList
-        .add(
-            "hidden"
-        );
+        .add("hidden");
 }
 
 
@@ -4042,22 +2748,15 @@ function showToast(
         return;
     }
 
-
     if (toastTimer) {
-
-        clearTimeout(
-            toastTimer
-        );
+        clearTimeout(toastTimer);
     }
-
 
     historyToast.textContent =
         message;
 
-
     historyToast.className =
         `history-toast visible ${type}`;
-
 
     toastTimer =
         window.setTimeout(
@@ -4065,7 +2764,6 @@ function showToast(
 
                 historyToast.className =
                     "history-toast";
-
 
                 historyToast.textContent =
                     "";
