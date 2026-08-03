@@ -59,14 +59,17 @@ button {
 
     top: 0;
     left: 0;
-    bottom: 0;
 
     width: 260px;
+    height: 100vh;
 
     display: flex;
     flex-direction: column;
 
     padding: 28px 20px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
 
     background: var(--sidebar);
 
@@ -75,7 +78,23 @@ button {
 
     z-index: 1000;
 }
+.sidebar{
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
 
+.sidebar::-webkit-scrollbar {
+    width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 10px;
+}
 
 .brand {
     display: flex;

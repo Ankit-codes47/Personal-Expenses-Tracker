@@ -201,7 +201,7 @@ onAuthStateChanged(
         if (!user) {
 
             window.location.replace(
-                "login.html"
+                "index.html"
             );
 
             return;
@@ -1222,7 +1222,7 @@ async function logoutUser() {
 
 
         window.location.replace(
-            "login.html"
+            "index.html"
         );
 
     }
@@ -1433,7 +1433,7 @@ confirmDeleteAccountButton?.addEventListener(
 
 
             window.location.replace(
-                "login.html"
+                "index.html"
             );
 
         }

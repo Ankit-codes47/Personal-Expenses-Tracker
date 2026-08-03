@@ -285,7 +285,7 @@ onAuthStateChanged(auth, async user => {
     if (!user) {
 
         window.location.replace(
-            "login.html"
+            "index.html"
         );
 
         return;
@@ -2429,7 +2429,7 @@ logoutButton?.addEventListener(
             await signOut(auth);
 
             window.location.replace(
-                "login.html"
+                "index.html"
             );
 
         } catch (error) {

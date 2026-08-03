@@ -1,7 +1,7 @@
 // =====================================================
 // PAYMENTS.JS
-// Expense Tracker - Day 11
-// UPI ID + UPI Number + QR Scanner + Firestore History
+// Expense Tracker
+// UPI Payments + QR Scanner + Firestore Payment History
 // =====================================================
 
 
@@ -132,6 +132,9 @@ const noteCounter =
 const clearPaymentButton =
     document.getElementById("clearPaymentButton");
 
+const generatePaymentButton =
+    document.getElementById("generatePaymentButton");
+
 
 // =====================================================
 // QUICK ACTIONS
@@ -170,7 +173,9 @@ const previewUpiId =
     document.getElementById("previewUpiId");
 
 const previewPaymentAddressLabel =
-    document.getElementById("previewPaymentAddressLabel");
+    document.getElementById(
+        "previewPaymentAddressLabel"
+    );
 
 const previewAmount =
     document.getElementById("previewAmount");
@@ -186,7 +191,7 @@ const copyUpiButton =
 
 
 // =====================================================
-// QR SCANNER
+// QR SCANNER ELEMENTS
 // =====================================================
 
 const qrScannerModal =
@@ -196,43 +201,69 @@ const qrScannerBackdrop =
     document.getElementById("qrScannerBackdrop");
 
 const closeQrScannerButton =
-    document.getElementById("closeQrScannerButton");
+    document.getElementById(
+        "closeQrScannerButton"
+    );
 
 const cancelQrScannerButton =
-    document.getElementById("cancelQrScannerButton");
+    document.getElementById(
+        "cancelQrScannerButton"
+    );
 
 const startCameraButton =
-    document.getElementById("startCameraButton");
+    document.getElementById(
+        "startCameraButton"
+    );
 
 const retryCameraButton =
-    document.getElementById("retryCameraButton");
+    document.getElementById(
+        "retryCameraButton"
+    );
 
 const qrScannerVideo =
-    document.getElementById("qrScannerVideo");
+    document.getElementById(
+        "qrScannerVideo"
+    );
 
 const qrCameraStartState =
-    document.getElementById("qrCameraStartState");
+    document.getElementById(
+        "qrCameraStartState"
+    );
 
 const qrCameraErrorState =
-    document.getElementById("qrCameraErrorState");
+    document.getElementById(
+        "qrCameraErrorState"
+    );
 
 const qrCameraErrorMessage =
-    document.getElementById("qrCameraErrorMessage");
+    document.getElementById(
+        "qrCameraErrorMessage"
+    );
 
 const qrScanningBadge =
-    document.getElementById("qrScanningBadge");
+    document.getElementById(
+        "qrScanningBadge"
+    );
 
 const qrScanResult =
-    document.getElementById("qrScanResult");
+    document.getElementById(
+        "qrScanResult"
+    );
 
 const qrScanResultText =
-    document.getElementById("qrScanResultText");
+    document.getElementById(
+        "qrScanResultText"
+    );
 
 const qrScanMessage =
-    document.getElementById("qrScanMessage");
+    document.getElementById(
+        "qrScanMessage"
+    );
 
 const useScannedQrButton =
-    document.getElementById("useScannedQrButton");
+    document.getElementById(
+        "useScannedQrButton"
+    );
 
 
 // =====================================================
@@ -248,7 +279,7 @@ onAuthStateChanged(
             stopCamera();
 
             window.location.replace(
-                "login.html"
+                "index.html"
             );
 
             return;
@@ -285,7 +316,6 @@ onAuthStateChanged(
 function updateUserInterface() {
 
     if (!currentUser) {
-
         return;
     }
 
@@ -319,13 +349,12 @@ function updateUserInterface() {
 
 
 // =====================================================
-// NAME FROM EMAIL
+// GET NAME FROM EMAIL
 // =====================================================
 
 function getNameFromEmail(email) {
 
     if (!email) {
-
         return "";
     }
 
@@ -360,7 +389,6 @@ function updateNoteCounter() {
         !paymentNote ||
         !noteCounter
     ) {
-
         return;
     }
 
@@ -371,7 +399,7 @@ function updateNoteCounter() {
 
 
 // =====================================================
-// UPI ID NORMALIZATION
+// UPI ID INPUT
 // =====================================================
 
 upiId?.addEventListener(
@@ -388,7 +416,11 @@ upiId?.addEventListener(
 
 
 // =====================================================
-// UPI NUMBER NORMALIZATION
+// UPI NUMBER INPUT
+//
+// Indian mobile number:
+// - digits only
+// - maximum 10 digits
 // =====================================================
 
 upiNumber?.addEventListener(
@@ -398,13 +430,13 @@ upiNumber?.addEventListener(
         upiNumber.value =
             upiNumber.value
                 .replace(/\D/g, "")
-                .slice(0, 15);
+                .slice(0, 10);
     }
 );
 
 
 // =====================================================
-// RECIPIENT TYPE SELECTOR
+// RECIPIENT TYPE EVENTS
 // =====================================================
 
 upiIdType?.addEventListener(
@@ -518,7 +550,7 @@ manualPaymentButton?.addEventListener(
         );
 
 
-        window.setTimeout(
+        setTimeout(
             () => {
 
                 recipientName?.focus();
@@ -530,7 +562,7 @@ manualPaymentButton?.addEventListener(
 
 
 // =====================================================
-// OPEN SCANNER BUTTONS
+// QR SCANNER BUTTONS
 // =====================================================
 
 [
@@ -577,7 +609,7 @@ function openQrScanner() {
 
 
 // =====================================================
-// CLOSE SCANNER EVENTS
+// CLOSE QR SCANNER EVENTS
 // =====================================================
 
 closeQrScannerButton?.addEventListener(
@@ -650,12 +682,9 @@ function resetScannerState() {
     stopCamera();
 
 
-    scannedPayment =
-        null;
+    scannedPayment = null;
 
-
-    barcodeDetector =
-        null;
+    barcodeDetector = null;
 
 
     if (qrCameraStartState) {
@@ -693,20 +722,12 @@ function resetScannerState() {
     }
 
 
-    if (qrScanMessage) {
-
-        qrScanMessage.textContent =
-            "";
-
-        qrScanMessage.classList.remove(
-            "visible"
-        );
-    }
+    clearScannerMessage();
 }
 
 
 // =====================================================
-// START CAMERA BUTTONS
+// START CAMERA
 // =====================================================
 
 startCameraButton?.addEventListener(
@@ -722,16 +743,14 @@ retryCameraButton?.addEventListener(
 
 
 // =====================================================
-// START CAMERA
+// START CAMERA FUNCTION
 // =====================================================
 
 async function startCamera() {
 
     clearScannerMessage();
 
-
-    scannedPayment =
-        null;
+    scannedPayment = null;
 
 
     if (useScannedQrButton) {
@@ -774,7 +793,7 @@ async function startCamera() {
     if (!("BarcodeDetector" in window)) {
 
         showCameraError(
-            "QR scanning is not supported by this browser. Try a supported mobile browser."
+            "QR scanning is not supported by this browser."
         );
 
         return;
@@ -787,7 +806,8 @@ async function startCamera() {
 
 
         const supportedFormats =
-            await BarcodeDetector.getSupportedFormats();
+            await BarcodeDetector
+                .getSupportedFormats();
 
 
         if (
@@ -815,17 +835,20 @@ async function startCamera() {
 
 
         cameraStream =
-            await navigator.mediaDevices.getUserMedia(
-                {
-                    audio: false,
+            await navigator.mediaDevices
+                .getUserMedia(
+                    {
+                        audio: false,
 
-                    video: {
-                        facingMode: {
-                            ideal: "environment"
+                        video: {
+
+                            facingMode: {
+                                ideal:
+                                    "environment"
+                            }
                         }
                     }
-                }
-            );
+                );
 
 
         if (!qrScannerVideo) {
@@ -889,7 +912,7 @@ async function startCamera() {
 
 
 // =====================================================
-// CAMERA ERROR
+// CAMERA ERROR HANDLER
 // =====================================================
 
 function handleCameraError(error) {
@@ -904,9 +927,8 @@ function handleCameraError(error) {
     ) {
 
         message =
-            "Camera permission was denied. Allow camera access in your browser settings and try again.";
+            "Camera permission was denied. Allow camera access and try again.";
     }
-
 
     else if (
         error?.name ===
@@ -917,7 +939,6 @@ function handleCameraError(error) {
             "No camera was found on this device.";
     }
 
-
     else if (
         error?.name ===
         "NotReadableError"
@@ -926,7 +947,6 @@ function handleCameraError(error) {
         message =
             "The camera is currently unavailable or being used by another application.";
     }
-
 
     else if (
         error?.name ===
@@ -990,7 +1010,6 @@ async function scanQrFrame() {
         !barcodeDetector ||
         !qrScannerVideo
     ) {
-
         return;
     }
 
@@ -1015,7 +1034,8 @@ async function scanQrFrame() {
 
                 const rawValue =
                     String(
-                        codes[0].rawValue || ""
+                        codes[0].rawValue ||
+                        ""
                     ).trim();
 
 
@@ -1135,7 +1155,8 @@ function handleScannedQr(rawValue) {
 function parseUpiQr(rawValue) {
 
     if (
-        typeof rawValue !== "string"
+        typeof rawValue !==
+        "string"
     ) {
 
         return {
@@ -1151,7 +1172,9 @@ function parseUpiQr(rawValue) {
     if (
         !value
             .toLowerCase()
-            .startsWith("upi://pay")
+            .startsWith(
+                "upi://pay"
+            )
     ) {
 
         return {
@@ -1184,7 +1207,8 @@ function parseUpiQr(rawValue) {
 
         const paymentUpiId =
             String(
-                params.get("pa") || ""
+                params.get("pa") ||
+                ""
             )
                 .trim()
                 .toLowerCase();
@@ -1205,24 +1229,26 @@ function parseUpiQr(rawValue) {
 
         const recipient =
             String(
-                params.get("pn") || ""
+                params.get("pn") ||
+                ""
             ).trim();
 
 
         const amountValue =
             String(
-                params.get("am") || ""
+                params.get("am") ||
+                ""
             ).trim();
 
 
         const note =
             String(
-                params.get("tn") || ""
+                params.get("tn") ||
+                ""
             ).trim();
 
 
-        let amount =
-            "";
+        let amount = "";
 
 
         if (amountValue) {
@@ -1296,7 +1322,7 @@ function parseUpiQr(rawValue) {
 
 
 // =====================================================
-// USE SCANNED DETAILS
+// USE SCANNED QR DETAILS
 // =====================================================
 
 useScannedQrButton?.addEventListener(
@@ -1312,12 +1338,6 @@ useScannedQrButton?.addEventListener(
             return;
         }
 
-
-        /*
-         * Standard UPI payment QR data gives us
-         * the payee address in the pa parameter.
-         * Therefore QR scanning selects UPI ID.
-         */
 
         setRecipientType(
             "upi-id"
@@ -1365,7 +1385,6 @@ useScannedQrButton?.addEventListener(
 
         updateNoteCounter();
 
-
         closeQrScanner();
 
 
@@ -1380,27 +1399,6 @@ useScannedQrButton?.addEventListener(
         showMessage(
             "UPI QR scanned. Review the payment details before continuing.",
             "success"
-        );
-
-
-        window.setTimeout(
-            () => {
-
-                if (
-                    !recipientName?.value
-                ) {
-
-                    recipientName?.focus();
-                }
-
-                else if (
-                    !paymentAmount?.value
-                ) {
-
-                    paymentAmount?.focus();
-                }
-            },
-            400
         );
     }
 );
@@ -1466,7 +1464,6 @@ function stopCamera() {
 function showScannerMessage(message) {
 
     if (!qrScanMessage) {
-
         return;
     }
 
@@ -1484,7 +1481,6 @@ function showScannerMessage(message) {
 function clearScannerMessage() {
 
     if (!qrScanMessage) {
-
         return;
     }
 
@@ -1501,16 +1497,29 @@ function clearScannerMessage() {
 
 // =====================================================
 // PAYMENT FORM SUBMIT
+//
+// IMPORTANT:
+// PAYMENT IS SAVED TO HISTORY HERE.
 // =====================================================
 
 paymentForm?.addEventListener(
     "submit",
-    event => {
+    async event => {
 
         event.preventDefault();
 
-
         clearMessage();
+
+
+        if (!currentUser) {
+
+            showMessage(
+                "You must be signed in before creating a payment.",
+                "error"
+            );
+
+            return;
+        }
 
 
         const payment =
@@ -1537,58 +1546,194 @@ paymentForm?.addEventListener(
         }
 
 
-        // New generated request = new Firestore history record.
+        if (generatePaymentButton) {
 
-        currentPaymentHistoryId =
-            null;
+            generatePaymentButton.disabled =
+                true;
 
-
-        const paymentAddress =
-            payment.recipientType === "upi-number"
-                ? payment.upiNumber
-                : payment.upiId;
+            generatePaymentButton.textContent =
+                "Generating...";
+        }
 
 
-        currentPayment = {
+        try {
 
-            recipient:
-                payment.recipient,
-
-            recipientType:
-                payment.recipientType,
-
-            upiId:
-                payment.upiId,
-
-            upiNumber:
-                payment.upiNumber,
-
-            paymentAddress,
-
-            amount:
-                Number(
-                    payment.amount
-                ),
-
-            note:
-                payment.note,
-
-            uri:
-                createUpiUri(
-                    payment
-                )
-        };
+            currentPaymentHistoryId =
+                null;
 
 
-        renderPaymentPreview(
-            currentPayment
-        );
+            const paymentAddress =
+                payment.recipientType ===
+                "upi-number"
+                    ? payment.upiNumber
+                    : payment.upiId;
 
 
-        showMessage(
-            "UPI payment request generated successfully.",
-            "success"
-        );
+            currentPayment = {
+
+                recipient:
+                    payment.recipient,
+
+                recipientType:
+                    payment.recipientType,
+
+                upiId:
+                    payment.upiId,
+
+                upiNumber:
+                    payment.upiNumber,
+
+                paymentAddress,
+
+                amount:
+                    Number(
+                        payment.amount
+                    ),
+
+                note:
+                    payment.note,
+
+                uri:
+                    payment.recipientType ===
+                    "upi-id"
+                        ? createUpiUri(
+                            payment
+                        )
+                        : null
+            };
+
+
+            // =========================================
+            // SAVE TO FIRESTORE PAYMENT HISTORY
+            // =========================================
+
+            const paymentsReference =
+                collection(
+                    db,
+                    "users",
+                    currentUser.uid,
+                    "payments"
+                );
+
+
+            const paymentDocument =
+                await addDoc(
+                    paymentsReference,
+                    {
+
+                        recipient:
+                            currentPayment.recipient,
+
+                        recipientType:
+                            currentPayment.recipientType,
+
+                        paymentAddress:
+                            currentPayment.paymentAddress,
+
+                        upiId:
+                            currentPayment.upiId ||
+                            "",
+
+                        upiNumber:
+                            currentPayment.upiNumber ||
+                            "",
+
+                        amount:
+                            Number(
+                                currentPayment.amount
+                            ),
+
+                        note:
+                            currentPayment.note ||
+                            "",
+
+                        status:
+                            "pending",
+
+                        expenseRecorded:
+                            false,
+
+                        transactionId:
+                            "",
+
+                        source:
+                            "upi",
+
+                        createdAt:
+                            serverTimestamp(),
+
+                        updatedAt:
+                            serverTimestamp()
+                    }
+                );
+
+
+            currentPaymentHistoryId =
+                paymentDocument.id;
+
+
+            renderPaymentPreview(
+                currentPayment
+            );
+
+
+            if (
+                currentPayment.recipientType ===
+                "upi-number"
+            ) {
+
+                showMessage(
+                    "UPI Number payment request saved to Payment History as pending.",
+                    "success"
+                );
+            }
+
+            else {
+
+                showMessage(
+                    "Payment request generated and saved to Payment History as pending.",
+                    "success"
+                );
+            }
+        }
+
+        catch (error) {
+
+            console.error(
+                "Generate payment error:",
+                error
+            );
+
+
+            currentPayment =
+                null;
+
+
+            currentPaymentHistoryId =
+                null;
+
+
+            resetPreview();
+
+
+            showMessage(
+                "Unable to save the payment request. Please try again.",
+                "error"
+            );
+        }
+
+        finally {
+
+            if (generatePaymentButton) {
+
+                generatePaymentButton.disabled =
+                    false;
+
+
+                generatePaymentButton.textContent =
+                    "Generate Payment";
+            }
+        }
     }
 );
 
@@ -1607,32 +1752,38 @@ function readPaymentForm() {
 
         recipient:
             String(
-                recipientName?.value || ""
+                recipientName?.value ||
+                ""
             ).trim(),
 
         recipientType,
 
         upiId:
             String(
-                upiId?.value || ""
+                upiId?.value ||
+                ""
             )
                 .trim()
                 .toLowerCase(),
 
         upiNumber:
             String(
-                upiNumber?.value || ""
+                upiNumber?.value ||
+                ""
             )
-                .replace(/\D/g, ""),
+                .replace(/\D/g, "")
+                .slice(0, 10),
 
         amount:
             String(
-                paymentAmount?.value || ""
+                paymentAmount?.value ||
+                ""
             ).trim(),
 
         note:
             String(
-                paymentNote?.value || ""
+                paymentNote?.value ||
+                ""
             ).trim()
     };
 }
@@ -1644,12 +1795,19 @@ function readPaymentForm() {
 
 function validatePayment(payment) {
 
+    // -------------------------------------------------
+    // RECIPIENT
+    // -------------------------------------------------
+
     if (!payment.recipient) {
 
         return {
+
             valid: false,
+
             message:
                 "Enter the recipient name.",
+
             element:
                 recipientName
         };
@@ -1662,16 +1820,21 @@ function validatePayment(payment) {
     ) {
 
         return {
+
             valid: false,
+
             message:
                 "Recipient name cannot exceed 60 characters.",
+
             element:
                 recipientName
         };
     }
 
 
+    // -------------------------------------------------
     // UPI ID
+    // -------------------------------------------------
 
     if (
         payment.recipientType ===
@@ -1681,9 +1844,12 @@ function validatePayment(payment) {
         if (!payment.upiId) {
 
             return {
+
                 valid: false,
+
                 message:
                     "Enter the recipient UPI ID.",
+
                 element:
                     upiId
             };
@@ -1697,9 +1863,12 @@ function validatePayment(payment) {
         ) {
 
             return {
+
                 valid: false,
+
                 message:
                     "Enter a valid UPI ID such as name@bank.",
+
                 element:
                     upiId
             };
@@ -1707,7 +1876,10 @@ function validatePayment(payment) {
     }
 
 
+    // -------------------------------------------------
     // UPI NUMBER
+    // EXACTLY 10 DIGITS
+    // -------------------------------------------------
 
     if (
         payment.recipientType ===
@@ -1717,9 +1889,12 @@ function validatePayment(payment) {
         if (!payment.upiNumber) {
 
             return {
+
                 valid: false,
+
                 message:
                     "Enter the recipient UPI Number.",
+
                 element:
                     upiNumber
             };
@@ -1733,9 +1908,12 @@ function validatePayment(payment) {
         ) {
 
             return {
+
                 valid: false,
+
                 message:
-                    "Enter a valid UPI Number.",
+                    "Enter a valid 10-digit Indian mobile number registered with UPI.",
+
                 element:
                     upiNumber
             };
@@ -1743,12 +1921,19 @@ function validatePayment(payment) {
     }
 
 
+    // -------------------------------------------------
+    // AMOUNT
+    // -------------------------------------------------
+
     if (!payment.amount) {
 
         return {
+
             valid: false,
+
             message:
                 "Enter the payment amount.",
+
             element:
                 paymentAmount
         };
@@ -1767,9 +1952,12 @@ function validatePayment(payment) {
     ) {
 
         return {
+
             valid: false,
+
             message:
                 "Payment amount must be greater than ₹0.",
+
             element:
                 paymentAmount
         };
@@ -1783,14 +1971,21 @@ function validatePayment(payment) {
     ) {
 
         return {
+
             valid: false,
+
             message:
                 "Payment amount can contain a maximum of two decimal places.",
+
             element:
                 paymentAmount
         };
     }
 
+
+    // -------------------------------------------------
+    // NOTE
+    // -------------------------------------------------
 
     if (
         payment.note.length >
@@ -1798,9 +1993,12 @@ function validatePayment(payment) {
     ) {
 
         return {
+
             valid: false,
+
             message:
                 "Payment note cannot exceed 100 characters.",
+
             element:
                 paymentNote
         };
@@ -1814,7 +2012,7 @@ function validatePayment(payment) {
 
 
 // =====================================================
-// UPI ID VALIDATION
+// VALIDATE UPI ID
 // =====================================================
 
 function isValidUpiId(value) {
@@ -1830,21 +2028,16 @@ function isValidUpiId(value) {
 
 
 // =====================================================
-// UPI NUMBER VALIDATION
+// VALIDATE UPI NUMBER
+//
+// Indian mobile number:
+// exactly 10 digits
+// starts with 6, 7, 8 or 9
 // =====================================================
 
 function isValidUpiNumber(value) {
 
-    /*
-     * Keep this validation format-based.
-     * A website cannot determine whether the number is
-     * actually registered/active for UPI.
-     *
-     * This accepts 8-15 numeric digits rather than
-     * pretending every phone number is a valid VPA.
-     */
-
-    return /^\d{8,15}$/.test(
+    return /^[6-9]\d{9}$/.test(
         value
     );
 }
@@ -1864,33 +2057,29 @@ function hasMaximumTwoDecimals(value) {
 
 // =====================================================
 // CREATE UPI URI
+//
+// A UPI ID/VPA is used for "pa".
+// Raw mobile number mode is not converted into a VPA.
 // =====================================================
 
 function createUpiUri(payment) {
+
+    if (
+        payment.recipientType !==
+        "upi-id"
+    ) {
+
+        return null;
+    }
+
 
     const params =
         new URLSearchParams();
 
 
-    /*
-     * UPI ID:
-     * pa contains the actual VPA.
-     *
-     * UPI Number:
-     * We preserve the user-entered number as the
-     * payment address. We do NOT invent @upi or
-     * another VPA suffix.
-     */
-
-    const paymentAddress =
-        payment.recipientType === "upi-number"
-            ? payment.upiNumber
-            : payment.upiId;
-
-
     params.set(
         "pa",
-        paymentAddress
+        payment.upiId
     );
 
 
@@ -1946,7 +2135,8 @@ function renderPaymentPreview(payment) {
     if (previewPaymentAddressLabel) {
 
         previewPaymentAddressLabel.textContent =
-            payment.recipientType === "upi-number"
+            payment.recipientType ===
+            "upi-number"
                 ? "UPI Number"
                 : "UPI ID";
     }
@@ -1990,20 +2180,139 @@ function renderPaymentPreview(payment) {
     }
 
 
-    generateQrCode(
-        payment.uri
+    // -------------------------------------------------
+    // UPI ID MODE
+    // -------------------------------------------------
+
+    if (payment.uri) {
+
+        generateQrCode(
+            payment.uri
+        );
+
+
+        if (openUpiButton) {
+
+            openUpiButton.disabled =
+                false;
+
+
+            openUpiButton.textContent =
+                "Open UPI App";
+        }
+    }
+
+    // -------------------------------------------------
+    // UPI NUMBER MODE
+    // -------------------------------------------------
+
+    else {
+
+        showNumberPreview();
+
+
+        if (openUpiButton) {
+
+            openUpiButton.disabled =
+                true;
+
+
+            openUpiButton.textContent =
+                "UPI ID Required";
+        }
+    }
+}
+
+
+// =====================================================
+// UPI NUMBER PREVIEW
+// =====================================================
+
+function showNumberPreview() {
+
+    if (!qrCode) {
+        return;
+    }
+
+
+    qrCode.innerHTML =
+        "";
+
+
+    qrCode.classList.remove(
+        "qr-error"
+    );
+
+
+    const wrapper =
+        document.createElement(
+            "div"
+        );
+
+
+    wrapper.style.textAlign =
+        "center";
+
+
+    wrapper.style.padding =
+        "20px";
+
+
+    const icon =
+        document.createElement(
+            "div"
+        );
+
+
+    icon.textContent =
+        "#";
+
+
+    icon.style.fontSize =
+        "48px";
+
+
+    icon.style.fontWeight =
+        "700";
+
+
+    icon.style.marginBottom =
+        "10px";
+
+
+    const text =
+        document.createElement(
+            "p"
+        );
+
+
+    text.textContent =
+        "UPI Number saved. Use a UPI ID or scan a UPI QR to open an external UPI payment app.";
+
+
+    wrapper.appendChild(
+        icon
+    );
+
+
+    wrapper.appendChild(
+        text
+    );
+
+
+    qrCode.appendChild(
+        wrapper
     );
 }
 
 
 // =====================================================
-// GENERATE PAYMENT QR
+// GENERATE QR CODE
 // =====================================================
 
 function generateQrCode(text) {
 
     if (!qrCode) {
-
         return;
     }
 
@@ -2043,7 +2352,9 @@ function generateQrCode(text) {
         "https://api.qrserver.com/v1/create-qr-code/" +
         "?size=300x300" +
         "&data=" +
-        encodeURIComponent(text);
+        encodeURIComponent(
+            text
+        );
 
 
     image.addEventListener(
@@ -2075,7 +2386,7 @@ function generateQrCode(text) {
 
 
             showMessage(
-                "QR generation is unavailable. You can still try opening the payment in your UPI app.",
+                "QR generation is unavailable. You can still open the payment using your UPI app.",
                 "info"
             );
         }
@@ -2090,14 +2401,13 @@ function generateQrCode(text) {
 
 // =====================================================
 // OPEN UPI APP
-// SAVE PAYMENT TO FIRESTORE FIRST
 // =====================================================
 
 openUpiButton?.addEventListener(
     "click",
-    async () => {
+    () => {
 
-        if (!currentPayment?.uri) {
+        if (!currentPayment) {
 
             showMessage(
                 "Generate a payment request first.",
@@ -2108,10 +2418,24 @@ openUpiButton?.addEventListener(
         }
 
 
-        if (!currentUser) {
+        if (
+            currentPayment.recipientType ===
+            "upi-number"
+        ) {
 
             showMessage(
-                "You must be signed in before making a payment.",
+                "Use a UPI ID or scan the recipient's UPI QR code to open a UPI payment app.",
+                "info"
+            );
+
+            return;
+        }
+
+
+        if (!currentPayment.uri) {
+
+            showMessage(
+                "No valid UPI payment link is available.",
                 "error"
             );
 
@@ -2119,118 +2443,25 @@ openUpiButton?.addEventListener(
         }
 
 
-        openUpiButton.disabled =
-            true;
-
-
-        try {
-
-            // Save one history record for this request.
-
-            if (!currentPaymentHistoryId) {
-
-                const paymentsReference =
-                    collection(
-                        db,
-                        "users",
-                        currentUser.uid,
-                        "payments"
-                    );
-
-
-                const paymentDocument =
-                    await addDoc(
-                        paymentsReference,
-                        {
-
-                            recipient:
-                                currentPayment.recipient,
-
-                            recipientType:
-                                currentPayment.recipientType,
-
-                            paymentAddress:
-                                currentPayment.paymentAddress,
-
-                            upiId:
-                                currentPayment.upiId || "",
-
-                            upiNumber:
-                                currentPayment.upiNumber || "",
-
-                            amount:
-                                Number(
-                                    currentPayment.amount
-                                ),
-
-                            note:
-                                currentPayment.note ||
-                                "",
-
-                            status:
-                                "pending",
-
-                            expenseRecorded:
-                                false,
-
-                            transactionId:
-                                "",
-
-                            source:
-                                "upi",
-
-                            createdAt:
-                                serverTimestamp(),
-
-                            updatedAt:
-                                serverTimestamp()
-                        }
-                    );
-
-
-                currentPaymentHistoryId =
-                    paymentDocument.id;
-            }
-
-
-            /*
-             * Opening the external UPI app does not
-             * prove that the bank payment succeeded.
-             *
-             * Therefore the history record starts as
-             * pending and can be confirmed later.
-             */
-
+        if (!currentPaymentHistoryId) {
 
             showMessage(
-                "Payment saved as pending. Opening your UPI app...",
-                "info"
-            );
-
-
-            window.location.href =
-                currentPayment.uri;
-        }
-
-        catch (error) {
-
-            console.error(
-                "Save payment history error:",
-                error
-            );
-
-
-            showMessage(
-                "Unable to save the payment to history. The UPI app was not opened.",
+                "This payment was not saved. Generate the payment again.",
                 "error"
             );
+
+            return;
         }
 
-        finally {
 
-            openUpiButton.disabled =
-                false;
-        }
+        showMessage(
+            "Payment is saved as pending. Opening your UPI app...",
+            "info"
+        );
+
+
+        window.location.href =
+            currentPayment.uri;
     }
 );
 
@@ -2264,7 +2495,8 @@ copyUpiButton?.addEventListener(
 
 
             const label =
-                currentPayment.recipientType === "upi-number"
+                currentPayment.recipientType ===
+                "upi-number"
                     ? "UPI Number"
                     : "UPI ID";
 
@@ -2475,6 +2707,17 @@ function resetPreview() {
         previewNote.textContent =
             "-";
     }
+
+
+    if (openUpiButton) {
+
+        openUpiButton.disabled =
+            false;
+
+
+        openUpiButton.textContent =
+            "Open UPI App";
+    }
 }
 
 
@@ -2545,7 +2788,7 @@ logoutButton?.addEventListener(
 
 
             window.location.replace(
-                "login.html"
+                "index.html"
             );
         }
 
@@ -2570,7 +2813,7 @@ logoutButton?.addEventListener(
 
 
 // =====================================================
-// STOP CAMERA IF PAGE CLOSES
+// STOP CAMERA ON PAGE EXIT
 // =====================================================
 
 window.addEventListener(
@@ -2598,10 +2841,17 @@ function formatCurrency(amount) {
     return new Intl.NumberFormat(
         "en-IN",
         {
-            style: "currency",
-            currency: "INR",
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+            style:
+                "currency",
+
+            currency:
+                "INR",
+
+            minimumFractionDigits:
+                2,
+
+            maximumFractionDigits:
+                2
         }
     ).format(value);
 }
@@ -2617,7 +2867,6 @@ function showMessage(
 ) {
 
     if (!paymentMessage) {
-
         return;
     }
 
@@ -2630,7 +2879,7 @@ function showMessage(
         `payment-message visible ${type}`;
 
 
-    window.setTimeout(
+    setTimeout(
         () => {
 
             if (
@@ -2649,7 +2898,6 @@ function showMessage(
 function clearMessage() {
 
     if (!paymentMessage) {
-
         return;
     }
 

@@ -15,6 +15,8 @@ import {
     orderBy,
     getDocs,
     addDoc,
+    doc,
+    getDoc,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
@@ -138,6 +140,9 @@ let savingsGoals = [];
 
 let transactionType = "income";
 
+// Current month's Firestore budget
+let currentMonthlyBudget = 0;
+
 
 // ========================================
 // CATEGORIES
@@ -171,7 +176,10 @@ const expenseCategories = [
 // ========================================
 
 if (currentDate) {
-    currentDate.textContent = getCurrentDate();
+
+    currentDate.textContent =
+        getCurrentDate();
+
 }
 
 
@@ -181,40 +189,64 @@ if (currentDate) {
 
 if (menuButton && sidebar) {
 
-    menuButton.addEventListener("click", (event) => {
+    menuButton.addEventListener(
+        "click",
+        (event) => {
 
-        event.stopPropagation();
+            event.stopPropagation();
 
-        sidebar.classList.toggle("open");
-
-    });
-
-
-    document.addEventListener("click", (event) => {
-
-        if (
-            sidebar.classList.contains("open") &&
-            !sidebar.contains(event.target) &&
-            !menuButton.contains(event.target)
-        ) {
-
-            sidebar.classList.remove("open");
+            sidebar.classList.toggle(
+                "open"
+            );
 
         }
+    );
 
-    });
+
+    document.addEventListener(
+        "click",
+        (event) => {
+
+            if (
+                sidebar.classList.contains(
+                    "open"
+                ) &&
+                !sidebar.contains(
+                    event.target
+                ) &&
+                !menuButton.contains(
+                    event.target
+                )
+            ) {
+
+                sidebar.classList.remove(
+                    "open"
+                );
+
+            }
+
+        }
+    );
 
 
     const navLinks =
-        sidebar.querySelectorAll(".nav-link");
+        sidebar.querySelectorAll(
+            ".nav-link"
+        );
+
 
     navLinks.forEach((link) => {
 
-        link.addEventListener("click", () => {
+        link.addEventListener(
+            "click",
+            () => {
 
-            sidebar.classList.remove("open");
+                sidebar.classList.remove(
+                    "open"
+                );
 
-        });
+            }
+        );
 
     });
 
@@ -225,63 +257,74 @@ if (menuButton && sidebar) {
 // LOGOUT
 // ========================================
 
-logoutButton?.addEventListener("click", async () => {
+logoutButton?.addEventListener(
+    "click",
+    async () => {
 
-    try {
+        try {
 
-        await signOut(auth);
+            await signOut(auth);
 
-    } catch (error) {
+        } catch (error) {
 
-        console.error(error);
+            console.error(error);
 
-        showToast("Logout failed");
+            showToast(
+                "Logout failed"
+            );
+
+        }
 
     }
-
-});
+);
 
 
 // ========================================
 // AUTH CHECK
 // ========================================
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(
+    auth,
+    async (user) => {
 
-    if (!user) {
+        if (!user) {
 
-        window.location.href = "login.html";
+            window.location.href =
+                "index.html";
 
-        return;
+            return;
+
+        }
+
+
+        currentUser = user;
+
+
+        if (dashboardContent) {
+
+            dashboardContent.style.display =
+                "flex";
+
+        }
+
+
+        loadUser();
+
+
+        // Load all dashboard data before
+        // calculating totals and rendering UI.
+
+        await Promise.all([
+            loadTransactions(),
+            loadSavingsGoals(),
+            loadMonthlyBudget()
+        ]);
+
+
+        updateDashboard();
 
     }
-
-
-    currentUser = user;
-
-
-    if (dashboardContent) {
-
-        dashboardContent.style.display = "flex";
-
-    }
-
-
-    loadUser();
-
-
-    // Load transactions and savings goals
-    // before calculating dashboard totals.
-
-    await Promise.all([
-        loadTransactions(),
-        loadSavingsGoals()
-    ]);
-
-
-    updateDashboard();
-
-});
+);
 
 
 // ========================================
@@ -293,7 +336,8 @@ function loadUser() {
     if (userEmail) {
 
         userEmail.textContent =
-            currentUser.email || "User";
+            currentUser.email ||
+            "User";
 
     }
 
@@ -305,8 +349,11 @@ function loadUser() {
             currentUser.email ||
             "User";
 
+
         userAvatar.textContent =
-            name.charAt(0).toUpperCase();
+            name
+                .charAt(0)
+                .toUpperCase();
 
     }
 
@@ -321,10 +368,14 @@ async function loadTransactions() {
 
     try {
 
-        if (!currentUser){
+        if (!currentUser) {
+
             transactions = [];
+
             return;
-        };
+
+        }
+
 
         const transactionReference =
             collection(
@@ -334,9 +385,16 @@ async function loadTransactions() {
                 "transactions"
             );
 
-        const q = query(
-            transactionReference,
-            orderBy("createdAt", "desc"));
+
+        const q =
+            query(
+                transactionReference,
+                orderBy(
+                    "createdAt",
+                    "desc"
+                )
+            );
+
 
         const snapshot =
             await getDocs(q);
@@ -345,17 +403,20 @@ async function loadTransactions() {
         transactions = [];
 
 
-        snapshot.forEach((documentSnapshot) => {
+        snapshot.forEach(
+            (documentSnapshot) => {
 
-            transactions.push({
+                transactions.push({
 
-                id: documentSnapshot.id,
+                    id:
+                        documentSnapshot.id,
 
-                ...documentSnapshot.data()
+                    ...documentSnapshot.data()
 
-            });
+                });
 
-        });
+            }
+        );
 
     } catch (error) {
 
@@ -380,6 +441,15 @@ async function loadSavingsGoals() {
 
     try {
 
+        if (!currentUser) {
+
+            savingsGoals = [];
+
+            return;
+
+        }
+
+
         const goalsReference =
             collection(
                 db,
@@ -390,23 +460,28 @@ async function loadSavingsGoals() {
 
 
         const snapshot =
-            await getDocs(goalsReference);
+            await getDocs(
+                goalsReference
+            );
 
 
         savingsGoals = [];
 
 
-        snapshot.forEach((documentSnapshot) => {
+        snapshot.forEach(
+            (documentSnapshot) => {
 
-            savingsGoals.push({
+                savingsGoals.push({
 
-                id: documentSnapshot.id,
+                    id:
+                        documentSnapshot.id,
 
-                ...documentSnapshot.data()
+                    ...documentSnapshot.data()
 
-            });
+                });
 
-        });
+            }
+        );
 
     } catch (error) {
 
@@ -433,11 +508,15 @@ function calculateTotalSavings() {
         (total, goal) => {
 
             const amount =
-                Number(goal.savedAmount);
+                Number(
+                    goal.savedAmount
+                );
 
 
             if (
-                !Number.isFinite(amount) ||
+                !Number.isFinite(
+                    amount
+                ) ||
                 amount < 0
             ) {
 
@@ -456,6 +535,100 @@ function calculateTotalSavings() {
 
 
 // ========================================
+// LOAD CURRENT MONTHLY BUDGET
+// ========================================
+
+async function loadMonthlyBudget() {
+
+    try {
+
+        if (!currentUser) {
+
+            currentMonthlyBudget = 0;
+
+            return;
+
+        }
+
+
+        const now =
+            new Date();
+
+
+        const year =
+            now.getFullYear();
+
+
+        const month =
+            String(
+                now.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
+
+
+        const budgetId =
+            `${year}-${month}`;
+
+
+        const budgetReference =
+            doc(
+                db,
+                "users",
+                currentUser.uid,
+                "budgets",
+                budgetId
+            );
+
+
+        const snapshot =
+            await getDoc(
+                budgetReference
+            );
+
+
+        if (!snapshot.exists()) {
+
+            currentMonthlyBudget = 0;
+
+            return;
+
+        }
+
+
+        const data =
+            snapshot.data();
+
+
+        const amount =
+            Number(
+                data.amount
+            );
+
+
+        currentMonthlyBudget =
+            Number.isFinite(amount) &&
+            amount >= 0
+                ? amount
+                : 0;
+
+    } catch (error) {
+
+        console.error(
+            "Failed to load monthly budget:",
+            error
+        );
+
+
+        currentMonthlyBudget = 0;
+
+    }
+
+}
+
+
+// ========================================
 // UPDATE DASHBOARD
 // ========================================
 
@@ -466,38 +639,48 @@ function updateDashboard() {
     let expense = 0;
 
 
-    transactions.forEach((transaction) => {
+    transactions.forEach(
+        (transaction) => {
 
-        const amount =
-            Number(transaction.amount);
+            const amount =
+                Number(
+                    transaction.amount
+                );
 
 
-        if (
-            !Number.isFinite(amount) ||
-            amount < 0
-        ) {
+            if (
+                !Number.isFinite(
+                    amount
+                ) ||
+                amount < 0
+            ) {
 
-            return;
+                return;
+
+            }
+
+
+            if (
+                transaction.type ===
+                "income"
+            ) {
+
+                income += amount;
+
+            } else if (
+                transaction.type ===
+                "expense"
+            ) {
+
+                expense += amount;
+
+            }
 
         }
+    );
 
 
-        if (transaction.type === "income") {
-
-            income += amount;
-
-        } else if (
-            transaction.type === "expense"
-        ) {
-
-            expense += amount;
-
-        }
-
-    });
-
-
-    // Actual money saved in Day 8 Savings Goals.
+    // Actual money saved in Savings Goals.
 
     const savings =
         calculateTotalSavings();
@@ -515,7 +698,9 @@ function updateDashboard() {
     if (totalIncome) {
 
         totalIncome.textContent =
-            formatCurrency(income);
+            formatCurrency(
+                income
+            );
 
     }
 
@@ -523,7 +708,9 @@ function updateDashboard() {
     if (totalExpenses) {
 
         totalExpenses.textContent =
-            formatCurrency(expense);
+            formatCurrency(
+                expense
+            );
 
     }
 
@@ -531,7 +718,9 @@ function updateDashboard() {
     if (totalSavings) {
 
         totalSavings.textContent =
-            formatCurrency(savings);
+            formatCurrency(
+                savings
+            );
 
     }
 
@@ -539,14 +728,16 @@ function updateDashboard() {
     if (totalBalance) {
 
         totalBalance.textContent =
-            formatCurrency(balance);
+            formatCurrency(
+                balance
+            );
 
     }
 
 
     renderRecentTransactions();
 
-    updateBudget(expense);
+    updateBudget();
 
 }
 
@@ -557,10 +748,16 @@ function updateDashboard() {
 
 function renderRecentTransactions() {
 
-    if (!recentTransactions) return;
+    if (!recentTransactions) {
+
+        return;
+
+    }
 
 
-    if (transactions.length === 0) {
+    if (
+        transactions.length === 0
+    ) {
 
         recentTransactions.innerHTML = `
             <div class="empty-state">
@@ -586,62 +783,200 @@ function renderRecentTransactions() {
 
 
     const latest =
-        transactions.slice(0, 5);
+        transactions.slice(
+            0,
+            5
+        );
 
 
     recentTransactions.innerHTML =
-        latest.map((transaction) => `
+        latest
+            .map(
+                (transaction) => `
 
-            <div class="transaction-item">
+                    <div class="transaction-item">
 
-                <div>
+                        <div>
 
-                    <strong>
-                        ${escapeHTML(
-                            transaction.title || ""
-                        )}
-                    </strong>
+                            <strong>
+                                ${escapeHTML(
+                                    transaction.title ||
+                                    ""
+                                )}
+                            </strong>
 
-                    <p>
-                        ${escapeHTML(
-                            transaction.category || ""
-                        )}
-                    </p>
+                            <p>
+                                ${escapeHTML(
+                                    transaction.category ||
+                                    ""
+                                )}
+                            </p>
 
-                </div>
+                        </div>
 
 
-                <div>
+                        <div>
 
-                    <strong class="${
-                        transaction.type === "income"
-                            ? "income-text"
-                            : "expense-text"
-                    }">
+                            <strong class="${
+                                transaction.type ===
+                                "income"
+                                    ? "income-text"
+                                    : "expense-text"
+                            }">
 
-                        ${
-                            transaction.type === "income"
-                                ? "+"
-                                : "-"
-                        }
+                                ${
+                                    transaction.type ===
+                                    "income"
+                                        ? "+"
+                                        : "-"
+                                }
 
-                        ${formatCurrency(
-                            Number(transaction.amount) || 0
-                        )}
+                                ${formatCurrency(
+                                    Number(
+                                        transaction.amount
+                                    ) || 0
+                                )}
 
-                    </strong>
+                            </strong>
 
-                    <small>
-                        ${formatDate(
-                            transaction.date
-                        )}
-                    </small>
+                            <small>
+                                ${formatDate(
+                                    transaction.date
+                                )}
+                            </small>
 
-                </div>
+                        </div>
 
-            </div>
+                    </div>
 
-        `).join("");
+                `
+            )
+            .join("");
+
+}
+
+
+// ========================================
+// CURRENT MONTH EXPENSE TOTAL
+// ========================================
+
+function calculateCurrentMonthExpense() {
+
+    const now =
+        new Date();
+
+
+    const currentYear =
+        now.getFullYear();
+
+
+    const currentMonth =
+        now.getMonth() + 1;
+
+
+    return transactions.reduce(
+        (total, transaction) => {
+
+            if (
+                transaction.type !==
+                "expense"
+            ) {
+
+                return total;
+
+            }
+
+
+            const amount =
+                Number(
+                    transaction.amount
+                );
+
+
+            if (
+                !Number.isFinite(amount) ||
+                amount < 0
+            ) {
+
+                return total;
+
+            }
+
+
+            const dateValue =
+                transaction.date;
+
+
+            if (!dateValue) {
+
+                return total;
+
+            }
+
+
+            let transactionYear = null;
+            let transactionMonth = null;
+
+
+            if (
+                typeof dateValue ===
+                "string"
+            ) {
+
+                const parts =
+                    dateValue.split("-");
+
+
+                if (
+                    parts.length >= 2
+                ) {
+
+                    transactionYear =
+                        Number(
+                            parts[0]
+                        );
+
+                    transactionMonth =
+                        Number(
+                            parts[1]
+                        );
+
+                }
+
+            } else if (
+                dateValue?.toDate
+            ) {
+
+                const date =
+                    dateValue.toDate();
+
+
+                transactionYear =
+                    date.getFullYear();
+
+                transactionMonth =
+                    date.getMonth() + 1;
+
+            }
+
+
+            if (
+                transactionYear !==
+                    currentYear ||
+                transactionMonth !==
+                    currentMonth
+            ) {
+
+                return total;
+
+            }
+
+
+            return total + amount;
+
+        },
+        0
+    );
 
 }
 
@@ -650,20 +985,25 @@ function renderRecentTransactions() {
 // MONTHLY BUDGET
 // ========================================
 
-function updateBudget(expense) {
+function updateBudget() {
 
     const budget =
-        Number(
-            localStorage.getItem(
-                "monthlyBudget"
-            )
-        ) || 0;
+        currentMonthlyBudget;
+
+
+    // Only current month's expenses
+    // should affect current month's budget.
+
+    const expense =
+        calculateCurrentMonthExpense();
 
 
     if (budgetSpent) {
 
         budgetSpent.textContent =
-            formatCurrency(expense);
+            formatCurrency(
+                expense
+            );
 
     }
 
@@ -671,7 +1011,9 @@ function updateBudget(expense) {
     if (monthlyBudget) {
 
         monthlyBudget.textContent =
-            formatCurrency(budget);
+            formatCurrency(
+                budget
+            );
 
     }
 
@@ -701,7 +1043,10 @@ function updateBudget(expense) {
 
     const percent =
         Math.min(
-            (expense / budget) * 100,
+            (
+                expense /
+                budget
+            ) * 100,
             100
         );
 
@@ -718,7 +1063,11 @@ function updateBudget(expense) {
         budget - expense;
 
 
-    if (!budgetMessage) return;
+    if (!budgetMessage) {
+
+        return;
+
+    }
 
 
     if (remaining >= 0) {
@@ -732,7 +1081,9 @@ function updateBudget(expense) {
 
         budgetMessage.textContent =
             `Budget exceeded by ${formatCurrency(
-                Math.abs(remaining)
+                Math.abs(
+                    remaining
+                )
             )}`;
 
     }
@@ -915,33 +1266,39 @@ function closeTransactionModal() {
 
 function loadCategories(categories) {
 
-    if (!transactionCategory) return;
+    if (!transactionCategory) {
+
+        return;
+
+    }
 
 
     transactionCategory.innerHTML =
         "";
 
 
-    categories.forEach((category) => {
+    categories.forEach(
+        (category) => {
 
-        const option =
-            document.createElement(
-                "option"
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                category;
+
+            option.textContent =
+                category;
+
+
+            transactionCategory.appendChild(
+                option
             );
 
-
-        option.value =
-            category;
-
-        option.textContent =
-            category;
-
-
-        transactionCategory.appendChild(
-            option
-        );
-
-    });
+        }
+    );
 
 }
 
@@ -955,7 +1312,11 @@ async function saveTransaction(event) {
     event.preventDefault();
 
 
-    if (!currentUser) return;
+    if (!currentUser) {
+
+        return;
+
+    }
 
 
     if (transactionMessage) {
@@ -968,7 +1329,8 @@ async function saveTransaction(event) {
 
     const title =
         transactionTitle?.value
-            .trim() || "";
+            .trim() ||
+        "";
 
 
     const amount =
@@ -994,7 +1356,8 @@ async function saveTransaction(event) {
 
     const notes =
         transactionNotes?.value
-            .trim() || "";
+            .trim() ||
+        "";
 
 
     if (
@@ -1097,11 +1460,28 @@ async function saveTransaction(event) {
 
 function escapeHTML(value) {
 
-    return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+    return String(
+        value ?? ""
+    )
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
 
 }
